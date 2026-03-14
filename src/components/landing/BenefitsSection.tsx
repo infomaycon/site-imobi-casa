@@ -14,17 +14,11 @@ const benefits = [
 
 const BenefitsSection = () => {
   return (
-    <section className="py-24 bg-surface-dark relative">
+    <section className="py-24 bg-surface-light-alt relative">
       <div className="container mx-auto px-6 max-w-6xl">
-        <motion.div
-          className="text-center mb-16"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-        >
+        <motion.div className="text-center mb-16" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}>
           <span className="text-primary font-display font-semibold text-sm uppercase tracking-widest">Benefícios</span>
-          <h2 className="font-display font-bold text-3xl md:text-5xl text-on-dark mt-3">
+          <h2 className="font-display font-bold text-3xl md:text-5xl text-heading mt-3">
             Tudo que seu site precisa para <span className="text-gradient-primary">vender mais</span>
           </h2>
         </motion.div>
@@ -33,17 +27,15 @@ const BenefitsSection = () => {
           {benefits.map((b, i) => (
             <motion.div
               key={i}
-              className="group p-6 rounded-xl bg-surface-dark-card border border-border/10 hover:border-primary/30 transition-all duration-300"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
+              className="group p-6 rounded-xl bg-surface-light-card border border-border hover:border-primary/30 transition-all duration-300 shadow-soft"
+              initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
               transition={{ duration: 0.5, delay: i * 0.07 }}
             >
               <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
                 <b.icon className="w-6 h-6 text-primary" />
               </div>
-              <h3 className="font-display font-semibold text-on-dark text-base mb-2">{b.title}</h3>
-              <p className="text-on-dark-muted text-sm font-body leading-relaxed">{b.desc}</p>
+              <h3 className="font-display font-semibold text-heading text-base mb-2">{b.title}</h3>
+              <p className="text-body-muted text-sm font-body leading-relaxed">{b.desc}</p>
             </motion.div>
           ))}
         </div>

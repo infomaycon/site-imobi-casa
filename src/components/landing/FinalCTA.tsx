@@ -6,35 +6,18 @@ const FinalCTA = () => {
     <section className="relative py-32 overflow-hidden">
       <div className="absolute inset-0">
         <img src={heroBg} alt="" className="w-full h-full object-cover" />
-        <div className="absolute inset-0 bg-surface-dark/90" />
+        <div className="absolute inset-0 bg-background/85" />
       </div>
       <div className="relative z-10 container mx-auto px-6 text-center max-w-3xl">
-        <motion.h2
-          className="font-display font-bold text-3xl md:text-5xl text-on-dark mb-6"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-        >
+        <motion.h2 className="font-display font-bold text-3xl md:text-5xl text-heading mb-6" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
           Corretores de alto padrão precisam de um site{" "}
           <span className="text-gradient-primary">à altura.</span>
         </motion.h2>
-        <motion.p
-          className="text-on-dark-muted text-lg mb-10 font-body"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.1 }}
-        >
+        <motion.p className="text-body text-lg mb-10 font-body" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }}>
           Não perca mais tempo com sites genéricos. Conquiste autoridade digital com uma presença online premium.
         </motion.p>
-        <motion.a
-          href="#planos"
-          className="inline-flex items-center justify-center px-10 py-5 rounded-lg font-display font-bold text-lg bg-primary text-primary-foreground hover:brightness-110 transition-all shadow-premium"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.2 }}
-        >
+        <motion.a href="#planos" className="inline-flex items-center justify-center px-10 py-5 rounded-lg font-display font-bold text-lg bg-primary text-primary-foreground hover:brightness-110 transition-all shadow-premium"
+          initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }}>
           Quero Começar Agora
         </motion.a>
       </div>
