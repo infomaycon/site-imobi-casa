@@ -11,63 +11,63 @@ export const demoModels: DemoModel[] = [
     id: "aurora-prime",
     name: "Aurora Prime Imóveis",
     tagline: "Elevando o padrão de viver nas grandes cidades.",
-    colors: { primary: "#1a2744", secondary: "#c9a84c", bg: "#0d1520", text: "#f0ece4", accent: "#c9a84c" },
-    style: "Luxo urbano sofisticado",
+    colors: { primary: "#1a2744", secondary: "#c9a84c", bg: "#fafafa", text: "#1a1a1a", accent: "#c9a84c" },
+    style: "Azul marinho + Dourado",
   },
   {
     id: "skyline-urban",
     name: "Skyline Urban Realty",
     tagline: "Exclusividade nos melhores endereços.",
-    colors: { primary: "#111111", secondary: "#c0c0c0", bg: "#0a0a0a", text: "#e8e8e8", accent: "#c0c0c0" },
+    colors: { primary: "#222222", secondary: "#a0a0a0", bg: "#f8f8f8", text: "#1a1a1a", accent: "#a0a0a0" },
     style: "Preto + Prata",
   },
   {
     id: "metropolitan-elite",
     name: "Metropolitan Elite",
     tagline: "O extraordinário começa no endereço certo.",
-    colors: { primary: "#3a3a3a", secondary: "#b87333", bg: "#1a1a1a", text: "#e0dcd6", accent: "#b87333" },
+    colors: { primary: "#3a3a3a", secondary: "#b87333", bg: "#f9f7f5", text: "#1a1a1a", accent: "#b87333" },
     style: "Cinza grafite + Cobre",
   },
   {
     id: "villa-capital",
     name: "Villa Capital Imóveis",
     tagline: "Arquitetura, localização e prestígio.",
-    colors: { primary: "#6b4e37", secondary: "#d4c5a9", bg: "#f5f0e8", text: "#3d2b1f", accent: "#6b4e37" },
+    colors: { primary: "#6b4e37", secondary: "#d4c5a9", bg: "#faf8f5", text: "#3d2b1f", accent: "#6b4e37" },
     style: "Bege sofisticado + Marrom café",
   },
   {
     id: "urban-signature",
     name: "Urban Signature Realty",
     tagline: "Assinatura de luxo no mercado imobiliário.",
-    colors: { primary: "#111111", secondary: "#b8993e", bg: "#0d0d0d", text: "#eae6df", accent: "#b8993e" },
+    colors: { primary: "#222222", secondary: "#b8993e", bg: "#fafafa", text: "#1a1a1a", accent: "#b8993e" },
     style: "Preto + Dourado fosco",
   },
   {
     id: "infinity-city",
     name: "Infinity City Imóveis",
     tagline: "Imóveis que acompanham seu crescimento.",
-    colors: { primary: "#1a4a5c", secondary: "#d1d5db", bg: "#0f2b36", text: "#e4e8ec", accent: "#2d8fa5" },
+    colors: { primary: "#1a4a5c", secondary: "#2d8fa5", bg: "#f5f9fa", text: "#1a1a1a", accent: "#2d8fa5" },
     style: "Azul petróleo + Cinza claro",
   },
   {
     id: "empire-urban",
     name: "Empire Urban Living",
     tagline: "Grandes negócios para grandes conquistas.",
-    colors: { primary: "#111111", secondary: "#1a3a8a", bg: "#0a0a0a", text: "#e0e4ea", accent: "#2952cc" },
+    colors: { primary: "#1a1a2e", secondary: "#2952cc", bg: "#f5f6fa", text: "#1a1a1a", accent: "#2952cc" },
     style: "Preto + Azul royal",
   },
   {
     id: "prime-district",
     name: "Prime District Realty",
     tagline: "O privilégio de morar nos melhores bairros.",
-    colors: { primary: "#c9a84c", secondary: "#ffffff", bg: "#fafafa", text: "#1a1a1a", accent: "#c9a84c" },
+    colors: { primary: "#c9a84c", secondary: "#1a1a1a", bg: "#ffffff", text: "#1a1a1a", accent: "#c9a84c" },
     style: "Branco + Dourado elegante",
   },
   {
     id: "crown-city",
     name: "Crown City Imóveis",
     tagline: "Realeza no mercado imobiliário urbano.",
-    colors: { primary: "#5c1a2a", secondary: "#c9a84c", bg: "#1a0a10", text: "#f0e8e0", accent: "#c9a84c" },
+    colors: { primary: "#5c1a2a", secondary: "#c9a84c", bg: "#faf5f5", text: "#1a1a1a", accent: "#c9a84c" },
     style: "Vinho + Dourado",
   },
 ];
@@ -83,7 +83,7 @@ export interface Property {
   suites: number;
   bathrooms: number;
   parking: number;
-  image: number; // index 1-6
+  image: number;
   features: string[];
   description: string;
 }
