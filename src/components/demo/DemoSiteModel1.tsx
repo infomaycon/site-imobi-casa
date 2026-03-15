@@ -413,7 +413,7 @@ const Model1Detail = ({ property, colors, onBack }: { property: Property; colors
         <div className="grid md:grid-cols-3 gap-12">
           <div className="md:col-span-2 space-y-8">
             <div>
-              <div className="inline-block px-4 py-1 text-xs font-display font-bold uppercase tracking-wider mb-3" style={{ backgroundColor: colors.secondary, color: colors.primary }}>
+              <div className="inline-block px-4 py-1 text-xs font-display font-bold uppercase tracking-wider mb-3" style={{ backgroundColor: colors.primary, color: "#fff" }}>
                 {property.type}
               </div>
               <h1 className="font-display font-bold text-3xl mb-2" style={{ color: colors.text }}>{property.title}</h1>
