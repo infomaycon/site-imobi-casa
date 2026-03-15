@@ -406,7 +406,7 @@ const Model2Overlay = ({ property, colors, onClose }: { property: Property; colo
               </div>
             </div>
             <div className="flex flex-col items-end gap-3">
-              <p className="font-display font-black text-3xl" style={{ color: colors.text }}>{property.price}</p>
+              <p className="font-display font-black text-3xl" style={{ color: colors.primary }}>{property.price}</p>
               <a href="https://wa.me/5511999990000" target="_blank" rel="noopener noreferrer"
                 className="flex items-center gap-2 px-6 py-3 rounded-full font-display font-bold text-sm transition-all hover:brightness-110"
                 style={{ backgroundColor: "#25d366", color: "#fff" }}>

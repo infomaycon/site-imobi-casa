@@ -443,7 +443,7 @@ const Model1Detail = ({ property, colors, onBack }: { property: Property; colors
               <h3 className="font-display font-bold text-lg mb-3" style={{ color: colors.primary }}>Diferenciais</h3>
               <div className="flex flex-wrap gap-3">
                 {property.features.map((f, i) => (
-                  <span key={i} className="flex items-center gap-2 px-4 py-2 text-sm border" style={{ borderColor: colors.secondary + "40", color: colors.primary }}>
+                  <span key={i} className="flex items-center gap-2 px-4 py-2 text-sm border" style={{ borderColor: colors.primary + "40", color: colors.primary }}>
                     {featureIcon(f)} {f}
                   </span>
                 ))}
