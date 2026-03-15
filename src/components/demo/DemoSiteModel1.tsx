@@ -100,7 +100,7 @@ const DemoSiteModel1 = ({ model }: { model: DemoModel }) => {
             <img src={bannerImg} alt="" className="absolute inset-0 w-full h-full object-cover" />
             <div className="absolute inset-0" style={{ background: `linear-gradient(135deg, ${c.primary}dd 0%, ${c.primary}88 50%, transparent 100%)` }} />
             <div className="relative z-10 text-center px-6 max-w-3xl">
-              <motion.div className="w-16 h-0.5 mx-auto mb-6" style={{ backgroundColor: c.secondary }} initial={{ scaleX: 0 }} animate={{ scaleX: 1 }} transition={{ duration: 0.8 }} />
+              <motion.div className="w-16 h-0.5 mx-auto mb-6" style={{ backgroundColor: c.primary }} initial={{ scaleX: 0 }} animate={{ scaleX: 1 }} transition={{ duration: 0.8 }} />
               <motion.h1 className="font-display font-black text-4xl md:text-6xl mb-4 text-white" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
                 {model.name}
               </motion.h1>
