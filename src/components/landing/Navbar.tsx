@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
+import logo from "@/assets/imobicasa-logo.png";
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
@@ -7,8 +8,8 @@ const Navbar = () => {
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-xl border-b border-border">
       <div className="container mx-auto px-6 h-16 flex items-center justify-between">
-        <a href="/" className="font-display font-bold text-xl text-heading">
-          Sites<span className="text-primary">Premium</span>
+        <a href="/" className="flex items-center">
+          <img src={logo} alt="ImobiCasa" className="h-10" />
         </a>
 
         <div className="hidden md:flex items-center gap-8">
