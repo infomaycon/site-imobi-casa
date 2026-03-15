@@ -146,9 +146,9 @@ html {
   background: hsl(0 0% 96%);
 }
 ::-webkit-scrollbar-thumb {
-  background: hsl(152 68% 42% / 0.3);
+  background: hsl(168 62% 40% / 0.3);
   border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: hsl(152 68% 42% / 0.5);
+  background: hsl(168 62% 40% / 0.5);
 }
