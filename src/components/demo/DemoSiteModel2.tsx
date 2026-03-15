@@ -2,7 +2,7 @@ import { useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { properties, type Property, type DemoModel } from "@/data/models";
-import { ArrowLeft, Phone, Mail, MapPin, Bed, Bath, Car, Maximize, ChefHat, Waves, Mountain, Fence, Gem, Menu, X, MessageCircle, ChevronLeft, ChevronRight } from "lucide-react";
+import { ArrowLeft, Phone, Mail, MapPin, Bed, Bath, Car, Maximize, ChefHat, Waves, Mountain, Fence, Gem, Menu, X, MessageCircle, ChevronLeft, ChevronRight, Award, TrendingUp, Users } from "lucide-react";
 import { getSearchFilter } from "@/components/demo/SearchFilters";
 
 import property1 from "@/assets/property-1.jpg";
@@ -12,6 +12,7 @@ import property4 from "@/assets/property-4.jpg";
 import property5 from "@/assets/property-5.jpg";
 import property6 from "@/assets/property-6.jpg";
 import bannerImg from "@/assets/banner-model2.jpg";
+import brokerPhoto from "@/assets/broker-photo.jpg";
 
 const propertyImages = [property1, property2, property3, property4, property5, property6];
 
@@ -26,11 +27,7 @@ const featureIcon = (f: string) => {
   return <Icon className="w-4 h-4" />;
 };
 
-/* ── Model 2: Skyline Urban – Dark/Modern, Overlay Gallery ──
-   Layout: Full-bleed images, overlay property detail
-   Nav: Left-aligned logo, minimal 
-   Cards: Image dominant with overlaid info
-*/
+/* ── Model 2: Skyline Urban – Light theme, Overlay Gallery ── */
 const DemoSiteModel2 = ({ model }: { model: DemoModel }) => {
   const navigate = useNavigate();
   const [page, setPage] = useState<DemoPage>("home");
@@ -50,7 +47,7 @@ const DemoSiteModel2 = ({ model }: { model: DemoModel }) => {
     <button
       onClick={() => { setPage(target); setMobileMenu(false); setSelectedProperty(null); }}
       className="text-sm font-medium transition-colors"
-      style={{ color: page === target ? "#fff" : c.text + "55" }}
+      style={{ color: page === target ? c.primary : c.text + "55" }}
     >
       {label}
     </button>
@@ -65,10 +62,10 @@ const DemoSiteModel2 = ({ model }: { model: DemoModel }) => {
         </button>
       </div>
 
-      {/* Navbar – dark bar, left logo */}
-      <nav className="sticky top-0 z-50" style={{ backgroundColor: c.primary }}>
+      {/* Navbar – light bar */}
+      <nav className="sticky top-0 z-50 border-b" style={{ backgroundColor: c.bg, borderColor: c.text + "10" }}>
         <div className="container mx-auto px-6 h-14 flex items-center justify-between">
-          <button onClick={() => { setPage("home"); setSelectedProperty(null); }} className="font-display font-bold text-lg text-white tracking-tight">
+          <button onClick={() => { setPage("home"); setSelectedProperty(null); }} className="font-display font-bold text-lg tracking-tight" style={{ color: c.primary }}>
             {model.name}
           </button>
           <div className="hidden md:flex items-center gap-8">
@@ -78,7 +75,7 @@ const DemoSiteModel2 = ({ model }: { model: DemoModel }) => {
             <NavLink label="Contato" target="contact" />
           </div>
           <button className="md:hidden" onClick={() => setMobileMenu(!mobileMenu)}>
-            {mobileMenu ? <X className="w-6 h-6 text-white" /> : <Menu className="w-6 h-6 text-white" />}
+            {mobileMenu ? <X className="w-6 h-6" style={{ color: c.text }} /> : <Menu className="w-6 h-6" style={{ color: c.text }} />}
           </button>
         </div>
         {mobileMenu && (
@@ -94,7 +91,7 @@ const DemoSiteModel2 = ({ model }: { model: DemoModel }) => {
       {/* HOME */}
       {page === "home" && !selectedProperty && (
         <>
-          {/* Hero – full bleed, left aligned text */}
+          {/* Hero – full bleed */}
           <section className="relative h-[90vh] flex items-end overflow-hidden">
             <img src={bannerImg} alt="" className="absolute inset-0 w-full h-full object-cover" />
             <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
@@ -145,6 +142,12 @@ const DemoSiteModel2 = ({ model }: { model: DemoModel }) => {
               </div>
             </div>
           </section>
+
+          {/* Sobre o Corretor */}
+          <BrokerSection2 colors={c} />
+
+          {/* Entre em Contato */}
+          <ContactSection2 colors={c} modelId={model.id} />
         </>
       )}
 
@@ -178,7 +181,7 @@ const DemoSiteModel2 = ({ model }: { model: DemoModel }) => {
         </section>
       )}
 
-      {/* OVERLAY GALLERY – Model 2 unique experience */}
+      {/* OVERLAY GALLERY */}
       <AnimatePresence>
         {selectedProperty && (
           <Model2Overlay property={selectedProperty} colors={c} onClose={() => setSelectedProperty(null)} />
@@ -187,45 +190,23 @@ const DemoSiteModel2 = ({ model }: { model: DemoModel }) => {
 
       {/* ABOUT */}
       {page === "about" && !selectedProperty && (
-        <section className="py-24">
-          <div className="container mx-auto px-6 max-w-3xl">
-            <h2 className="font-display font-bold text-3xl mb-8" style={{ color: c.text }}>Sobre</h2>
-            <div className="space-y-6 text-base leading-relaxed" style={{ color: c.text + "aa" }}>
-              <p>A <strong style={{ color: c.text }}>{model.name}</strong> é referência no mercado imobiliário urbano. Combinamos tecnologia de ponta com um atendimento personalizado para encontrar o imóvel perfeito para você.</p>
-              <p>Nossa equipe de especialistas possui amplo conhecimento do mercado e está preparada para oferecer as melhores oportunidades de investimento e moradia.</p>
+        <>
+          <section className="py-24">
+            <div className="container mx-auto px-6 max-w-3xl">
+              <h2 className="font-display font-bold text-3xl mb-8" style={{ color: c.text }}>Sobre</h2>
+              <div className="space-y-6 text-base leading-relaxed" style={{ color: c.text + "aa" }}>
+                <p>A <strong style={{ color: c.text }}>{model.name}</strong> é referência no mercado imobiliário urbano. Combinamos tecnologia de ponta com um atendimento personalizado para encontrar o imóvel perfeito para você.</p>
+                <p>Nossa equipe de especialistas possui amplo conhecimento do mercado e está preparada para oferecer as melhores oportunidades de investimento e moradia.</p>
+              </div>
             </div>
-          </div>
-        </section>
+          </section>
+          <BrokerSection2 colors={c} />
+        </>
       )}
 
       {/* CONTACT */}
       {page === "contact" && !selectedProperty && (
-        <section className="py-24">
-          <div className="container mx-auto px-6 max-w-4xl">
-            <h2 className="font-display font-bold text-3xl mb-8" style={{ color: c.text }}>Contato</h2>
-            <div className="grid md:grid-cols-2 gap-12">
-              <div className="space-y-6">
-                <div className="flex items-center gap-3"><Phone className="w-5 h-5" style={{ color: c.text + "55" }} /><span>(11) 99999-0000</span></div>
-                <div className="flex items-center gap-3"><Mail className="w-5 h-5" style={{ color: c.text + "55" }} /><span>contato@{model.id}.com.br</span></div>
-                <div className="flex items-center gap-3"><MapPin className="w-5 h-5" style={{ color: c.text + "55" }} /><span>Av. Paulista, 1000 - São Paulo, SP</span></div>
-                <a href="https://wa.me/5511999990000" target="_blank" rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-display font-bold transition-all hover:brightness-110"
-                  style={{ backgroundColor: "#25d366", color: "#fff" }}>
-                  <MessageCircle className="w-5 h-5" /> WhatsApp
-                </a>
-              </div>
-              <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
-                <input type="text" placeholder="Seu nome" className="w-full px-4 py-3 rounded-xl border text-sm font-body" style={{ backgroundColor: c.text + "05", borderColor: c.text + "15", color: c.text }} />
-                <input type="email" placeholder="Seu e-mail" className="w-full px-4 py-3 rounded-xl border text-sm font-body" style={{ backgroundColor: c.text + "05", borderColor: c.text + "15", color: c.text }} />
-                <input type="tel" placeholder="Seu telefone" className="w-full px-4 py-3 rounded-xl border text-sm font-body" style={{ backgroundColor: c.text + "05", borderColor: c.text + "15", color: c.text }} />
-                <textarea placeholder="Mensagem" rows={4} className="w-full px-4 py-3 rounded-xl border text-sm font-body resize-none" style={{ backgroundColor: c.text + "05", borderColor: c.text + "15", color: c.text }} />
-                <button type="submit" className="w-full py-3 rounded-full font-display font-bold text-sm transition-all hover:brightness-110" style={{ backgroundColor: c.primary, color: "#fff" }}>
-                  Enviar
-                </button>
-              </form>
-            </div>
-          </div>
-        </section>
+        <ContactSection2 colors={c} modelId={model.id} />
       )}
 
       <footer className="py-8 border-t" style={{ borderColor: c.text + "10" }}>
@@ -238,6 +219,77 @@ const DemoSiteModel2 = ({ model }: { model: DemoModel }) => {
   );
 };
 
+/* ── Broker Section – Model 2 style ── */
+const BrokerSection2 = ({ colors }: { colors: DemoModel["colors"] }) => (
+  <section className="py-20" style={{ backgroundColor: colors.text + "04" }}>
+    <div className="container mx-auto px-6 max-w-5xl">
+      <h2 className="font-display font-bold text-2xl md:text-3xl mb-10" style={{ color: colors.text }}>Sobre o Corretor</h2>
+      <div className="grid md:grid-cols-5 gap-10 items-center">
+        <div className="md:col-span-2 flex justify-center">
+          <div className="w-60 h-60 overflow-hidden rounded-2xl shadow-xl">
+            <img src={brokerPhoto} alt="Ricardo Mendes" className="w-full h-full object-cover" />
+          </div>
+        </div>
+        <div className="md:col-span-3 space-y-4">
+          <h3 className="font-display font-bold text-2xl" style={{ color: colors.text }}>Ricardo Mendes</h3>
+          <p className="text-sm font-display font-semibold" style={{ color: colors.primary }}>Corretor de Imóveis • CRECI 123.456</p>
+          <p className="leading-relaxed" style={{ color: colors.text + "88" }}>
+            Com mais de 15 anos de experiência no mercado imobiliário de alto padrão, Ricardo Mendes é especialista em imóveis residenciais e comerciais nas regiões mais valorizadas de São Paulo.
+          </p>
+          <p className="leading-relaxed" style={{ color: colors.text + "88" }}>
+            Reconhecido pela excelência no atendimento e profundo conhecimento do mercado, já intermediou mais de 500 transações imobiliárias, sempre priorizando a satisfação e segurança dos seus clientes.
+          </p>
+          <div className="flex flex-wrap gap-6 pt-4">
+            {[
+              { icon: Award, label: "15+ anos de experiência" },
+              { icon: TrendingUp, label: "500+ imóveis vendidos" },
+              { icon: Users, label: "1000+ clientes atendidos" },
+            ].map((item, i) => (
+              <div key={i} className="flex items-center gap-2 text-xs" style={{ color: colors.text + "77" }}>
+                <item.icon className="w-4 h-4" style={{ color: colors.primary }} />
+                <span>{item.label}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+);
+
+/* ── Contact Section – Model 2 style ── */
+const ContactSection2 = ({ colors, modelId }: { colors: DemoModel["colors"]; modelId: string }) => (
+  <section className="py-24">
+    <div className="container mx-auto px-6 max-w-4xl">
+      <h2 className="font-display font-bold text-3xl mb-3" style={{ color: colors.text }}>Entre em Contato</h2>
+      <p className="mb-10" style={{ color: colors.text + "77" }}>Tem interesse em algum imóvel? Envie sua mensagem por e-mail ou WhatsApp.</p>
+      <div className="grid md:grid-cols-2 gap-12">
+        <div className="space-y-6">
+          <div className="flex items-center gap-3"><Phone className="w-5 h-5" style={{ color: colors.text + "55" }} /><span>(11) 99999-0000</span></div>
+          <div className="flex items-center gap-3"><Mail className="w-5 h-5" style={{ color: colors.text + "55" }} /><span>contato@{modelId}.com.br</span></div>
+          <div className="flex items-center gap-3"><MapPin className="w-5 h-5" style={{ color: colors.text + "55" }} /><span>Av. Paulista, 1000 - São Paulo, SP</span></div>
+        </div>
+        <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
+          <input type="text" placeholder="Seu nome completo" className="w-full px-4 py-3 rounded-xl border text-sm font-body" style={{ backgroundColor: colors.text + "05", borderColor: colors.text + "15", color: colors.text }} />
+          <input type="email" placeholder="seu@email.com" className="w-full px-4 py-3 rounded-xl border text-sm font-body" style={{ backgroundColor: colors.text + "05", borderColor: colors.text + "15", color: colors.text }} />
+          <input type="tel" placeholder="(00) 00000-0000" className="w-full px-4 py-3 rounded-xl border text-sm font-body" style={{ backgroundColor: colors.text + "05", borderColor: colors.text + "15", color: colors.text }} />
+          <textarea placeholder="Escreva sua mensagem aqui..." rows={4} className="w-full px-4 py-3 rounded-xl border text-sm font-body resize-none" style={{ backgroundColor: colors.text + "05", borderColor: colors.text + "15", color: colors.text }} />
+          <div className="flex flex-col sm:flex-row gap-3">
+            <button type="submit" className="flex-1 py-3 rounded-full font-display font-bold text-sm transition-all hover:brightness-110 flex items-center justify-center gap-2" style={{ backgroundColor: colors.primary, color: "#fff" }}>
+              <Mail className="w-4 h-4" /> Enviar por e-mail
+            </button>
+            <a href="https://wa.me/5511999990000" target="_blank" rel="noopener noreferrer"
+              className="flex-1 py-3 rounded-full font-display font-bold text-sm transition-all hover:brightness-110 flex items-center justify-center gap-2"
+              style={{ backgroundColor: "#25d366", color: "#fff" }}>
+              <MessageCircle className="w-4 h-4" /> Enviar no WhatsApp
+            </a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+);
+
 /* ── Card: Image dominant with overlaid info ── */
 const Model2Card = ({ property, colors, onSelect }: { property: Property; colors: DemoModel["colors"]; onSelect: () => void }) => (
   <motion.div
@@ -248,11 +300,9 @@ const Model2Card = ({ property, colors, onSelect }: { property: Property; colors
   >
     <img src={propertyImages[property.image - 1]} alt={property.title} className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-    {/* Badge */}
     <div className="absolute top-4 left-4 px-3 py-1 rounded-full text-xs font-display font-bold uppercase backdrop-blur-sm bg-white/20 text-white">
       {property.type}
     </div>
-    {/* Info overlay */}
     <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
       <h3 className="font-display font-bold text-xl mb-1">{property.title}</h3>
       <p className="text-xs text-white/60 flex items-center gap-1 mb-3"><MapPin className="w-3 h-3" />{property.location}</p>
@@ -272,9 +322,7 @@ const Model2Card = ({ property, colors, onSelect }: { property: Property; colors
 /* ── Overlay Gallery: Full-screen image gallery with swipe ── */
 const Model2Overlay = ({ property, colors, onClose }: { property: Property; colors: DemoModel["colors"]; onClose: () => void }) => {
   const [currentImage, setCurrentImage] = useState(0);
-  const [showInfo, setShowInfo] = useState(true);
   const allImages = [0, 1, 2, 3, 4, 5].map((i) => propertyImages[(property.image + i - 1) % 6]);
-  const [[dragDirection], setDragDirection] = useState([0]);
 
   const paginate = useCallback((dir: number) => {
     setCurrentImage((prev) => (prev + dir + allImages.length) % allImages.length);
@@ -285,15 +333,12 @@ const Model2Overlay = ({ property, colors, onClose }: { property: Property; colo
       className="fixed inset-0 z-[100] flex flex-col"
       initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
     >
-      {/* Backdrop */}
       <div className="absolute inset-0 bg-black/95" onClick={onClose} />
 
-      {/* Close button */}
       <button onClick={onClose} className="absolute top-6 right-6 z-10 w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-white hover:bg-white/20 transition-all backdrop-blur-sm">
         <X className="w-5 h-5" />
       </button>
 
-      {/* Image carousel */}
       <div className="relative flex-1 flex items-center justify-center overflow-hidden">
         <AnimatePresence mode="wait">
           <motion.img
@@ -315,7 +360,6 @@ const Model2Overlay = ({ property, colors, onClose }: { property: Property; colo
           />
         </AnimatePresence>
 
-        {/* Nav arrows */}
         <button onClick={() => paginate(-1)} className="absolute left-4 w-12 h-12 rounded-full bg-white/10 flex items-center justify-center text-white hover:bg-white/20 transition-all backdrop-blur-sm">
           <ChevronLeft className="w-6 h-6" />
         </button>
@@ -323,7 +367,6 @@ const Model2Overlay = ({ property, colors, onClose }: { property: Property; colo
           <ChevronRight className="w-6 h-6" />
         </button>
 
-        {/* Dots */}
         <div className="absolute bottom-4 flex gap-2">
           {allImages.map((_, i) => (
             <button key={i} onClick={() => setCurrentImage(i)}
