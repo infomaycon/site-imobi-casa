@@ -76,7 +76,6 @@ const ModelsSection = () => {
                 {/* Color palette */}
                 <div className="flex items-center gap-2 mb-5">
                   <div className="w-5 h-5 rounded-full border border-border shadow-sm" style={{ backgroundColor: model.colors.primary }} />
-                  <div className="w-5 h-5 rounded-full border border-border shadow-sm" style={{ backgroundColor: model.colors.secondary }} />
                   <span className="text-xs font-body text-body-muted ml-1">{model.style}</span>
                 </div>
 
