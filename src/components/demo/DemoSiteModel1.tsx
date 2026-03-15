@@ -246,7 +246,7 @@ const BrokerSection = ({ colors, modelName }: { colors: DemoModel["colors"]; mod
         </div>
         <div className="md:col-span-3 space-y-4">
           <h3 className="font-display font-bold text-2xl" style={{ color: colors.text }}>Ricardo Mendes</h3>
-          <p className="text-sm font-display font-semibold uppercase tracking-wider" style={{ color: colors.secondary }}>Corretor de Imóveis • CRECI 123.456</p>
+          <p className="text-sm font-display font-semibold uppercase tracking-wider" style={{ color: colors.primary }}>Corretor de Imóveis • CRECI 123.456</p>
           <p className="leading-relaxed" style={{ color: colors.text + "88" }}>
             Com mais de 15 anos de experiência no mercado imobiliário de alto padrão, Ricardo Mendes é especialista em imóveis residenciais e comerciais nas regiões mais valorizadas de São Paulo.
           </p>
