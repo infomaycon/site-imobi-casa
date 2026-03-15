@@ -360,10 +360,10 @@ const Model2Overlay = ({ property, colors, onClose }: { property: Property; colo
           />
         </AnimatePresence>
 
-        <button onClick={() => paginate(-1)} className="absolute left-4 w-12 h-12 rounded-full bg-white/10 flex items-center justify-center text-white hover:bg-white/20 transition-all backdrop-blur-sm">
+        <button onClick={() => paginate(-1)} className="absolute left-4 w-12 h-12 rounded-full bg-black/5 flex items-center justify-center hover:bg-black/10 transition-all" style={{ color: colors.text }}>
           <ChevronLeft className="w-6 h-6" />
         </button>
-        <button onClick={() => paginate(1)} className="absolute right-4 w-12 h-12 rounded-full bg-white/10 flex items-center justify-center text-white hover:bg-white/20 transition-all backdrop-blur-sm">
+        <button onClick={() => paginate(1)} className="absolute right-4 w-12 h-12 rounded-full bg-black/5 flex items-center justify-center hover:bg-black/10 transition-all" style={{ color: colors.text }}>
           <ChevronRight className="w-6 h-6" />
         </button>
 
@@ -371,7 +371,7 @@ const Model2Overlay = ({ property, colors, onClose }: { property: Property; colo
           {allImages.map((_, i) => (
             <button key={i} onClick={() => setCurrentImage(i)}
               className="w-2.5 h-2.5 rounded-full transition-all"
-              style={{ backgroundColor: i === currentImage ? "#fff" : "rgba(255,255,255,0.3)" }} />
+              style={{ backgroundColor: i === currentImage ? colors.primary : colors.text + "30" }} />
           ))}
         </div>
       </div>
