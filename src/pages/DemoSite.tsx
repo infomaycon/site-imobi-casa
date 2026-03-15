@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { demoModels, properties, type Property, type DemoModel } from "@/data/models";
 import { ArrowLeft, Phone, Mail, MapPin, Bed, Bath, Car, Maximize, ChefHat, Waves, Mountain, Fence, Gem, Menu, X, MessageCircle } from "lucide-react";
+import { getSearchFilter } from "@/components/demo/SearchFilters";
 
 import property1 from "@/assets/property-1.jpg";
 import property2 from "@/assets/property-2.jpg";
@@ -122,6 +123,12 @@ const DemoSite = () => {
             </div>
           </section>
 
+          {/* Search Filter */}
+          {(() => {
+            const FilterComponent = getSearchFilter(model.id);
+            return FilterComponent ? <FilterComponent colors={c} /> : null;
+          })()}
+
           <section className="py-16">
             <div className="container mx-auto px-6 max-w-6xl">
               <h2 className="font-display font-bold text-2xl md:text-3xl text-center mb-8" style={{ color: c.text }}>Encontre seu Imóvel Ideal</h2>
@@ -148,6 +155,10 @@ const DemoSite = () => {
           <div className="container mx-auto px-6 max-w-6xl">
             <h2 className="font-display font-bold text-3xl text-center mb-4" style={{ color: c.text }}>Nossos Imóveis</h2>
             <p className="text-center mb-8" style={{ color: c.text + "77" }}>Explore nosso portfólio exclusivo de imóveis de alto padrão</p>
+            {(() => {
+              const FilterComponent = getSearchFilter(model.id);
+              return FilterComponent ? <div className="mb-8"><FilterComponent colors={c} /></div> : null;
+            })()}
             <div className="flex justify-center gap-3 mb-12 flex-wrap">
               {["todos", "casas", "apartamentos", "terrenos"].map((f) => (
                 <button key={f} onClick={() => setFilter(f)} className="px-5 py-2 rounded-lg text-sm font-display font-semibold capitalize transition-all"
