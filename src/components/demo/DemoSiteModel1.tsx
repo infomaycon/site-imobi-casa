@@ -431,7 +431,7 @@ const Model1Detail = ({ property, colors, onBack }: { property: Property; colors
                   { icon: Car, label: "Vagas", value: property.parking },
                 ].map((item, i) => (
                   <div key={i} className="p-4 border" style={{ borderColor: colors.text + "12" }}>
-                    <item.icon className="w-5 h-5 mb-2" style={{ color: colors.secondary }} />
+                    <item.icon className="w-5 h-5 mb-2" style={{ color: colors.primary }} />
                     <p className="text-xs" style={{ color: colors.text + "66" }}>{item.label}</p>
                     <p className="font-display font-bold text-sm">{String(item.value)}</p>
                   </div>
