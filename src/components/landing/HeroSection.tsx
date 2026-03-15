@@ -35,7 +35,7 @@ const HeroSection = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.3 }}
         >
-          Conquiste autoridade digital e multiplique suas vendas com sites imobiliários de alto padrão, projetados para converter visitantes em clientes qualificados.
+          Tenha um site profissional preparado para capturar oportunidades todos os dias.
         </motion.p>
 
         <motion.div
