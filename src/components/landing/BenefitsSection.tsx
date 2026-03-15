@@ -17,7 +17,7 @@ const BenefitsSection = () => {
     <section className="py-28 bg-surface-light-alt relative overflow-hidden">
       <div className="container mx-auto px-6 max-w-6xl">
         <motion.div className="text-center mb-20" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}>
-          <span className="text-primary font-display font-semibold text-sm uppercase tracking-widest">Por que escolher</span>
+          <span className="text-gold font-display font-semibold text-sm uppercase tracking-widest">Por que escolher</span>
           <h2 className="font-display font-bold text-3xl md:text-5xl text-heading mt-3">
             Tudo que seu site precisa para <span className="text-gradient-primary">vender mais</span>
           </h2>

@@ -43,8 +43,8 @@
     --text-heading: 220 25% 12%;
     --text-body: 220 10% 35%;
     --text-muted: 220 10% 55%;
-    --gold: 40 70% 45%;
-    --gold-light: 40 60% 70%;
+    --gold: 25 95% 55%;
+    --gold-light: 25 85% 65%;
     
     font-family: 'Inter', system-ui, sans-serif;
   }
