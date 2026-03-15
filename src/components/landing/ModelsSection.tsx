@@ -82,8 +82,8 @@ const ModelsSection = () => {
 
                 <button
                   onClick={() => navigate(`/demo/${model.id}`)}
-                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-display font-semibold transition-all hover:brightness-110 w-full justify-center"
-                  style={{ backgroundColor: model.colors.primary, color: "#fff" }}
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-display font-semibold transition-all hover:brightness-110 w-full justify-center text-white"
+                  style={{ backgroundColor: "#00bf63" }}
                 >
                   Ver Demonstração
                   <ExternalLink className="w-4 h-4" />
