@@ -260,7 +260,7 @@ const BrokerSection = ({ colors, modelName }: { colors: DemoModel["colors"]; mod
               { icon: Users, label: "1000+ clientes atendidos" },
             ].map((item, i) => (
               <div key={i} className="flex items-center gap-2 text-xs" style={{ color: colors.text + "77" }}>
-                <item.icon className="w-4 h-4" style={{ color: colors.secondary }} />
+                <item.icon className="w-4 h-4" style={{ color: colors.primary }} />
                 <span>{item.label}</span>
               </div>
             ))}
