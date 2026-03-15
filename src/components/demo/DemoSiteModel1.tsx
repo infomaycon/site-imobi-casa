@@ -164,7 +164,7 @@ const DemoSiteModel1 = ({ model }: { model: DemoModel }) => {
         <section className="py-20">
           <div className="container mx-auto px-6 max-w-6xl">
             <div className="text-center mb-8">
-              <div className="w-12 h-0.5 mx-auto mb-4" style={{ backgroundColor: c.secondary }} />
+               <div className="w-12 h-0.5 mx-auto mb-4" style={{ backgroundColor: c.primary }} />
               <h2 className="font-display font-bold text-3xl" style={{ color: c.text }}>Nossos Imóveis</h2>
               <p className="mt-2" style={{ color: c.text + "77" }}>Portfólio exclusivo de imóveis de alto padrão</p>
             </div>
