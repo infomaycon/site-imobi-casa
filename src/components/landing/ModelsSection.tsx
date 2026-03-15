@@ -57,6 +57,17 @@ const ModelsSection = () => {
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                {/* Large outlined number */}
+                <span
+                  className="absolute top-3 right-4 font-display font-black text-7xl leading-none select-none pointer-events-none"
+                  style={{
+                    WebkitTextStroke: `2px ${model.colors.primary}`,
+                    color: "transparent",
+                    opacity: 0.35,
+                  }}
+                >
+                  {String(i + 1).padStart(2, "0")}
+                </span>
               </div>
 
               {/* Color bar */}
