@@ -37,6 +37,17 @@ const DemoSite = () => {
   if (model.id === "skyline-urban") return <DemoSiteModel2 model={model} />;
   if (model.id === "metropolitan-elite") return <DemoSiteModel3 model={model} />;
 
+  // Generic template for models 4-9
+  return <GenericDemoSite model={model} />;
+};
+
+const GenericDemoSite = ({ model }: { model: DemoModel }) => {
+  const navigate = useNavigate();
+  const [page, setPage] = useState<DemoPage>("home");
+  const [filter, setFilter] = useState<string>("todos");
+  const [selectedProperty, setSelectedProperty] = useState<Property | null>(null);
+  const [mobileMenu, setMobileMenu] = useState(false);
+
   const c = model.colors;
 
   const filtered = filter === "todos" ? properties : properties.filter((p) => {
