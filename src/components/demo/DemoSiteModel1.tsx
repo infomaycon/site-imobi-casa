@@ -235,7 +235,7 @@ const BrokerSection = ({ colors, modelName }: { colors: DemoModel["colors"]; mod
   <section className="py-20" style={{ backgroundColor: colors.text + "04" }}>
     <div className="container mx-auto px-6 max-w-5xl">
       <div className="text-center mb-12">
-        <div className="w-12 h-0.5 mx-auto mb-4" style={{ backgroundColor: colors.secondary }} />
+        <div className="w-12 h-0.5 mx-auto mb-4" style={{ backgroundColor: colors.primary }} />
         <h2 className="font-display font-bold text-2xl md:text-3xl" style={{ color: colors.primary }}>Sobre o Corretor</h2>
       </div>
       <div className="grid md:grid-cols-5 gap-10 items-center">
