@@ -47,8 +47,8 @@ const DemoSiteModel1 = ({ model }: { model: DemoModel }) => {
       onClick={() => { setPage(target); setMobileMenu(false); setSelectedProperty(null); }}
       className="text-sm font-medium tracking-wide uppercase transition-all border-b-2 pb-1"
       style={{
-        color: page === target ? c.secondary : c.text + "77",
-        borderColor: page === target ? c.secondary : "transparent",
+        color: page === target ? c.primary : c.text + "77",
+        borderColor: page === target ? c.primary : "transparent",
       }}
     >
       {label}
