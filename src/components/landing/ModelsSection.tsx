@@ -56,15 +56,11 @@ const ModelsSection = () => {
                   alt={`Preview do modelo ${model.name}`}
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                {/* Large outlined number */}
+                <div className="absolute inset-0 bg-black/30" />
+                {/* Large number */}
                 <span
-                  className="absolute top-3 right-4 font-display font-black text-7xl leading-none select-none pointer-events-none"
-                  style={{
-                    WebkitTextStroke: `2px ${model.colors.primary}`,
-                    color: "transparent",
-                    opacity: 0.35,
-                  }}
+                  className="absolute bottom-3 left-4 font-display font-black text-6xl leading-none select-none pointer-events-none text-white drop-shadow-lg"
+                  style={{ opacity: 0.9 }}
                 >
                   {String(i + 1).padStart(2, "0")}
                 </span>
