@@ -282,9 +282,9 @@ const ContactSection = ({ colors, modelId, variant }: { colors: DemoModel["color
       </div>
       <div className="grid md:grid-cols-2 gap-12">
         <div className="space-y-6">
-          <div className="flex items-center gap-3"><Phone className="w-5 h-5" style={{ color: colors.secondary }} /><span>(11) 99999-0000</span></div>
-          <div className="flex items-center gap-3"><Mail className="w-5 h-5" style={{ color: colors.secondary }} /><span>contato@{modelId}.com.br</span></div>
-          <div className="flex items-center gap-3"><MapPin className="w-5 h-5" style={{ color: colors.secondary }} /><span>Av. Paulista, 1000 - São Paulo, SP</span></div>
+           <div className="flex items-center gap-3"><Phone className="w-5 h-5" style={{ color: colors.primary }} /><span>(11) 99999-0000</span></div>
+           <div className="flex items-center gap-3"><Mail className="w-5 h-5" style={{ color: colors.primary }} /><span>contato@{modelId}.com.br</span></div>
+           <div className="flex items-center gap-3"><MapPin className="w-5 h-5" style={{ color: colors.primary }} /><span>Av. Paulista, 1000 - São Paulo, SP</span></div>
         </div>
         <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
           <input type="text" placeholder="Seu nome completo" className="w-full px-4 py-3 border text-sm font-body" style={{ backgroundColor: colors.text + "05", borderColor: colors.text + "15", color: colors.text }} />
