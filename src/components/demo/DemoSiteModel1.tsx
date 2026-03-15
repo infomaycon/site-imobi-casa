@@ -108,7 +108,7 @@ const DemoSiteModel1 = ({ model }: { model: DemoModel }) => {
                 "{model.tagline}"
               </motion.p>
               <motion.div className="flex flex-col sm:flex-row gap-4 justify-center" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}>
-                <button onClick={() => setPage("listing")} className="px-8 py-3 rounded-none font-display font-bold tracking-wider uppercase text-sm transition-all hover:brightness-110" style={{ backgroundColor: c.secondary, color: c.primary }}>
+                <button onClick={() => setPage("listing")} className="px-8 py-3 rounded-none font-display font-bold tracking-wider uppercase text-sm transition-all hover:brightness-110" style={{ backgroundColor: c.primary, color: "#fff" }}>
                   Ver Imóveis
                 </button>
                 <button onClick={() => setPage("contact")} className="px-8 py-3 rounded-none font-display font-semibold tracking-wider uppercase text-sm border-2 text-white transition-all hover:bg-white/10" style={{ borderColor: "rgba(255,255,255,0.4)" }}>
