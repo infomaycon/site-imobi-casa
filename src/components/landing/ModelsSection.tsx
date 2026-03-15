@@ -3,15 +3,15 @@ import { demoModels } from "@/data/models";
 import { useNavigate } from "react-router-dom";
 import { ExternalLink } from "lucide-react";
 
-import previewAuroraPrime from "@/assets/preview-aurora-prime.jpg";
-import previewSkylineUrban from "@/assets/preview-skyline-urban.jpg";
-import previewMetropolitanElite from "@/assets/preview-metropolitan-elite.jpg";
-import previewVillaCapital from "@/assets/preview-villa-capital.jpg";
-import previewUrbanSignature from "@/assets/preview-urban-signature.jpg";
-import previewInfinityCity from "@/assets/preview-infinity-city.jpg";
-import previewEmpireUrban from "@/assets/preview-empire-urban.jpg";
-import previewPrimeDistrict from "@/assets/preview-prime-district.jpg";
-import previewCrownCity from "@/assets/preview-crown-city.jpg";
+import previewAuroraPrime from "@/assets/preview-aurora-prime.png";
+import previewSkylineUrban from "@/assets/preview-skyline-urban.png";
+import previewMetropolitanElite from "@/assets/preview-metropolitan-elite.png";
+import previewVillaCapital from "@/assets/preview-villa-capital.png";
+import previewUrbanSignature from "@/assets/preview-urban-signature.png";
+import previewInfinityCity from "@/assets/preview-infinity-city.png";
+import previewEmpireUrban from "@/assets/preview-empire-urban.png";
+import previewPrimeDistrict from "@/assets/preview-prime-district.png";
+import previewCrownCity from "@/assets/preview-crown-city.png";
 
 const previewMap: Record<string, string> = {
   "aurora-prime": previewAuroraPrime,
