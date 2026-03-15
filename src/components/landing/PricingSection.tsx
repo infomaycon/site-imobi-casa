@@ -27,7 +27,7 @@ const PricingSection = () => {
     <section id="planos" className="py-24 bg-surface-light-alt relative">
       <div className="container mx-auto px-6 max-w-6xl">
         <motion.div className="text-center mb-16" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
-          <span className="text-primary font-display font-semibold text-sm uppercase tracking-widest">Planos</span>
+          <span className="text-gold font-display font-semibold text-sm uppercase tracking-widest">Planos</span>
           <h2 className="font-display font-bold text-3xl md:text-5xl text-heading mt-3">
             Escolha o plano ideal para <span className="text-gradient-primary">seu negócio</span>
           </h2>

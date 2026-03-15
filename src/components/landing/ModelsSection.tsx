@@ -32,7 +32,7 @@ const ModelsSection = () => {
     <section id="modelos" className="py-28 bg-surface-light relative">
       <div className="container mx-auto px-6 max-w-7xl">
         <motion.div className="text-center mb-16" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
-          <span className="text-primary font-display font-semibold text-sm uppercase tracking-widest">Modelos</span>
+          <span className="text-gold font-display font-semibold text-sm uppercase tracking-widest">Modelos</span>
           <h2 className="font-display font-bold text-3xl md:text-5xl text-heading mt-3">
             9 Modelos Premium <span className="text-gradient-primary">Prontos para Usar</span>
           </h2>
