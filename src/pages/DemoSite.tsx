@@ -42,12 +42,190 @@ const DemoSite = () => {
   return <GenericDemoSite model={model} />;
 };
 
+type ContactFormState = {
+  name: string;
+  email: string;
+  phone: string;
+  message: string;
+};
+
+const buildContactMessage = (form: ContactFormState, modelName: string) => {
+  const intro = `Olá! Tenho interesse em um imóvel da ${modelName}.`;
+  const details = [
+    form.name ? `Nome: ${form.name}` : null,
+    form.email ? `E-mail: ${form.email}` : null,
+    form.phone ? `Telefone: ${form.phone}` : null,
+    form.message ? `Mensagem: ${form.message}` : null,
+  ].filter(Boolean);
+
+  return [intro, ...details].join("\n");
+};
+
+const buildEmailHref = (form: ContactFormState, model: DemoModel) => {
+  const subject = encodeURIComponent(`Contato - ${model.name}`);
+  const body = encodeURIComponent(buildContactMessage(form, model.name));
+  return `mailto:contato@${model.id}.com.br?subject=${subject}&body=${body}`;
+};
+
+const buildWhatsAppHref = (form: ContactFormState, model: DemoModel) => {
+  const text = encodeURIComponent(buildContactMessage(form, model.name));
+  return `https://wa.me/5511999990000?text=${text}`;
+};
+
+const BrokerSection = ({ colors, model }: { colors: DemoModel["colors"]; model: DemoModel }) => (
+  <section id="about-section" className="py-24">
+    <div className="container mx-auto px-6 max-w-6xl">
+      <div className="text-center max-w-2xl mx-auto mb-14">
+        <h2 className="font-display font-bold text-3xl md:text-4xl mb-4" style={{ color: colors.primary }}>Sobre o Corretor</h2>
+        <p className="font-body" style={{ color: colors.text + "77" }}>
+          Conheça o profissional por trás de cada negociação e o atendimento consultivo da {model.name}.
+        </p>
+      </div>
+      <div className="grid md:grid-cols-[0.9fr_1.1fr] gap-12 lg:gap-16 items-center">
+        <div className="flex justify-center">
+          <div className="relative w-full max-w-sm">
+            <div className="absolute inset-0 rounded-[2rem]" style={{ background: `linear-gradient(145deg, ${colors.primary}22, ${colors.secondary}18)` }} />
+            <img
+              src={brokerPhoto}
+              alt="Ricardo Mendes - Corretor de imóveis"
+              className="relative w-full h-[430px] rounded-[2rem] object-cover shadow-xl"
+            />
+          </div>
+        </div>
+        <div className="space-y-6">
+          <div className="space-y-2">
+            <p className="text-sm font-display font-semibold uppercase tracking-[0.25em]" style={{ color: colors.primary }}>Atendimento consultivo</p>
+            <h3 className="font-display font-bold text-2xl md:text-3xl" style={{ color: colors.text }}>Ricardo Mendes</h3>
+            <p className="font-body text-sm font-semibold" style={{ color: colors.text + "88" }}>CRECI 123.456-F · Especialista em imóveis de alto padrão</p>
+          </div>
+
+          <p className="text-base leading-relaxed font-body" style={{ color: colors.text + "aa" }}>
+            Com mais de <strong style={{ color: colors.text }}>15 anos de experiência</strong> no mercado imobiliário, Ricardo atua com visão estratégica, curadoria criteriosa e acompanhamento próximo em cada etapa da compra ou venda.
+          </p>
+          <p className="text-base leading-relaxed font-body" style={{ color: colors.text + "aa" }}>
+            Na <strong style={{ color: colors.primary }}>{model.name}</strong>, o foco está em construir relações de confiança e entregar segurança, discrição e performance para clientes que buscam os melhores endereços da cidade.
+          </p>
+
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
+            {[
+              { icon: Award, label: "Experiência", value: "15+ anos" },
+              { icon: TrendingUp, label: "Negócios fechados", value: "500+" },
+              { icon: Users, label: "Clientes atendidos", value: "1.200+" },
+            ].map((stat) => (
+              <div
+                key={stat.label}
+                className="rounded-2xl border p-5 text-center"
+                style={{ borderColor: colors.text + "12", backgroundColor: colors.text + "03" }}
+              >
+                <stat.icon className="w-5 h-5 mx-auto mb-3" style={{ color: colors.primary }} />
+                <p className="font-display font-bold text-lg" style={{ color: colors.text }}>{stat.value}</p>
+                <p className="text-xs font-body" style={{ color: colors.text + "66" }}>{stat.label}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+);
+
+const ContactSection = ({
+  colors,
+  model,
+  form,
+  onFieldChange,
+}: {
+  colors: DemoModel["colors"];
+  model: DemoModel;
+  form: ContactFormState;
+  onFieldChange: (field: keyof ContactFormState, value: string) => void;
+}) => (
+  <section id="contact-section" className="py-24">
+    <div className="container mx-auto px-6">
+      <div className="max-w-3xl mx-auto text-center">
+        <h2 className="font-display font-bold text-3xl md:text-4xl mb-4" style={{ color: colors.primary }}>Entre em Contato</h2>
+        <p className="font-body mb-10 max-w-2xl mx-auto" style={{ color: colors.text + "77" }}>
+          Tem interesse em algum imóvel? Envie sua mensagem por e-mail ou WhatsApp.
+        </p>
+      </div>
+
+      <div className="max-w-3xl mx-auto rounded-[2rem] border p-6 md:p-8" style={{ borderColor: colors.text + "12", backgroundColor: colors.text + "03" }}>
+        <form className="space-y-4 text-left" onSubmit={(e) => e.preventDefault()}>
+          <div>
+            <label className="block text-sm font-display font-semibold mb-2 text-center sm:text-left" style={{ color: colors.text }}>Nome</label>
+            <input
+              type="text"
+              value={form.name}
+              onChange={(e) => onFieldChange("name", e.target.value)}
+              placeholder="Seu nome completo"
+              className="w-full px-4 py-3 rounded-xl border text-sm font-body outline-none transition-all focus:ring-2"
+              style={{ backgroundColor: colors.bg, borderColor: colors.text + "15", color: colors.text, '--tw-ring-color': colors.primary + "40" } as React.CSSProperties}
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-display font-semibold mb-2 text-center sm:text-left" style={{ color: colors.text }}>E-mail</label>
+            <input
+              type="email"
+              value={form.email}
+              onChange={(e) => onFieldChange("email", e.target.value)}
+              placeholder="seu@email.com"
+              className="w-full px-4 py-3 rounded-xl border text-sm font-body outline-none transition-all focus:ring-2"
+              style={{ backgroundColor: colors.bg, borderColor: colors.text + "15", color: colors.text, '--tw-ring-color': colors.primary + "40" } as React.CSSProperties}
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-display font-semibold mb-2 text-center sm:text-left" style={{ color: colors.text }}>Telefone</label>
+            <input
+              type="tel"
+              value={form.phone}
+              onChange={(e) => onFieldChange("phone", e.target.value)}
+              placeholder="(00) 00000-0000"
+              className="w-full px-4 py-3 rounded-xl border text-sm font-body outline-none transition-all focus:ring-2"
+              style={{ backgroundColor: colors.bg, borderColor: colors.text + "15", color: colors.text, '--tw-ring-color': colors.primary + "40" } as React.CSSProperties}
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-display font-semibold mb-2 text-center sm:text-left" style={{ color: colors.text }}>Mensagem</label>
+            <textarea
+              value={form.message}
+              onChange={(e) => onFieldChange("message", e.target.value)}
+              placeholder="Escreva sua mensagem aqui..."
+              rows={5}
+              className="w-full px-4 py-3 rounded-xl border text-sm font-body resize-none outline-none transition-all focus:ring-2"
+              style={{ backgroundColor: colors.bg, borderColor: colors.text + "15", color: colors.text, '--tw-ring-color': colors.primary + "40" } as React.CSSProperties}
+            />
+          </div>
+          <div className="flex flex-col sm:flex-row justify-center gap-3 pt-4">
+            <a
+              href={buildEmailHref(form, model)}
+              className="inline-flex flex-1 items-center justify-center gap-2 px-6 py-3.5 rounded-xl font-display font-bold text-sm transition-all hover:brightness-110"
+              style={{ backgroundColor: colors.primary, color: "#fff" }}
+            >
+              <Mail className="w-5 h-5" /> Enviar por e-mail
+            </a>
+            <a
+              href={buildWhatsAppHref(form, model)}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex flex-1 items-center justify-center gap-2 px-6 py-3.5 rounded-xl font-display font-bold text-sm transition-all hover:brightness-110"
+              style={{ backgroundColor: colors.primary, color: "#fff" }}
+            >
+              <MessageCircle className="w-5 h-5" /> Enviar no WhatsApp
+            </a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+);
+
 const GenericDemoSite = ({ model }: { model: DemoModel }) => {
   const navigate = useNavigate();
   const [page, setPage] = useState<DemoPage>("home");
   const [filter, setFilter] = useState<string>("todos");
   const [selectedProperty, setSelectedProperty] = useState<Property | null>(null);
   const [mobileMenu, setMobileMenu] = useState(false);
+  const [contactForm, setContactForm] = useState<ContactFormState>({ name: "", email: "", phone: "", message: "" });
 
   const c = model.colors;
 
@@ -67,11 +245,30 @@ const GenericDemoSite = ({ model }: { model: DemoModel }) => {
     return <Icon className="w-4 h-4" />;
   };
 
-  const NavLink = ({ label, target }: { label: string; target: DemoPage }) => (
+  const updateContactField = (field: keyof ContactFormState, value: string) => {
+    setContactForm((current) => ({ ...current, [field]: value }));
+  };
+
+  const navigateWithinDemo = (target: DemoPage, sectionId?: string) => {
+    setPage(target);
+    setMobileMenu(false);
+    setSelectedProperty(null);
+
+    if (sectionId) {
+      window.setTimeout(() => {
+        document.getElementById(sectionId)?.scrollIntoView({ behavior: "smooth", block: "start" });
+      }, 80);
+      return;
+    }
+
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const NavLink = ({ label, target, sectionId }: { label: string; target: DemoPage; sectionId?: string }) => (
     <button
-      onClick={() => { setPage(target); setMobileMenu(false); setSelectedProperty(null); }}
+      onClick={() => navigateWithinDemo(target, sectionId)}
       className="text-sm font-medium transition-colors hover:opacity-80"
-      style={{ color: page === target ? c.primary : c.text + "88" }}
+      style={{ color: page === target && !sectionId ? c.primary : c.text + "88" }}
     >
       {label}
     </button>
@@ -79,7 +276,6 @@ const GenericDemoSite = ({ model }: { model: DemoModel }) => {
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: c.bg, color: c.text }}>
-      {/* Back to main site */}
       <div className="fixed top-4 left-4 z-[60]">
         <button
           onClick={() => navigate("/")}
@@ -89,17 +285,16 @@ const GenericDemoSite = ({ model }: { model: DemoModel }) => {
         </button>
       </div>
 
-      {/* Navbar */}
       <nav className="sticky top-0 z-50 border-b backdrop-blur-xl" style={{ backgroundColor: c.bg + "ee", borderColor: c.text + "12" }}>
         <div className="container mx-auto px-6 h-16 flex items-center justify-between">
-          <button onClick={() => { setPage("home"); setSelectedProperty(null); }} className="font-display font-bold text-lg" style={{ color: c.primary }}>
+          <button onClick={() => navigateWithinDemo("home")} className="font-display font-bold text-lg" style={{ color: c.primary }}>
             {model.name}
           </button>
           <div className="hidden md:flex items-center gap-6">
             <NavLink label="Início" target="home" />
             <NavLink label="Imóveis" target="listing" />
-            <NavLink label="Sobre" target="about" />
-            <NavLink label="Contato" target="contact" />
+            <NavLink label="Sobre" target="home" sectionId="about-section" />
+            <NavLink label="Contato" target="home" sectionId="contact-section" />
           </div>
           <button className="md:hidden" onClick={() => setMobileMenu(!mobileMenu)} style={{ color: c.text }}>
             {mobileMenu ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -109,13 +304,12 @@ const GenericDemoSite = ({ model }: { model: DemoModel }) => {
           <div className="md:hidden p-6 space-y-4 border-t" style={{ borderColor: c.text + "12" }}>
             <NavLink label="Início" target="home" />
             <NavLink label="Imóveis" target="listing" />
-            <NavLink label="Sobre" target="about" />
-            <NavLink label="Contato" target="contact" />
+            <NavLink label="Sobre" target="home" sectionId="about-section" />
+            <NavLink label="Contato" target="home" sectionId="contact-section" />
           </div>
         )}
       </nav>
 
-      {/* Pages */}
       {page === "home" && !selectedProperty && (
         <>
           <section className="relative h-[80vh] flex items-center justify-center overflow-hidden">
@@ -129,29 +323,32 @@ const GenericDemoSite = ({ model }: { model: DemoModel }) => {
                 "{model.tagline}"
               </motion.p>
               <motion.div className="flex flex-col sm:flex-row gap-4 justify-center" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}>
-                <button onClick={() => setPage("listing")} className="px-8 py-3 rounded-lg font-display font-bold transition-all hover:brightness-110" style={{ backgroundColor: c.primary, color: "#fff" }}>
+                <button onClick={() => navigateWithinDemo("listing")} className="px-8 py-3 rounded-lg font-display font-bold transition-all hover:brightness-110" style={{ backgroundColor: c.primary, color: "#fff" }}>
                   Ver Imóveis
                 </button>
-                <button onClick={() => setPage("contact")} className="px-8 py-3 rounded-lg font-display font-semibold border-2 transition-all" style={{ borderColor: c.primary + "40", color: c.text }}>
+                <button onClick={() => navigateWithinDemo("home", "contact-section")} className="px-8 py-3 rounded-lg font-display font-semibold border-2 transition-all" style={{ borderColor: c.primary + "40", color: c.text }}>
                   Fale Conosco
                 </button>
               </motion.div>
             </div>
           </section>
 
-          {/* Search Filter */}
           {(() => {
             const FilterComponent = getSearchFilter(model.id);
             return FilterComponent ? <FilterComponent colors={c} /> : null;
           })()}
 
-          <section className="py-16">
+          <section id="listing-section" className="py-16">
             <div className="container mx-auto px-6 max-w-6xl">
               <h2 className="font-display font-bold text-2xl md:text-3xl text-center mb-8" style={{ color: c.text }}>Encontre seu Imóvel Ideal</h2>
               <div className="flex justify-center gap-3 mb-12 flex-wrap">
                 {["todos", "casas", "apartamentos", "terrenos"].map((f) => (
-                  <button key={f} onClick={() => setFilter(f)} className="px-5 py-2 rounded-lg text-sm font-display font-semibold capitalize transition-all"
-                    style={{ backgroundColor: filter === f ? c.primary : c.text + "08", color: filter === f ? "#fff" : c.text + "88" }}>
+                  <button
+                    key={f}
+                    onClick={() => setFilter(f)}
+                    className="px-5 py-2 rounded-lg text-sm font-display font-semibold capitalize transition-all"
+                    style={{ backgroundColor: filter === f ? c.primary : c.text + "08", color: filter === f ? "#fff" : c.text + "88" }}
+                  >
                     {f}
                   </button>
                 ))}
@@ -163,6 +360,9 @@ const GenericDemoSite = ({ model }: { model: DemoModel }) => {
               </div>
             </div>
           </section>
+
+          <BrokerSection colors={c} model={model} />
+          <ContactSection colors={c} model={model} form={contactForm} onFieldChange={updateContactField} />
         </>
       )}
 
@@ -177,8 +377,12 @@ const GenericDemoSite = ({ model }: { model: DemoModel }) => {
             })()}
             <div className="flex justify-center gap-3 mb-12 flex-wrap">
               {["todos", "casas", "apartamentos", "terrenos"].map((f) => (
-                <button key={f} onClick={() => setFilter(f)} className="px-5 py-2 rounded-lg text-sm font-display font-semibold capitalize transition-all"
-                  style={{ backgroundColor: filter === f ? c.primary : c.text + "08", color: filter === f ? "#fff" : c.text + "88" }}>
+                <button
+                  key={f}
+                  onClick={() => setFilter(f)}
+                  className="px-5 py-2 rounded-lg text-sm font-display font-semibold capitalize transition-all"
+                  style={{ backgroundColor: filter === f ? c.primary : c.text + "08", color: filter === f ? "#fff" : c.text + "88" }}
+                >
                   {f}
                 </button>
               ))}
@@ -196,94 +400,9 @@ const GenericDemoSite = ({ model }: { model: DemoModel }) => {
         <PropertyDetail property={selectedProperty} colors={c} featureIcon={featureIcon} onBack={() => setSelectedProperty(null)} />
       )}
 
-      {/* About / Sobre o Corretor */}
-      {page === "about" && !selectedProperty && (
-        <section className="py-24">
-          <div className="container mx-auto px-6 max-w-5xl">
-            <h2 className="font-display font-bold text-3xl md:text-4xl mb-4 text-center" style={{ color: c.primary }}>Sobre o Corretor</h2>
-            <p className="text-center mb-16 font-body max-w-2xl mx-auto" style={{ color: c.text + "77" }}>
-              Conheça o profissional dedicado a encontrar o imóvel ideal para você
-            </p>
-            <div className="grid md:grid-cols-2 gap-12 lg:gap-16 items-center">
-              <div className="flex justify-center">
-                <div className="relative">
-                  <img src={brokerPhoto} alt="Ricardo Mendes - Corretor de Imóveis" className="w-72 h-72 md:w-80 md:h-96 rounded-2xl object-cover shadow-xl" />
-                  <div className="absolute -bottom-3 -right-3 w-72 md:w-80 h-72 md:h-96 rounded-2xl border-2 -z-10" style={{ borderColor: c.primary + "40" }} />
-                </div>
-              </div>
-              <div className="space-y-6">
-                <div>
-                  <h3 className="font-display font-bold text-2xl md:text-3xl mb-2" style={{ color: c.text }}>Ricardo Mendes</h3>
-                  <p className="font-body text-sm font-semibold" style={{ color: c.primary }}>CRECI 123.456-F | Consultor Imobiliário Premium</p>
-                </div>
-                <p className="text-base leading-relaxed font-body" style={{ color: c.text + "aa" }}>
-                  Com mais de <strong style={{ color: c.text }}>15 anos de experiência</strong> no mercado imobiliário de alto padrão, construí uma carreira baseada em confiança, transparência e resultados. Cada negociação é conduzida com dedicação total, garantindo que meus clientes encontrem não apenas um imóvel, mas o lar perfeito para suas vidas.
-                </p>
-                <p className="text-base leading-relaxed font-body" style={{ color: c.text + "aa" }}>
-                  Atuando pela <strong style={{ color: c.primary }}>{model.name}</strong>, ofereço consultoria estratégica e um portfólio exclusivo nas melhores localizações. Meu compromisso é transformar sonhos em endereços, com atendimento personalizado do primeiro contato até a entrega das chaves.
-                </p>
-                <div className="grid grid-cols-3 gap-4 pt-4">
-                  {[
-                    { icon: Award, label: "Experiência", value: "15+ anos" },
-                    { icon: TrendingUp, label: "Vendas", value: "500+" },
-                    { icon: Users, label: "Clientes", value: "1.200+" },
-                  ].map((stat, i) => (
-                    <div key={i} className="text-center p-4 rounded-xl border" style={{ borderColor: c.text + "12", backgroundColor: c.text + "03" }}>
-                      <stat.icon className="w-5 h-5 mx-auto mb-2" style={{ color: c.primary }} />
-                      <p className="font-display font-bold text-lg" style={{ color: c.text }}>{stat.value}</p>
-                      <p className="text-xs font-body" style={{ color: c.text + "66" }}>{stat.label}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-      )}
+      {page === "about" && !selectedProperty && <BrokerSection colors={c} model={model} />}
+      {page === "contact" && !selectedProperty && <ContactSection colors={c} model={model} form={contactForm} onFieldChange={updateContactField} />}
 
-      {/* Contato */}
-      {page === "contact" && !selectedProperty && (
-        <section className="py-24">
-          <div className="container mx-auto px-6 max-w-2xl text-center">
-            <h2 className="font-display font-bold text-3xl md:text-4xl mb-4" style={{ color: c.primary }}>Entre em Contato</h2>
-            <p className="font-body mb-10" style={{ color: c.text + "77" }}>
-              Tem interesse em algum imóvel? Envie sua mensagem por e-mail ou WhatsApp.
-            </p>
-            <form className="space-y-4 text-left" onSubmit={(e) => e.preventDefault()}>
-              <div>
-                <label className="block text-sm font-display font-semibold mb-1.5" style={{ color: c.text }}>Nome</label>
-                <input type="text" placeholder="Seu nome completo" className="w-full px-4 py-3 rounded-lg border text-sm font-body outline-none transition-all focus:ring-2" style={{ backgroundColor: c.text + "05", borderColor: c.text + "15", color: c.text, '--tw-ring-color': c.primary + "40" } as React.CSSProperties} />
-              </div>
-              <div>
-                <label className="block text-sm font-display font-semibold mb-1.5" style={{ color: c.text }}>E-mail</label>
-                <input type="email" placeholder="seu@email.com" className="w-full px-4 py-3 rounded-lg border text-sm font-body outline-none transition-all focus:ring-2" style={{ backgroundColor: c.text + "05", borderColor: c.text + "15", color: c.text, '--tw-ring-color': c.primary + "40" } as React.CSSProperties} />
-              </div>
-              <div>
-                <label className="block text-sm font-display font-semibold mb-1.5" style={{ color: c.text }}>Telefone</label>
-                <input type="tel" placeholder="(00) 00000-0000" className="w-full px-4 py-3 rounded-lg border text-sm font-body outline-none transition-all focus:ring-2" style={{ backgroundColor: c.text + "05", borderColor: c.text + "15", color: c.text, '--tw-ring-color': c.primary + "40" } as React.CSSProperties} />
-              </div>
-              <div>
-                <label className="block text-sm font-display font-semibold mb-1.5" style={{ color: c.text }}>Mensagem</label>
-                <textarea placeholder="Escreva sua mensagem aqui..." rows={5} className="w-full px-4 py-3 rounded-lg border text-sm font-body resize-none outline-none transition-all focus:ring-2" style={{ backgroundColor: c.text + "05", borderColor: c.text + "15", color: c.text, '--tw-ring-color': c.primary + "40" } as React.CSSProperties} />
-              </div>
-              <div className="flex flex-col sm:flex-row gap-3 pt-4">
-                <a href={`mailto:contato@${model.id}.com.br`}
-                  className="flex-1 inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-lg font-display font-bold text-sm transition-all hover:brightness-110"
-                  style={{ backgroundColor: c.primary, color: "#fff" }}>
-                  <Mail className="w-5 h-5" /> Enviar por e-mail
-                </a>
-                <a href="https://wa.me/5511999990000" target="_blank" rel="noopener noreferrer"
-                  className="flex-1 inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-lg font-display font-bold text-sm transition-all hover:brightness-110"
-                  style={{ backgroundColor: "#25d366", color: "#fff" }}>
-                  <MessageCircle className="w-5 h-5" /> Enviar no WhatsApp
-                </a>
-              </div>
-            </form>
-          </div>
-        </section>
-      )}
-
-      {/* Footer */}
       <footer className="py-12 border-t" style={{ borderColor: c.text + "10", backgroundColor: c.text + "05" }}>
         <div className="container mx-auto px-6 max-w-6xl">
           <div className="grid md:grid-cols-3 gap-10 mb-10">
@@ -299,11 +418,15 @@ const GenericDemoSite = ({ model }: { model: DemoModel }) => {
                 {[
                   { label: "Início", target: "home" as DemoPage },
                   { label: "Imóveis", target: "listing" as DemoPage },
-                  { label: "Sobre", target: "about" as DemoPage },
-                  { label: "Contato", target: "contact" as DemoPage },
+                  { label: "Sobre", target: "home" as DemoPage, sectionId: "about-section" },
+                  { label: "Contato", target: "home" as DemoPage, sectionId: "contact-section" },
                 ].map((item) => (
-                  <button key={item.label} onClick={() => { setPage(item.target); setSelectedProperty(null); window.scrollTo(0, 0); }}
-                    className="block text-sm font-body transition-colors hover:opacity-80" style={{ color: c.text + "77" }}>
+                  <button
+                    key={item.label}
+                    onClick={() => navigateWithinDemo(item.target, item.sectionId)}
+                    className="block text-sm font-body transition-colors hover:opacity-80"
+                    style={{ color: c.text + "77" }}
+                  >
                     {item.label}
                   </button>
                 ))}
