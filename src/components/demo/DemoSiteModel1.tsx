@@ -47,8 +47,8 @@ const DemoSiteModel1 = ({ model }: { model: DemoModel }) => {
       onClick={() => { setPage(target); setMobileMenu(false); setSelectedProperty(null); }}
       className="text-sm font-medium tracking-wide uppercase transition-all border-b-2 pb-1"
       style={{
-        color: page === target ? c.secondary : c.text + "77",
-        borderColor: page === target ? c.secondary : "transparent",
+        color: page === target ? c.primary : c.text + "77",
+        borderColor: page === target ? c.primary : "transparent",
       }}
     >
       {label}
@@ -100,7 +100,7 @@ const DemoSiteModel1 = ({ model }: { model: DemoModel }) => {
             <img src={bannerImg} alt="" className="absolute inset-0 w-full h-full object-cover" />
             <div className="absolute inset-0" style={{ background: `linear-gradient(135deg, ${c.primary}dd 0%, ${c.primary}88 50%, transparent 100%)` }} />
             <div className="relative z-10 text-center px-6 max-w-3xl">
-              <motion.div className="w-16 h-0.5 mx-auto mb-6" style={{ backgroundColor: c.secondary }} initial={{ scaleX: 0 }} animate={{ scaleX: 1 }} transition={{ duration: 0.8 }} />
+              <motion.div className="w-16 h-0.5 mx-auto mb-6" style={{ backgroundColor: c.primary }} initial={{ scaleX: 0 }} animate={{ scaleX: 1 }} transition={{ duration: 0.8 }} />
               <motion.h1 className="font-display font-black text-4xl md:text-6xl mb-4 text-white" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
                 {model.name}
               </motion.h1>
@@ -108,7 +108,7 @@ const DemoSiteModel1 = ({ model }: { model: DemoModel }) => {
                 "{model.tagline}"
               </motion.p>
               <motion.div className="flex flex-col sm:flex-row gap-4 justify-center" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}>
-                <button onClick={() => setPage("listing")} className="px-8 py-3 rounded-none font-display font-bold tracking-wider uppercase text-sm transition-all hover:brightness-110" style={{ backgroundColor: c.secondary, color: c.primary }}>
+                <button onClick={() => setPage("listing")} className="px-8 py-3 rounded-none font-display font-bold tracking-wider uppercase text-sm transition-all hover:brightness-110" style={{ backgroundColor: c.primary, color: "#fff" }}>
                   Ver Imóveis
                 </button>
                 <button onClick={() => setPage("contact")} className="px-8 py-3 rounded-none font-display font-semibold tracking-wider uppercase text-sm border-2 text-white transition-all hover:bg-white/10" style={{ borderColor: "rgba(255,255,255,0.4)" }}>
@@ -128,7 +128,7 @@ const DemoSiteModel1 = ({ model }: { model: DemoModel }) => {
           <section className="py-20">
             <div className="container mx-auto px-6 max-w-6xl">
               <div className="text-center mb-12">
-                <div className="w-12 h-0.5 mx-auto mb-4" style={{ backgroundColor: c.secondary }} />
+                <div className="w-12 h-0.5 mx-auto mb-4" style={{ backgroundColor: c.primary }} />
                 <h2 className="font-display font-bold text-2xl md:text-3xl" style={{ color: c.text }}>Imóveis em Destaque</h2>
               </div>
               <div className="flex justify-center gap-3 mb-12 flex-wrap">
@@ -164,7 +164,7 @@ const DemoSiteModel1 = ({ model }: { model: DemoModel }) => {
         <section className="py-20">
           <div className="container mx-auto px-6 max-w-6xl">
             <div className="text-center mb-8">
-              <div className="w-12 h-0.5 mx-auto mb-4" style={{ backgroundColor: c.secondary }} />
+               <div className="w-12 h-0.5 mx-auto mb-4" style={{ backgroundColor: c.primary }} />
               <h2 className="font-display font-bold text-3xl" style={{ color: c.text }}>Nossos Imóveis</h2>
               <p className="mt-2" style={{ color: c.text + "77" }}>Portfólio exclusivo de imóveis de alto padrão</p>
             </div>
@@ -203,7 +203,7 @@ const DemoSiteModel1 = ({ model }: { model: DemoModel }) => {
         <>
           <section className="py-24">
             <div className="container mx-auto px-6 max-w-3xl">
-              <div className="w-12 h-0.5 mx-auto mb-4" style={{ backgroundColor: c.secondary }} />
+              <div className="w-12 h-0.5 mx-auto mb-4" style={{ backgroundColor: c.primary }} />
               <h2 className="font-display font-bold text-3xl mb-8 text-center" style={{ color: c.primary }}>Sobre Nós</h2>
               <div className="space-y-6 text-base leading-relaxed" style={{ color: c.text + "aa" }}>
                 <p>A <strong style={{ color: c.primary }}>{model.name}</strong> é uma referência no mercado imobiliário urbano de alto padrão. Com anos de experiência e um portfólio exclusivo, oferecemos imóveis que atendem aos mais exigentes padrões de qualidade, localização e sofisticação.</p>
@@ -235,7 +235,7 @@ const BrokerSection = ({ colors, modelName }: { colors: DemoModel["colors"]; mod
   <section className="py-20" style={{ backgroundColor: colors.text + "04" }}>
     <div className="container mx-auto px-6 max-w-5xl">
       <div className="text-center mb-12">
-        <div className="w-12 h-0.5 mx-auto mb-4" style={{ backgroundColor: colors.secondary }} />
+        <div className="w-12 h-0.5 mx-auto mb-4" style={{ backgroundColor: colors.primary }} />
         <h2 className="font-display font-bold text-2xl md:text-3xl" style={{ color: colors.primary }}>Sobre o Corretor</h2>
       </div>
       <div className="grid md:grid-cols-5 gap-10 items-center">
@@ -246,7 +246,7 @@ const BrokerSection = ({ colors, modelName }: { colors: DemoModel["colors"]; mod
         </div>
         <div className="md:col-span-3 space-y-4">
           <h3 className="font-display font-bold text-2xl" style={{ color: colors.text }}>Ricardo Mendes</h3>
-          <p className="text-sm font-display font-semibold uppercase tracking-wider" style={{ color: colors.secondary }}>Corretor de Imóveis • CRECI 123.456</p>
+          <p className="text-sm font-display font-semibold uppercase tracking-wider" style={{ color: colors.primary }}>Corretor de Imóveis • CRECI 123.456</p>
           <p className="leading-relaxed" style={{ color: colors.text + "88" }}>
             Com mais de 15 anos de experiência no mercado imobiliário de alto padrão, Ricardo Mendes é especialista em imóveis residenciais e comerciais nas regiões mais valorizadas de São Paulo.
           </p>
@@ -260,7 +260,7 @@ const BrokerSection = ({ colors, modelName }: { colors: DemoModel["colors"]; mod
               { icon: Users, label: "1000+ clientes atendidos" },
             ].map((item, i) => (
               <div key={i} className="flex items-center gap-2 text-xs" style={{ color: colors.text + "77" }}>
-                <item.icon className="w-4 h-4" style={{ color: colors.secondary }} />
+                <item.icon className="w-4 h-4" style={{ color: colors.primary }} />
                 <span>{item.label}</span>
               </div>
             ))}
@@ -276,15 +276,15 @@ const ContactSection = ({ colors, modelId, variant }: { colors: DemoModel["color
   <section className="py-24">
     <div className="container mx-auto px-6 max-w-4xl">
       <div className="text-center mb-10">
-        <div className="w-12 h-0.5 mx-auto mb-4" style={{ backgroundColor: colors.secondary }} />
+        <div className="w-12 h-0.5 mx-auto mb-4" style={{ backgroundColor: colors.primary }} />
         <h2 className="font-display font-bold text-3xl mb-3" style={{ color: colors.primary }}>Entre em Contato</h2>
         <p style={{ color: colors.text + "77" }}>Tem interesse em algum imóvel? Envie sua mensagem por e-mail ou WhatsApp.</p>
       </div>
       <div className="grid md:grid-cols-2 gap-12">
         <div className="space-y-6">
-          <div className="flex items-center gap-3"><Phone className="w-5 h-5" style={{ color: colors.secondary }} /><span>(11) 99999-0000</span></div>
-          <div className="flex items-center gap-3"><Mail className="w-5 h-5" style={{ color: colors.secondary }} /><span>contato@{modelId}.com.br</span></div>
-          <div className="flex items-center gap-3"><MapPin className="w-5 h-5" style={{ color: colors.secondary }} /><span>Av. Paulista, 1000 - São Paulo, SP</span></div>
+           <div className="flex items-center gap-3"><Phone className="w-5 h-5" style={{ color: colors.primary }} /><span>(11) 99999-0000</span></div>
+           <div className="flex items-center gap-3"><Mail className="w-5 h-5" style={{ color: colors.primary }} /><span>contato@{modelId}.com.br</span></div>
+           <div className="flex items-center gap-3"><MapPin className="w-5 h-5" style={{ color: colors.primary }} /><span>Av. Paulista, 1000 - São Paulo, SP</span></div>
         </div>
         <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
           <input type="text" placeholder="Seu nome completo" className="w-full px-4 py-3 border text-sm font-body" style={{ backgroundColor: colors.text + "05", borderColor: colors.text + "15", color: colors.text }} />
@@ -318,7 +318,7 @@ const Model1Card = ({ property, colors, onSelect }: { property: Property; colors
   >
     <div className="relative h-64 overflow-hidden">
       <img src={propertyImages[property.image - 1]} alt={property.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
-      <div className="absolute top-0 left-0 px-4 py-2 text-xs font-display font-bold uppercase tracking-wider" style={{ backgroundColor: colors.secondary, color: colors.primary }}>
+      <div className="absolute top-0 left-0 px-4 py-2 text-xs font-display font-bold uppercase tracking-wider" style={{ backgroundColor: colors.primary, color: "#fff" }}>
         {property.type}
       </div>
     </div>
@@ -326,7 +326,7 @@ const Model1Card = ({ property, colors, onSelect }: { property: Property; colors
       <h3 className="font-display font-bold text-lg mb-1" style={{ color: colors.text }}>{property.title}</h3>
       <p className="text-xs mb-4 flex items-center gap-1" style={{ color: colors.text + "66" }}><MapPin className="w-3 h-3" />{property.location}</p>
       <div className="flex items-center justify-between">
-        <p className="font-display font-black text-xl" style={{ color: colors.secondary }}>{property.price}</p>
+        <p className="font-display font-black text-xl" style={{ color: colors.primary }}>{property.price}</p>
         {property.type !== "terreno" && (
           <div className="flex gap-3 text-xs" style={{ color: colors.text + "55" }}>
             <span className="flex items-center gap-1"><Bed className="w-3 h-3" />{property.bedrooms}</span>
@@ -413,14 +413,14 @@ const Model1Detail = ({ property, colors, onBack }: { property: Property; colors
         <div className="grid md:grid-cols-3 gap-12">
           <div className="md:col-span-2 space-y-8">
             <div>
-              <div className="inline-block px-4 py-1 text-xs font-display font-bold uppercase tracking-wider mb-3" style={{ backgroundColor: colors.secondary, color: colors.primary }}>
+              <div className="inline-block px-4 py-1 text-xs font-display font-bold uppercase tracking-wider mb-3" style={{ backgroundColor: colors.primary, color: "#fff" }}>
                 {property.type}
               </div>
               <h1 className="font-display font-bold text-3xl mb-2" style={{ color: colors.text }}>{property.title}</h1>
               <p className="text-sm flex items-center gap-1" style={{ color: colors.text + "77" }}><MapPin className="w-4 h-4" />{property.location}</p>
             </div>
 
-            <p className="font-display font-black text-3xl" style={{ color: colors.secondary }}>{property.price}</p>
+            <p className="font-display font-black text-3xl" style={{ color: colors.primary }}>{property.price}</p>
 
             {property.type !== "terreno" && (
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -431,7 +431,7 @@ const Model1Detail = ({ property, colors, onBack }: { property: Property; colors
                   { icon: Car, label: "Vagas", value: property.parking },
                 ].map((item, i) => (
                   <div key={i} className="p-4 border" style={{ borderColor: colors.text + "12" }}>
-                    <item.icon className="w-5 h-5 mb-2" style={{ color: colors.secondary }} />
+                    <item.icon className="w-5 h-5 mb-2" style={{ color: colors.primary }} />
                     <p className="text-xs" style={{ color: colors.text + "66" }}>{item.label}</p>
                     <p className="font-display font-bold text-sm">{String(item.value)}</p>
                   </div>
@@ -443,7 +443,7 @@ const Model1Detail = ({ property, colors, onBack }: { property: Property; colors
               <h3 className="font-display font-bold text-lg mb-3" style={{ color: colors.primary }}>Diferenciais</h3>
               <div className="flex flex-wrap gap-3">
                 {property.features.map((f, i) => (
-                  <span key={i} className="flex items-center gap-2 px-4 py-2 text-sm border" style={{ borderColor: colors.secondary + "40", color: colors.primary }}>
+                  <span key={i} className="flex items-center gap-2 px-4 py-2 text-sm border" style={{ borderColor: colors.primary + "40", color: colors.primary }}>
                     {featureIcon(f)} {f}
                   </span>
                 ))}

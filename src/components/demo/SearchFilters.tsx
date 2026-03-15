@@ -419,7 +419,7 @@ export const FilterPremiumComplete = ({ colors }: FilterProps) => {
               </button>
             </div>
           </div>
-          <button onClick={() => setShowAdvanced(!showAdvanced)} className="flex items-center gap-2 text-xs font-display font-semibold transition-all" style={{ color: c.secondary || c.primary }}>
+          <button onClick={() => setShowAdvanced(!showAdvanced)} className="flex items-center gap-2 text-xs font-display font-semibold transition-all" style={{ color: c.primary }}>
             <SlidersHorizontal className="w-3.5 h-3.5" /> {showAdvanced ? "Ocultar filtros avançados" : "Filtros avançados"}
             <ChevronDown className="w-3.5 h-3.5" style={{ transform: showAdvanced ? "rotate(180deg)" : "none", transition: "transform 0.2s" }} />
           </button>

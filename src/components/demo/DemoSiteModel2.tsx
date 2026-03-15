@@ -265,9 +265,9 @@ const ContactSection2 = ({ colors, modelId }: { colors: DemoModel["colors"]; mod
       <p className="mb-10" style={{ color: colors.text + "77" }}>Tem interesse em algum imóvel? Envie sua mensagem por e-mail ou WhatsApp.</p>
       <div className="grid md:grid-cols-2 gap-12">
         <div className="space-y-6">
-          <div className="flex items-center gap-3"><Phone className="w-5 h-5" style={{ color: colors.text + "55" }} /><span>(11) 99999-0000</span></div>
-          <div className="flex items-center gap-3"><Mail className="w-5 h-5" style={{ color: colors.text + "55" }} /><span>contato@{modelId}.com.br</span></div>
-          <div className="flex items-center gap-3"><MapPin className="w-5 h-5" style={{ color: colors.text + "55" }} /><span>Av. Paulista, 1000 - São Paulo, SP</span></div>
+           <div className="flex items-center gap-3"><Phone className="w-5 h-5" style={{ color: colors.primary }} /><span>(11) 99999-0000</span></div>
+           <div className="flex items-center gap-3"><Mail className="w-5 h-5" style={{ color: colors.primary }} /><span>contato@{modelId}.com.br</span></div>
+           <div className="flex items-center gap-3"><MapPin className="w-5 h-5" style={{ color: colors.primary }} /><span>Av. Paulista, 1000 - São Paulo, SP</span></div>
         </div>
         <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
           <input type="text" placeholder="Seu nome completo" className="w-full px-4 py-3 rounded-xl border text-sm font-body" style={{ backgroundColor: colors.text + "05", borderColor: colors.text + "15", color: colors.text }} />
@@ -406,7 +406,7 @@ const Model2Overlay = ({ property, colors, onClose }: { property: Property; colo
               </div>
             </div>
             <div className="flex flex-col items-end gap-3">
-              <p className="font-display font-black text-3xl" style={{ color: colors.text }}>{property.price}</p>
+              <p className="font-display font-black text-3xl" style={{ color: colors.primary }}>{property.price}</p>
               <a href="https://wa.me/5511999990000" target="_blank" rel="noopener noreferrer"
                 className="flex items-center gap-2 px-6 py-3 rounded-full font-display font-bold text-sm transition-all hover:brightness-110"
                 style={{ backgroundColor: "#25d366", color: "#fff" }}>
