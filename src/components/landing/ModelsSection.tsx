@@ -59,7 +59,7 @@ const ModelsSection = () => {
                 <div className="absolute inset-0 bg-black/30" />
                 {/* Large number */}
                 <span
-                  className="absolute bottom-3 left-4 font-display font-black text-6xl leading-none select-none pointer-events-none text-white drop-shadow-lg"
+                  className="absolute top-3 left-4 font-display font-black text-6xl leading-none select-none pointer-events-none text-white drop-shadow-lg"
                   style={{ opacity: 0.9 }}
                 >
                   {String(i + 1).padStart(2, "0")}
@@ -76,7 +76,6 @@ const ModelsSection = () => {
                 {/* Color palette */}
                 <div className="flex items-center gap-2 mb-5">
                   <div className="w-5 h-5 rounded-full border border-border shadow-sm" style={{ backgroundColor: model.colors.primary }} />
-                  <div className="w-5 h-5 rounded-full border border-border shadow-sm" style={{ backgroundColor: model.colors.secondary }} />
                   <span className="text-xs font-body text-body-muted ml-1">{model.style}</span>
                 </div>
 
