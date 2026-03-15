@@ -326,7 +326,7 @@ const Model1Card = ({ property, colors, onSelect }: { property: Property; colors
       <h3 className="font-display font-bold text-lg mb-1" style={{ color: colors.text }}>{property.title}</h3>
       <p className="text-xs mb-4 flex items-center gap-1" style={{ color: colors.text + "66" }}><MapPin className="w-3 h-3" />{property.location}</p>
       <div className="flex items-center justify-between">
-        <p className="font-display font-black text-xl" style={{ color: colors.secondary }}>{property.price}</p>
+        <p className="font-display font-black text-xl" style={{ color: colors.primary }}>{property.price}</p>
         {property.type !== "terreno" && (
           <div className="flex gap-3 text-xs" style={{ color: colors.text + "55" }}>
             <span className="flex items-center gap-1"><Bed className="w-3 h-3" />{property.bedrooms}</span>
