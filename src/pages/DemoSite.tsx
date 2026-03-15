@@ -200,24 +200,27 @@ const GenericDemoSite = ({ model }: { model: DemoModel }) => {
       {page === "about" && !selectedProperty && (
         <section className="py-24">
           <div className="container mx-auto px-6 max-w-5xl">
-            <h2 className="font-display font-bold text-3xl mb-12 text-center" style={{ color: c.primary }}>Sobre o Corretor</h2>
-            <div className="grid md:grid-cols-2 gap-12 items-center">
+            <h2 className="font-display font-bold text-3xl md:text-4xl mb-4 text-center" style={{ color: c.primary }}>Sobre o Corretor</h2>
+            <p className="text-center mb-16 font-body max-w-2xl mx-auto" style={{ color: c.text + "77" }}>
+              Conheça o profissional dedicado a encontrar o imóvel ideal para você
+            </p>
+            <div className="grid md:grid-cols-2 gap-12 lg:gap-16 items-center">
               <div className="flex justify-center">
                 <div className="relative">
-                  <img src={brokerPhoto} alt="Corretor" className="w-64 h-64 md:w-80 md:h-80 rounded-2xl object-cover shadow-lg" />
-                  <div className="absolute -bottom-3 -right-3 w-64 md:w-80 h-64 md:h-80 rounded-2xl border-2 -z-10" style={{ borderColor: c.primary + "40" }} />
+                  <img src={brokerPhoto} alt="Ricardo Mendes - Corretor de Imóveis" className="w-72 h-72 md:w-80 md:h-96 rounded-2xl object-cover shadow-xl" />
+                  <div className="absolute -bottom-3 -right-3 w-72 md:w-80 h-72 md:h-96 rounded-2xl border-2 -z-10" style={{ borderColor: c.primary + "40" }} />
                 </div>
               </div>
               <div className="space-y-6">
                 <div>
-                  <h3 className="font-display font-bold text-2xl mb-1" style={{ color: c.text }}>Ricardo Mendes</h3>
-                  <p className="font-body text-sm" style={{ color: c.primary }}>CRECI 123.456-F | Consultor Premium</p>
+                  <h3 className="font-display font-bold text-2xl md:text-3xl mb-2" style={{ color: c.text }}>Ricardo Mendes</h3>
+                  <p className="font-body text-sm font-semibold" style={{ color: c.primary }}>CRECI 123.456-F | Consultor Imobiliário Premium</p>
                 </div>
                 <p className="text-base leading-relaxed font-body" style={{ color: c.text + "aa" }}>
-                  Especialista no mercado imobiliário de alto padrão com mais de 15 anos de experiência. Minha missão é encontrar o imóvel perfeito que reflita o estilo de vida e as aspirações de cada cliente, com atendimento personalizado e consultoria estratégica.
+                  Com mais de <strong style={{ color: c.text }}>15 anos de experiência</strong> no mercado imobiliário de alto padrão, construí uma carreira baseada em confiança, transparência e resultados. Cada negociação é conduzida com dedicação total, garantindo que meus clientes encontrem não apenas um imóvel, mas o lar perfeito para suas vidas.
                 </p>
                 <p className="text-base leading-relaxed font-body" style={{ color: c.text + "aa" }}>
-                  Atuando pela <strong style={{ color: c.primary }}>{model.name}</strong>, ofereço um portfólio exclusivo de imóveis premium nas melhores localizações, garantindo transparência e excelência em cada negociação.
+                  Atuando pela <strong style={{ color: c.primary }}>{model.name}</strong>, ofereço consultoria estratégica e um portfólio exclusivo nas melhores localizações. Meu compromisso é transformar sonhos em endereços, com atendimento personalizado do primeiro contato até a entrega das chaves.
                 </p>
                 <div className="grid grid-cols-3 gap-4 pt-4">
                   {[
@@ -225,7 +228,7 @@ const GenericDemoSite = ({ model }: { model: DemoModel }) => {
                     { icon: TrendingUp, label: "Vendas", value: "500+" },
                     { icon: Users, label: "Clientes", value: "1.200+" },
                   ].map((stat, i) => (
-                    <div key={i} className="text-center p-4 rounded-xl border" style={{ borderColor: c.text + "12" }}>
+                    <div key={i} className="text-center p-4 rounded-xl border" style={{ borderColor: c.text + "12", backgroundColor: c.text + "03" }}>
                       <stat.icon className="w-5 h-5 mx-auto mb-2" style={{ color: c.primary }} />
                       <p className="font-display font-bold text-lg" style={{ color: c.text }}>{stat.value}</p>
                       <p className="text-xs font-body" style={{ color: c.text + "66" }}>{stat.label}</p>
@@ -241,59 +244,41 @@ const GenericDemoSite = ({ model }: { model: DemoModel }) => {
       {/* Contato */}
       {page === "contact" && !selectedProperty && (
         <section className="py-24">
-          <div className="container mx-auto px-6 max-w-5xl">
-            <h2 className="font-display font-bold text-3xl mb-4 text-center" style={{ color: c.primary }}>Entre em Contato</h2>
-            <p className="text-center mb-12 font-body" style={{ color: c.text + "77" }}>Estamos prontos para ajudá-lo a encontrar o imóvel dos seus sonhos</p>
-            <div className="grid md:grid-cols-2 gap-12">
-              <div className="space-y-8">
-                <div className="space-y-5">
-                  {[
-                    { icon: Phone, label: "Telefone", value: "(11) 99999-0000" },
-                    { icon: Mail, label: "E-mail", value: `contato@${model.id}.com.br` },
-                    { icon: MapPin, label: "Endereço", value: "Av. Paulista, 1000 - São Paulo, SP" },
-                  ].map((item, i) => (
-                    <div key={i} className="flex items-start gap-4">
-                      <div className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0" style={{ backgroundColor: c.primary + "15" }}>
-                        <item.icon className="w-5 h-5" style={{ color: c.primary }} />
-                      </div>
-                      <div>
-                        <p className="text-xs font-body mb-0.5" style={{ color: c.text + "66" }}>{item.label}</p>
-                        <p className="font-display font-semibold text-sm" style={{ color: c.text }}>{item.value}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-                <div className="flex gap-3">
-                  <a href="https://wa.me/5511999990000" target="_blank" rel="noopener noreferrer"
-                    className="flex-1 inline-flex items-center justify-center gap-2 px-5 py-3 rounded-lg font-display font-bold text-sm transition-all hover:brightness-110"
-                    style={{ backgroundColor: "#25d366", color: "#fff" }}>
-                    <MessageCircle className="w-5 h-5" /> WhatsApp
-                  </a>
-                  <a href={`mailto:contato@${model.id}.com.br`}
-                    className="flex-1 inline-flex items-center justify-center gap-2 px-5 py-3 rounded-lg font-display font-bold text-sm border-2 transition-all hover:brightness-110"
-                    style={{ borderColor: c.primary, color: c.primary }}>
-                    <Mail className="w-5 h-5" /> E-mail
-                  </a>
-                </div>
+          <div className="container mx-auto px-6 max-w-2xl text-center">
+            <h2 className="font-display font-bold text-3xl md:text-4xl mb-4" style={{ color: c.primary }}>Entre em Contato</h2>
+            <p className="font-body mb-10" style={{ color: c.text + "77" }}>
+              Tem interesse em algum imóvel? Envie sua mensagem por e-mail ou WhatsApp.
+            </p>
+            <form className="space-y-4 text-left" onSubmit={(e) => e.preventDefault()}>
+              <div>
+                <label className="block text-sm font-display font-semibold mb-1.5" style={{ color: c.text }}>Nome</label>
+                <input type="text" placeholder="Seu nome completo" className="w-full px-4 py-3 rounded-lg border text-sm font-body outline-none transition-all focus:ring-2" style={{ backgroundColor: c.text + "05", borderColor: c.text + "15", color: c.text, '--tw-ring-color': c.primary + "40" } as React.CSSProperties} />
               </div>
-              <form className="space-y-4 p-6 rounded-2xl border" style={{ borderColor: c.text + "12" }} onSubmit={(e) => e.preventDefault()}>
-                <h3 className="font-display font-bold text-lg mb-2" style={{ color: c.text }}>Envie sua mensagem</h3>
-                <input type="text" placeholder="Seu nome" className="w-full px-4 py-3 rounded-lg border text-sm font-body" style={{ backgroundColor: c.text + "05", borderColor: c.text + "15", color: c.text }} />
-                <input type="email" placeholder="Seu e-mail" className="w-full px-4 py-3 rounded-lg border text-sm font-body" style={{ backgroundColor: c.text + "05", borderColor: c.text + "15", color: c.text }} />
-                <input type="tel" placeholder="Seu telefone" className="w-full px-4 py-3 rounded-lg border text-sm font-body" style={{ backgroundColor: c.text + "05", borderColor: c.text + "15", color: c.text }} />
-                <select className="w-full px-4 py-3 rounded-lg border text-sm font-body" style={{ backgroundColor: c.text + "05", borderColor: c.text + "15", color: c.text }}>
-                  <option value="">Assunto</option>
-                  <option>Compra de imóvel</option>
-                  <option>Venda de imóvel</option>
-                  <option>Investimento</option>
-                  <option>Outro</option>
-                </select>
-                <textarea placeholder="Sua mensagem" rows={4} className="w-full px-4 py-3 rounded-lg border text-sm font-body resize-none" style={{ backgroundColor: c.text + "05", borderColor: c.text + "15", color: c.text }} />
-                <button type="submit" className="w-full py-3 rounded-lg font-display font-bold transition-all hover:brightness-110" style={{ backgroundColor: c.primary, color: "#fff" }}>
-                  Enviar Mensagem
-                </button>
-              </form>
-            </div>
+              <div>
+                <label className="block text-sm font-display font-semibold mb-1.5" style={{ color: c.text }}>E-mail</label>
+                <input type="email" placeholder="seu@email.com" className="w-full px-4 py-3 rounded-lg border text-sm font-body outline-none transition-all focus:ring-2" style={{ backgroundColor: c.text + "05", borderColor: c.text + "15", color: c.text, '--tw-ring-color': c.primary + "40" } as React.CSSProperties} />
+              </div>
+              <div>
+                <label className="block text-sm font-display font-semibold mb-1.5" style={{ color: c.text }}>Telefone</label>
+                <input type="tel" placeholder="(00) 00000-0000" className="w-full px-4 py-3 rounded-lg border text-sm font-body outline-none transition-all focus:ring-2" style={{ backgroundColor: c.text + "05", borderColor: c.text + "15", color: c.text, '--tw-ring-color': c.primary + "40" } as React.CSSProperties} />
+              </div>
+              <div>
+                <label className="block text-sm font-display font-semibold mb-1.5" style={{ color: c.text }}>Mensagem</label>
+                <textarea placeholder="Escreva sua mensagem aqui..." rows={5} className="w-full px-4 py-3 rounded-lg border text-sm font-body resize-none outline-none transition-all focus:ring-2" style={{ backgroundColor: c.text + "05", borderColor: c.text + "15", color: c.text, '--tw-ring-color': c.primary + "40" } as React.CSSProperties} />
+              </div>
+              <div className="flex flex-col sm:flex-row gap-3 pt-4">
+                <a href={`mailto:contato@${model.id}.com.br`}
+                  className="flex-1 inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-lg font-display font-bold text-sm transition-all hover:brightness-110"
+                  style={{ backgroundColor: c.primary, color: "#fff" }}>
+                  <Mail className="w-5 h-5" /> Enviar por e-mail
+                </a>
+                <a href="https://wa.me/5511999990000" target="_blank" rel="noopener noreferrer"
+                  className="flex-1 inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-lg font-display font-bold text-sm transition-all hover:brightness-110"
+                  style={{ backgroundColor: "#25d366", color: "#fff" }}>
+                  <MessageCircle className="w-5 h-5" /> Enviar no WhatsApp
+                </a>
+              </div>
+            </form>
           </div>
         </section>
       )}
