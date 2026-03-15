@@ -318,7 +318,7 @@ const Model1Card = ({ property, colors, onSelect }: { property: Property; colors
   >
     <div className="relative h-64 overflow-hidden">
       <img src={propertyImages[property.image - 1]} alt={property.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
-      <div className="absolute top-0 left-0 px-4 py-2 text-xs font-display font-bold uppercase tracking-wider" style={{ backgroundColor: colors.secondary, color: colors.primary }}>
+      <div className="absolute top-0 left-0 px-4 py-2 text-xs font-display font-bold uppercase tracking-wider" style={{ backgroundColor: colors.primary, color: "#fff" }}>
         {property.type}
       </div>
     </div>
