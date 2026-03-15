@@ -378,20 +378,21 @@ const Model2Overlay = ({ property, colors, onClose }: { property: Property; colo
 
       {/* Property info panel */}
       <motion.div
-        className="relative z-10 bg-white/5 backdrop-blur-xl border-t border-white/10 p-6 md:p-8"
+        className="relative z-10 border-t p-6 md:p-8"
+        style={{ backgroundColor: colors.bg, borderColor: colors.text + "10" }}
         initial={{ y: 100 }} animate={{ y: 0 }} transition={{ delay: 0.2 }}
       >
         <div className="container mx-auto max-w-5xl">
           <div className="flex flex-col md:flex-row md:items-start gap-6">
             <div className="flex-1">
               <div className="flex items-center gap-3 mb-2">
-                <span className="px-3 py-1 rounded-full text-xs font-display font-bold uppercase bg-white/10 text-white capitalize">{property.type}</span>
-                <span className="text-white/40 text-sm flex items-center gap-1"><MapPin className="w-3 h-3" />{property.location}</span>
+                <span className="px-3 py-1 rounded-full text-xs font-display font-bold uppercase capitalize" style={{ backgroundColor: colors.primary + "15", color: colors.primary }}>{property.type}</span>
+                <span className="text-sm flex items-center gap-1" style={{ color: colors.text + "55" }}><MapPin className="w-3 h-3" />{property.location}</span>
               </div>
-              <h2 className="font-display font-bold text-2xl text-white mb-2">{property.title}</h2>
-              <p className="text-sm text-white/50 mb-4 max-w-xl">{property.description}</p>
+              <h2 className="font-display font-bold text-2xl mb-2" style={{ color: colors.text }}>{property.title}</h2>
+              <p className="text-sm mb-4 max-w-xl" style={{ color: colors.text + "77" }}>{property.description}</p>
               {property.type !== "terreno" && (
-                <div className="flex gap-6 text-sm text-white/60">
+                <div className="flex gap-6 text-sm" style={{ color: colors.text + "66" }}>
                   <span className="flex items-center gap-1"><Bed className="w-4 h-4" /> {property.bedrooms} quartos</span>
                   <span className="flex items-center gap-1"><Bath className="w-4 h-4" /> {property.bathrooms} banh.</span>
                   <span className="flex items-center gap-1"><Car className="w-4 h-4" /> {property.parking} vagas</span>
@@ -400,12 +401,12 @@ const Model2Overlay = ({ property, colors, onClose }: { property: Property; colo
               )}
               <div className="flex flex-wrap gap-2 mt-3">
                 {property.features.map((f, i) => (
-                  <span key={i} className="px-3 py-1 rounded-full text-xs border border-white/15 text-white/70">{f}</span>
+                  <span key={i} className="px-3 py-1 rounded-full text-xs border" style={{ borderColor: colors.text + "15", color: colors.text + "77" }}>{f}</span>
                 ))}
               </div>
             </div>
             <div className="flex flex-col items-end gap-3">
-              <p className="font-display font-black text-3xl text-white">{property.price}</p>
+              <p className="font-display font-black text-3xl" style={{ color: colors.text }}>{property.price}</p>
               <a href="https://wa.me/5511999990000" target="_blank" rel="noopener noreferrer"
                 className="flex items-center gap-2 px-6 py-3 rounded-full font-display font-bold text-sm transition-all hover:brightness-110"
                 style={{ backgroundColor: "#25d366", color: "#fff" }}>
