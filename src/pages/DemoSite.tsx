@@ -195,39 +195,99 @@ const GenericDemoSite = ({ model }: { model: DemoModel }) => {
         <PropertyDetail property={selectedProperty} colors={c} featureIcon={featureIcon} onBack={() => setSelectedProperty(null)} />
       )}
 
+      {/* About / Sobre o Corretor */}
       {page === "about" && !selectedProperty && (
         <section className="py-24">
-          <div className="container mx-auto px-6 max-w-3xl">
-            <h2 className="font-display font-bold text-3xl mb-8 text-center" style={{ color: c.primary }}>Sobre Nós</h2>
-            <div className="space-y-6 text-base leading-relaxed" style={{ color: c.text + "aa" }}>
-              <p>A <strong style={{ color: c.primary }}>{model.name}</strong> é uma referência no mercado imobiliário urbano de alto padrão. Com anos de experiência e um portfólio exclusivo, oferecemos imóveis que atendem aos mais exigentes padrões de qualidade, localização e sofisticação.</p>
-              <p>Nossa equipe de consultores especializados está preparada para oferecer um atendimento personalizado, compreendendo suas necessidades e apresentando as melhores opções do mercado. Trabalhamos com transparência, ética e dedicação para garantir a melhor experiência em cada negociação.</p>
-              <p>Seja para encontrar a residência dos seus sonhos, um investimento seguro ou o espaço comercial ideal, conte com a excelência e o comprometimento que definem nossa marca.</p>
+          <div className="container mx-auto px-6 max-w-5xl">
+            <h2 className="font-display font-bold text-3xl mb-12 text-center" style={{ color: c.primary }}>Sobre o Corretor</h2>
+            <div className="grid md:grid-cols-2 gap-12 items-center">
+              <div className="flex justify-center">
+                <div className="relative">
+                  <img src={brokerPhoto} alt="Corretor" className="w-64 h-64 md:w-80 md:h-80 rounded-2xl object-cover shadow-lg" />
+                  <div className="absolute -bottom-3 -right-3 w-64 md:w-80 h-64 md:h-80 rounded-2xl border-2 -z-10" style={{ borderColor: c.primary + "40" }} />
+                </div>
+              </div>
+              <div className="space-y-6">
+                <div>
+                  <h3 className="font-display font-bold text-2xl mb-1" style={{ color: c.text }}>Ricardo Mendes</h3>
+                  <p className="font-body text-sm" style={{ color: c.primary }}>CRECI 123.456-F | Consultor Premium</p>
+                </div>
+                <p className="text-base leading-relaxed font-body" style={{ color: c.text + "aa" }}>
+                  Especialista no mercado imobiliário de alto padrão com mais de 15 anos de experiência. Minha missão é encontrar o imóvel perfeito que reflita o estilo de vida e as aspirações de cada cliente, com atendimento personalizado e consultoria estratégica.
+                </p>
+                <p className="text-base leading-relaxed font-body" style={{ color: c.text + "aa" }}>
+                  Atuando pela <strong style={{ color: c.primary }}>{model.name}</strong>, ofereço um portfólio exclusivo de imóveis premium nas melhores localizações, garantindo transparência e excelência em cada negociação.
+                </p>
+                <div className="grid grid-cols-3 gap-4 pt-4">
+                  {[
+                    { icon: Award, label: "Experiência", value: "15+ anos" },
+                    { icon: TrendingUp, label: "Vendas", value: "500+" },
+                    { icon: Users, label: "Clientes", value: "1.200+" },
+                  ].map((stat, i) => (
+                    <div key={i} className="text-center p-4 rounded-xl border" style={{ borderColor: c.text + "12" }}>
+                      <stat.icon className="w-5 h-5 mx-auto mb-2" style={{ color: c.primary }} />
+                      <p className="font-display font-bold text-lg" style={{ color: c.text }}>{stat.value}</p>
+                      <p className="text-xs font-body" style={{ color: c.text + "66" }}>{stat.label}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
         </section>
       )}
 
+      {/* Contato */}
       {page === "contact" && !selectedProperty && (
         <section className="py-24">
-          <div className="container mx-auto px-6 max-w-4xl">
-            <h2 className="font-display font-bold text-3xl mb-8 text-center" style={{ color: c.primary }}>Entre em Contato</h2>
+          <div className="container mx-auto px-6 max-w-5xl">
+            <h2 className="font-display font-bold text-3xl mb-4 text-center" style={{ color: c.primary }}>Entre em Contato</h2>
+            <p className="text-center mb-12 font-body" style={{ color: c.text + "77" }}>Estamos prontos para ajudá-lo a encontrar o imóvel dos seus sonhos</p>
             <div className="grid md:grid-cols-2 gap-12">
-              <div className="space-y-6">
-                <div className="flex items-center gap-3"><Phone className="w-5 h-5" style={{ color: c.primary }} /><span>(11) 99999-0000</span></div>
-                <div className="flex items-center gap-3"><Mail className="w-5 h-5" style={{ color: c.primary }} /><span>contato@{model.id}.com.br</span></div>
-                <div className="flex items-center gap-3"><MapPin className="w-5 h-5" style={{ color: c.primary }} /><span>Av. Paulista, 1000 - São Paulo, SP</span></div>
-                <a href="https://wa.me/5511999990000" target="_blank" rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-6 py-3 rounded-lg font-display font-bold transition-all hover:brightness-110"
-                  style={{ backgroundColor: "#25d366", color: "#fff" }}>
-                  <MessageCircle className="w-5 h-5" /> WhatsApp
-                </a>
+              <div className="space-y-8">
+                <div className="space-y-5">
+                  {[
+                    { icon: Phone, label: "Telefone", value: "(11) 99999-0000" },
+                    { icon: Mail, label: "E-mail", value: `contato@${model.id}.com.br` },
+                    { icon: MapPin, label: "Endereço", value: "Av. Paulista, 1000 - São Paulo, SP" },
+                  ].map((item, i) => (
+                    <div key={i} className="flex items-start gap-4">
+                      <div className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0" style={{ backgroundColor: c.primary + "15" }}>
+                        <item.icon className="w-5 h-5" style={{ color: c.primary }} />
+                      </div>
+                      <div>
+                        <p className="text-xs font-body mb-0.5" style={{ color: c.text + "66" }}>{item.label}</p>
+                        <p className="font-display font-semibold text-sm" style={{ color: c.text }}>{item.value}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                <div className="flex gap-3">
+                  <a href="https://wa.me/5511999990000" target="_blank" rel="noopener noreferrer"
+                    className="flex-1 inline-flex items-center justify-center gap-2 px-5 py-3 rounded-lg font-display font-bold text-sm transition-all hover:brightness-110"
+                    style={{ backgroundColor: "#25d366", color: "#fff" }}>
+                    <MessageCircle className="w-5 h-5" /> WhatsApp
+                  </a>
+                  <a href={`mailto:contato@${model.id}.com.br`}
+                    className="flex-1 inline-flex items-center justify-center gap-2 px-5 py-3 rounded-lg font-display font-bold text-sm border-2 transition-all hover:brightness-110"
+                    style={{ borderColor: c.primary, color: c.primary }}>
+                    <Mail className="w-5 h-5" /> E-mail
+                  </a>
+                </div>
               </div>
-              <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
+              <form className="space-y-4 p-6 rounded-2xl border" style={{ borderColor: c.text + "12" }} onSubmit={(e) => e.preventDefault()}>
+                <h3 className="font-display font-bold text-lg mb-2" style={{ color: c.text }}>Envie sua mensagem</h3>
                 <input type="text" placeholder="Seu nome" className="w-full px-4 py-3 rounded-lg border text-sm font-body" style={{ backgroundColor: c.text + "05", borderColor: c.text + "15", color: c.text }} />
                 <input type="email" placeholder="Seu e-mail" className="w-full px-4 py-3 rounded-lg border text-sm font-body" style={{ backgroundColor: c.text + "05", borderColor: c.text + "15", color: c.text }} />
                 <input type="tel" placeholder="Seu telefone" className="w-full px-4 py-3 rounded-lg border text-sm font-body" style={{ backgroundColor: c.text + "05", borderColor: c.text + "15", color: c.text }} />
-                <textarea placeholder="Mensagem" rows={4} className="w-full px-4 py-3 rounded-lg border text-sm font-body resize-none" style={{ backgroundColor: c.text + "05", borderColor: c.text + "15", color: c.text }} />
+                <select className="w-full px-4 py-3 rounded-lg border text-sm font-body" style={{ backgroundColor: c.text + "05", borderColor: c.text + "15", color: c.text }}>
+                  <option value="">Assunto</option>
+                  <option>Compra de imóvel</option>
+                  <option>Venda de imóvel</option>
+                  <option>Investimento</option>
+                  <option>Outro</option>
+                </select>
+                <textarea placeholder="Sua mensagem" rows={4} className="w-full px-4 py-3 rounded-lg border text-sm font-body resize-none" style={{ backgroundColor: c.text + "05", borderColor: c.text + "15", color: c.text }} />
                 <button type="submit" className="w-full py-3 rounded-lg font-display font-bold transition-all hover:brightness-110" style={{ backgroundColor: c.primary, color: "#fff" }}>
                   Enviar Mensagem
                 </button>
@@ -237,10 +297,50 @@ const GenericDemoSite = ({ model }: { model: DemoModel }) => {
         </section>
       )}
 
-      <footer className="py-8 border-t" style={{ borderColor: c.text + "10" }}>
-        <div className="container mx-auto px-6 text-center">
-          <p className="font-display font-bold text-sm" style={{ color: c.primary }}>{model.name}</p>
-          <p className="text-xs mt-1" style={{ color: c.text + "55" }}>© 2026 Todos os direitos reservados. Site demonstrativo.</p>
+      {/* Footer */}
+      <footer className="py-12 border-t" style={{ borderColor: c.text + "10", backgroundColor: c.text + "05" }}>
+        <div className="container mx-auto px-6 max-w-6xl">
+          <div className="grid md:grid-cols-3 gap-10 mb-10">
+            <div>
+              <h4 className="font-display font-bold text-lg mb-4" style={{ color: c.primary }}>{model.name}</h4>
+              <p className="text-sm leading-relaxed font-body" style={{ color: c.text + "77" }}>
+                Especialistas em imóveis de alto padrão. Encontre a residência dos seus sonhos com atendimento personalizado e exclusivo.
+              </p>
+            </div>
+            <div>
+              <h4 className="font-display font-bold text-sm mb-4" style={{ color: c.text }}>Navegação</h4>
+              <div className="space-y-2">
+                {[
+                  { label: "Início", target: "home" as DemoPage },
+                  { label: "Imóveis", target: "listing" as DemoPage },
+                  { label: "Sobre", target: "about" as DemoPage },
+                  { label: "Contato", target: "contact" as DemoPage },
+                ].map((item) => (
+                  <button key={item.label} onClick={() => { setPage(item.target); setSelectedProperty(null); window.scrollTo(0, 0); }}
+                    className="block text-sm font-body transition-colors hover:opacity-80" style={{ color: c.text + "77" }}>
+                    {item.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+            <div>
+              <h4 className="font-display font-bold text-sm mb-4" style={{ color: c.text }}>Contato</h4>
+              <div className="space-y-3">
+                <div className="flex items-center gap-2 text-sm font-body" style={{ color: c.text + "77" }}>
+                  <Phone className="w-4 h-4" style={{ color: c.primary }} /> (11) 99999-0000
+                </div>
+                <div className="flex items-center gap-2 text-sm font-body" style={{ color: c.text + "77" }}>
+                  <Mail className="w-4 h-4" style={{ color: c.primary }} /> contato@{model.id}.com.br
+                </div>
+                <div className="flex items-center gap-2 text-sm font-body" style={{ color: c.text + "77" }}>
+                  <MapPin className="w-4 h-4" style={{ color: c.primary }} /> Av. Paulista, 1000 - SP
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="border-t pt-6 text-center" style={{ borderColor: c.text + "10" }}>
+            <p className="text-xs font-body" style={{ color: c.text + "55" }}>© 2026 {model.name}. Todos os direitos reservados. Site demonstrativo ImobiCasa.</p>
+          </div>
         </div>
       </footer>
     </div>
