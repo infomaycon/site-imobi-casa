@@ -203,7 +203,7 @@ const DemoSiteModel1 = ({ model }: { model: DemoModel }) => {
         <>
           <section className="py-24">
             <div className="container mx-auto px-6 max-w-3xl">
-              <div className="w-12 h-0.5 mx-auto mb-4" style={{ backgroundColor: c.secondary }} />
+              <div className="w-12 h-0.5 mx-auto mb-4" style={{ backgroundColor: c.primary }} />
               <h2 className="font-display font-bold text-3xl mb-8 text-center" style={{ color: c.primary }}>Sobre Nós</h2>
               <div className="space-y-6 text-base leading-relaxed" style={{ color: c.text + "aa" }}>
                 <p>A <strong style={{ color: c.primary }}>{model.name}</strong> é uma referência no mercado imobiliário urbano de alto padrão. Com anos de experiência e um portfólio exclusivo, oferecemos imóveis que atendem aos mais exigentes padrões de qualidade, localização e sofisticação.</p>
