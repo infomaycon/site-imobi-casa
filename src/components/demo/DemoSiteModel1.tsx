@@ -420,7 +420,7 @@ const Model1Detail = ({ property, colors, onBack }: { property: Property; colors
               <p className="text-sm flex items-center gap-1" style={{ color: colors.text + "77" }}><MapPin className="w-4 h-4" />{property.location}</p>
             </div>
 
-            <p className="font-display font-black text-3xl" style={{ color: colors.secondary }}>{property.price}</p>
+            <p className="font-display font-black text-3xl" style={{ color: colors.primary }}>{property.price}</p>
 
             {property.type !== "terreno" && (
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
