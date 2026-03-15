@@ -128,7 +128,7 @@ const DemoSiteModel1 = ({ model }: { model: DemoModel }) => {
           <section className="py-20">
             <div className="container mx-auto px-6 max-w-6xl">
               <div className="text-center mb-12">
-                <div className="w-12 h-0.5 mx-auto mb-4" style={{ backgroundColor: c.secondary }} />
+                <div className="w-12 h-0.5 mx-auto mb-4" style={{ backgroundColor: c.primary }} />
                 <h2 className="font-display font-bold text-2xl md:text-3xl" style={{ color: c.text }}>Imóveis em Destaque</h2>
               </div>
               <div className="flex justify-center gap-3 mb-12 flex-wrap">
