@@ -4,6 +4,9 @@ import { motion } from "framer-motion";
 import { demoModels, properties, type Property, type DemoModel } from "@/data/models";
 import { ArrowLeft, Phone, Mail, MapPin, Bed, Bath, Car, Maximize, ChefHat, Waves, Mountain, Fence, Gem, Menu, X, MessageCircle } from "lucide-react";
 import { getSearchFilter } from "@/components/demo/SearchFilters";
+import DemoSiteModel1 from "@/components/demo/DemoSiteModel1";
+import DemoSiteModel2 from "@/components/demo/DemoSiteModel2";
+import DemoSiteModel3 from "@/components/demo/DemoSiteModel3";
 
 import property1 from "@/assets/property-1.jpg";
 import property2 from "@/assets/property-2.jpg";
@@ -20,10 +23,6 @@ const DemoSite = () => {
   const { modelId } = useParams();
   const navigate = useNavigate();
   const model = demoModels.find((m) => m.id === modelId);
-  const [page, setPage] = useState<DemoPage>("home");
-  const [filter, setFilter] = useState<string>("todos");
-  const [selectedProperty, setSelectedProperty] = useState<Property | null>(null);
-  const [mobileMenu, setMobileMenu] = useState(false);
 
   if (!model) {
     return (
@@ -32,6 +31,22 @@ const DemoSite = () => {
       </div>
     );
   }
+
+  // Route first 3 models to their unique templates
+  if (model.id === "aurora-prime") return <DemoSiteModel1 model={model} />;
+  if (model.id === "skyline-urban") return <DemoSiteModel2 model={model} />;
+  if (model.id === "metropolitan-elite") return <DemoSiteModel3 model={model} />;
+
+  // Generic template for models 4-9
+  return <GenericDemoSite model={model} />;
+};
+
+const GenericDemoSite = ({ model }: { model: DemoModel }) => {
+  const navigate = useNavigate();
+  const [page, setPage] = useState<DemoPage>("home");
+  const [filter, setFilter] = useState<string>("todos");
+  const [selectedProperty, setSelectedProperty] = useState<Property | null>(null);
+  const [mobileMenu, setMobileMenu] = useState(false);
 
   const c = model.colors;
 
