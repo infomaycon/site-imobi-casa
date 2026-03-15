@@ -87,15 +87,12 @@ const HeroSection = () => {
                 alt="Site imobiliário premium em um notebook"
                 className="w-full max-w-xl xl:max-w-2xl drop-shadow-[0_25px_60px_rgba(0,0,0,0.4)]"
               />
-              {/* Glow effect beneath laptop */}
-              <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 w-3/4 h-8 bg-primary/20 blur-2xl rounded-full" />
+              {/* Shadow beneath laptop */}
+              <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 w-2/3 h-6 bg-black/30 blur-2xl rounded-full" />
             </motion.div>
           </motion.div>
         </div>
       </div>
-
-      {/* Bottom gradient fade to page background */}
-      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-background to-transparent" />
     </section>
   );
 };
