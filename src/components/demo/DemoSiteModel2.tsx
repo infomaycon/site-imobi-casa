@@ -333,9 +333,9 @@ const Model2Overlay = ({ property, colors, onClose }: { property: Property; colo
       className="fixed inset-0 z-[100] flex flex-col"
       initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
     >
-      <div className="absolute inset-0 bg-black/95" onClick={onClose} />
+      <div className="absolute inset-0 bg-white/95 backdrop-blur-sm" onClick={onClose} />
 
-      <button onClick={onClose} className="absolute top-6 right-6 z-10 w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-white hover:bg-white/20 transition-all backdrop-blur-sm">
+      <button onClick={onClose} className="absolute top-6 right-6 z-10 w-10 h-10 rounded-full bg-black/5 flex items-center justify-center hover:bg-black/10 transition-all" style={{ color: colors.text }}>
         <X className="w-5 h-5" />
       </button>
 
