@@ -276,7 +276,7 @@ const ContactSection = ({ colors, modelId, variant }: { colors: DemoModel["color
   <section className="py-24">
     <div className="container mx-auto px-6 max-w-4xl">
       <div className="text-center mb-10">
-        <div className="w-12 h-0.5 mx-auto mb-4" style={{ backgroundColor: colors.secondary }} />
+        <div className="w-12 h-0.5 mx-auto mb-4" style={{ backgroundColor: colors.primary }} />
         <h2 className="font-display font-bold text-3xl mb-3" style={{ color: colors.primary }}>Entre em Contato</h2>
         <p style={{ color: colors.text + "77" }}>Tem interesse em algum imóvel? Envie sua mensagem por e-mail ou WhatsApp.</p>
       </div>
