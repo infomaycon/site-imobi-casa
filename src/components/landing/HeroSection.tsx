@@ -46,7 +46,7 @@ const HeroSection = () => {
         >
           <a
             href="#planos"
-            className="inline-flex items-center justify-center px-8 py-4 rounded-lg font-display font-bold text-base sm:text-lg bg-primary text-primary-foreground hover:brightness-110 transition-all shadow-premium"
+            className="inline-flex items-center justify-center px-8 py-4 rounded-lg font-display font-bold text-base sm:text-lg bg-gold text-white hover:brightness-110 transition-all shadow-premium"
           >
             Quero Meu Site
           </a>
