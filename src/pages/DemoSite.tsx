@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { demoModels, properties, type Property, type DemoModel } from "@/data/models";
 import { ArrowLeft, Phone, Mail, MapPin, Bed, Bath, Car, Maximize, ChefHat, Waves, Mountain, Fence, Gem, Menu, X, MessageCircle, Award, TrendingUp, Users } from "lucide-react";
 import brokerPhoto from "@/assets/broker-photo.jpg";
@@ -8,6 +8,10 @@ import { getSearchFilter } from "@/components/demo/SearchFilters";
 import DemoSiteModel1 from "@/components/demo/DemoSiteModel1";
 import DemoSiteModel2 from "@/components/demo/DemoSiteModel2";
 import DemoSiteModel3 from "@/components/demo/DemoSiteModel3";
+import PropertyCardModel4 from "@/components/demo/PropertyCardModel4";
+import PropertyCardModel5 from "@/components/demo/PropertyCardModel5";
+import PropertyCardModel6 from "@/components/demo/PropertyCardModel6";
+import ImageLightbox from "@/components/demo/ImageLightbox";
 
 import property1 from "@/assets/property-1.jpg";
 import property2 from "@/assets/property-2.jpg";
