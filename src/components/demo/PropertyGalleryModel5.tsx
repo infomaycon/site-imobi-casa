@@ -99,43 +99,35 @@ const PropertyGalleryModel5 = ({
               </button>
             )}
 
-            {/* Main image with crossfade */}
-            <AnimatePresence mode="wait">
-              <motion.div
+            {/* Main image with fade */}
+            <div
+              className="relative cursor-pointer w-full"
+              onClick={() => setLightboxIndex(mainIndex)}
+            >
+              <img
                 key={mainIndex}
-                className="relative cursor-pointer w-full"
-                onClick={() => setLightboxIndex(mainIndex)}
-                custom={direction}
-                variants={variants}
-                initial="enter"
-                animate="center"
-                exit="exit"
-                transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
-              >
-                <img
-                  src={galleryImages[mainIndex]}
-                  alt={property.title}
-                  className="w-full h-auto max-h-[70vh] object-contain rounded-lg shadow-2xl"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent rounded-lg pointer-events-none" />
-                
-                {/* Title overlay on image */}
-                <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
-                  <span
-                    className="inline-block px-4 py-1.5 rounded-lg text-xs font-display font-bold capitalize mb-2"
-                    style={{ backgroundColor: colors.primary, color: "#fff" }}
-                  >
-                    {property.type}
-                  </span>
-                  <h1 className="font-display font-black text-2xl md:text-4xl text-white mb-1 drop-shadow-lg">
-                    {property.title}
-                  </h1>
-                  <p className="text-white/90 flex items-center gap-1 text-sm drop-shadow">
-                    <MapPin className="w-4 h-4" /> {property.location}
-                  </p>
-                </div>
-              </motion.div>
-            </AnimatePresence>
+                src={galleryImages[mainIndex]}
+                alt={property.title}
+                className="w-full h-auto max-h-[70vh] object-contain rounded-lg shadow-2xl animate-fade-in"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent rounded-lg pointer-events-none" />
+              
+              {/* Title overlay on image */}
+              <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
+                <span
+                  className="inline-block px-4 py-1.5 rounded-lg text-xs font-display font-bold capitalize mb-2"
+                  style={{ backgroundColor: colors.primary, color: "#fff" }}
+                >
+                  {property.type}
+                </span>
+                <h1 className="font-display font-black text-2xl md:text-4xl text-white mb-1 drop-shadow-lg">
+                  {property.title}
+                </h1>
+                <p className="text-white/90 flex items-center gap-1 text-sm drop-shadow">
+                  <MapPin className="w-4 h-4" /> {property.location}
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
