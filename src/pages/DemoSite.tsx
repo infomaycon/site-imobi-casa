@@ -15,6 +15,8 @@ import PropertyGalleryModel4 from "@/components/demo/PropertyGalleryModel4";
 import PropertyGalleryModel5 from "@/components/demo/PropertyGalleryModel5";
 import PropertyGalleryModel6 from "@/components/demo/PropertyGalleryModel6";
 import ImageLightbox from "@/components/demo/ImageLightbox";
+import ModelLogo from "@/components/demo/ModelLogo";
+import ModelFooter from "@/components/demo/ModelFooter";
 
 import property1 from "@/assets/property-1.jpg";
 import property2 from "@/assets/property-2.jpg";
