@@ -205,8 +205,8 @@ const DemoSiteModel1 = ({ model }: { model: DemoModel }) => {
               <div className="flex justify-center mt-10">
                 <button
                   onClick={() => setVisibleCount((v) => v + 12)}
-                  className="px-8 py-3 rounded-lg text-sm font-display font-bold transition-all hover:brightness-110"
-                  style={{ backgroundColor: c.primary, color: "#fff" }}
+                  className="px-6 py-2.5 rounded-lg text-sm font-display font-semibold transition-all border hover:opacity-80"
+                  style={{ borderColor: c.primary + "40", color: c.primary, backgroundColor: "transparent" }}
                 >
                   Ver mais imóveis
                 </button>
