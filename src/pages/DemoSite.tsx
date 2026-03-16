@@ -11,6 +11,9 @@ import DemoSiteModel3 from "@/components/demo/DemoSiteModel3";
 import PropertyCardModel4 from "@/components/demo/PropertyCardModel4";
 import PropertyCardModel5 from "@/components/demo/PropertyCardModel5";
 import PropertyCardModel6 from "@/components/demo/PropertyCardModel6";
+import PropertyGalleryModel4 from "@/components/demo/PropertyGalleryModel4";
+import PropertyGalleryModel5 from "@/components/demo/PropertyGalleryModel5";
+import PropertyGalleryModel6 from "@/components/demo/PropertyGalleryModel6";
 import ImageLightbox from "@/components/demo/ImageLightbox";
 
 import property1 from "@/assets/property-1.jpg";
@@ -329,7 +332,7 @@ const GenericDemoSite = ({ model }: { model: DemoModel }) => {
         <>
           <section className="relative h-[80vh] flex items-center justify-center overflow-hidden">
             <img src={isModel4 ? bannerModel4 : isModel5 ? bannerModel5 : isModel6 ? bannerModel6 : propertyImages[0]} alt="" className="absolute inset-0 w-full h-full object-cover" />
-            <div className="absolute inset-0 bg-black/40" />
+            <div className="absolute inset-0 bg-black/60" />
             <div className="relative z-10 text-center px-6 max-w-3xl">
               <motion.h1 className="font-display font-black text-4xl md:text-6xl mb-4 text-white" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
                 {model.name}
@@ -341,7 +344,7 @@ const GenericDemoSite = ({ model }: { model: DemoModel }) => {
                 <button onClick={() => navigateWithinDemo("listing")} className="px-8 py-3 rounded-lg font-display font-bold transition-all hover:brightness-110" style={{ backgroundColor: c.primary, color: "#fff" }}>
                   Ver Imóveis
                 </button>
-                <button onClick={() => navigateWithinDemo("home", "contact-section")} className="px-8 py-3 rounded-lg font-display font-semibold border-2 transition-all" style={{ borderColor: c.primary + "40", color: c.text }}>
+                <button onClick={() => navigateWithinDemo("home", "contact-section")} className="px-8 py-3 rounded-lg font-display font-semibold border-2 transition-all" style={{ borderColor: "#ffffff40", color: "#fff" }}>
                   Fale Conosco
                 </button>
               </motion.div>
@@ -446,7 +449,10 @@ const GenericDemoSite = ({ model }: { model: DemoModel }) => {
       )}
 
       {selectedProperty && (
-        <PropertyDetail property={selectedProperty} colors={c} featureIcon={featureIcon} onBack={() => setSelectedProperty(null)} />
+        isModel4 ? <PropertyGalleryModel4 property={selectedProperty} colors={c} onBack={() => setSelectedProperty(null)} />
+        : isModel5 ? <PropertyGalleryModel5 property={selectedProperty} colors={c} onBack={() => setSelectedProperty(null)} />
+        : isModel6 ? <PropertyGalleryModel6 property={selectedProperty} colors={c} onBack={() => setSelectedProperty(null)} />
+        : <PropertyDetail property={selectedProperty} colors={c} featureIcon={featureIcon} onBack={() => setSelectedProperty(null)} />
       )}
 
       {page === "about" && !selectedProperty && <BrokerSection colors={c} model={model} />}
