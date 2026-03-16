@@ -396,10 +396,10 @@ const ImageLightbox3 = ({ images, currentIndex, onClose, onNav }: { images: stri
         src={images[currentIndex]}
         alt=""
         className="relative z-10 max-h-[80vh] max-w-[90vw] object-contain rounded-2xl shadow-2xl"
-        initial={{ opacity: 0, x: 80 }}
-        animate={{ opacity: 1, x: 0 }}
-        exit={{ opacity: 0, x: -80 }}
-        transition={{ duration: 0.3 }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.15 }}
       />
     </AnimatePresence>
     <div className="absolute bottom-6 flex gap-2 z-10">
