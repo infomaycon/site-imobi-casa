@@ -108,7 +108,7 @@ const PropertyGalleryModel5 = ({
                 key={mainIndex}
                 src={galleryImages[mainIndex]}
                 alt={property.title}
-                className="w-full h-auto max-h-[70vh] object-contain rounded-lg shadow-2xl animate-fade-in"
+                className="w-full h-auto max-h-[70vh] object-contain rounded-lg shadow-2xl transition-opacity duration-300"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent rounded-lg pointer-events-none" />
               
