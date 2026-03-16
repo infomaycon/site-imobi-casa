@@ -230,6 +230,12 @@ const GenericDemoSite = ({ model }: { model: DemoModel }) => {
   const [selectedProperty, setSelectedProperty] = useState<Property | null>(null);
   const [mobileMenu, setMobileMenu] = useState(false);
   const [contactForm, setContactForm] = useState<ContactFormState>({ name: "", email: "", phone: "", message: "" });
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+
+  const isModel4 = model.id === "villa-capital";
+  const isModel5 = model.id === "urban-signature";
+  const isModel6 = model.id === "infinity-city";
+  const useCustomCards = isModel4 || isModel5 || isModel6;
 
   const c = model.colors;
 
