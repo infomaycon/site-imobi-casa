@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useLayoutEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { properties, type Property, type DemoModel } from "@/data/models";
@@ -38,8 +38,8 @@ const DemoSiteModel3 = ({ model }: { model: DemoModel }) => {
   const [sideNav, setSideNav] = useState(false);
   const c = model.colors;
 
-  useEffect(() => { window.scrollTo(0, 0); }, []);
-  useEffect(() => { if (selectedProperty) window.scrollTo(0, 0); }, [selectedProperty]);
+  useLayoutEffect(() => { window.scrollTo(0, 0); }, []);
+  useLayoutEffect(() => { if (selectedProperty) window.scrollTo(0, 0); }, [selectedProperty]);
 
 
   const filtered = filter === "todos" ? properties : properties.filter((p) => {
