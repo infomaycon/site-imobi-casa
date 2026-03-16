@@ -60,9 +60,9 @@ const PropertyGalleryModel5 = ({
   }, [mainIndex, goTo, galleryImages.length]);
 
   const variants = {
-    enter: (d: number) => ({ x: d > 0 ? "100%" : "-100%", opacity: 0.6 }),
-    center: { x: 0, opacity: 1 },
-    exit: (d: number) => ({ x: d > 0 ? "-100%" : "100%", opacity: 0.6 }),
+    enter: { opacity: 0, scale: 0.98 },
+    center: { opacity: 1, scale: 1 },
+    exit: { opacity: 0, scale: 0.98 },
   };
 
   return (
