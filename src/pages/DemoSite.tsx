@@ -233,7 +233,7 @@ const GenericDemoSite = ({ model }: { model: DemoModel }) => {
   const navigate = useNavigate();
   const [page, setPage] = useState<DemoPage>("home");
   const [filter, setFilter] = useState<string>("todos");
-  const [visibleCount, setVisibleCount] = useState(12);
+  const [visibleCount, setVisibleCount] = useState(8);
   const [selectedProperty, setSelectedProperty] = useState<Property | null>(null);
   const [mobileMenu, setMobileMenu] = useState(false);
   const [contactForm, setContactForm] = useState<ContactFormState>({ name: "", email: "", phone: "", message: "" });
