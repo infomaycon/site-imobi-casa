@@ -32,6 +32,7 @@ const DemoSiteModel2 = ({ model }: { model: DemoModel }) => {
   const navigate = useNavigate();
   const [page, setPage] = useState<DemoPage>("home");
   const [filter, setFilter] = useState<string>("todos");
+  const [visibleCount, setVisibleCount] = useState(12);
   const [selectedProperty, setSelectedProperty] = useState<Property | null>(null);
   const [mobileMenu, setMobileMenu] = useState(false);
   const c = model.colors;
@@ -136,10 +137,15 @@ const DemoSiteModel2 = ({ model }: { model: DemoModel }) => {
                 ))}
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {filtered.map((p) => (
+                {filtered.slice(0, visibleCount).map((p) => (
                   <Model2Card key={p.id} property={p} colors={c} onSelect={() => setSelectedProperty(p)} />
                 ))}
               </div>
+              {filtered.length > visibleCount && (
+                <div className="flex justify-center mt-10">
+                  <button onClick={() => setVisibleCount((v) => v + 12)} className="px-8 py-3 rounded-full text-sm font-display font-bold transition-all hover:brightness-110" style={{ backgroundColor: c.primary, color: "#fff" }}>Ver mais imóveis</button>
+                </div>
+              )}
             </div>
           </section>
 
@@ -173,10 +179,15 @@ const DemoSiteModel2 = ({ model }: { model: DemoModel }) => {
               ))}
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {filtered.map((p) => (
+              {filtered.slice(0, visibleCount).map((p) => (
                 <Model2Card key={p.id} property={p} colors={c} onSelect={() => setSelectedProperty(p)} />
               ))}
             </div>
+            {filtered.length > visibleCount && (
+              <div className="flex justify-center mt-10">
+                <button onClick={() => setVisibleCount((v) => v + 12)} className="px-8 py-3 rounded-full text-sm font-display font-bold transition-all hover:brightness-110" style={{ backgroundColor: c.primary, color: "#fff" }}>Ver mais imóveis</button>
+              </div>
+            )}
           </div>
         </section>
       )}
