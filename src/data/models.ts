@@ -125,4 +125,40 @@ export const properties: Property[] = [
     image: 6, features: ["Acabamento Premium", "Varanda"],
     description: "Loft com pé-direito duplo, cozinha gourmet integrada e acabamentos assinados por designers renomados.",
   },
+  {
+    id: "7", title: "Cobertura Triplex Jardins", type: "apartamento", price: "R$ 7.500.000",
+    location: "Jardim Europa, São Paulo - SP", area: "520m²", bedrooms: 4, suites: 4, bathrooms: 6, parking: 4,
+    image: 1, features: ["Piscina", "Vista Panorâmica", "Área Gourmet", "Acabamento Premium"],
+    description: "Cobertura triplex com terraço panorâmico, piscina aquecida e acabamentos em mármore importado.",
+  },
+  {
+    id: "8", title: "Casa de Campo Luxuosa", type: "casa", price: "R$ 3.200.000",
+    location: "Granja Viana, Cotia - SP", area: "480m²", bedrooms: 5, suites: 3, bathrooms: 5, parking: 4,
+    image: 2, features: ["Piscina", "Área Gourmet", "Varanda"],
+    description: "Casa de campo em condomínio fechado com amplo jardim, churrasqueira gourmet e quadra de tênis.",
+  },
+  {
+    id: "9", title: "Studio Moderno Faria Lima", type: "apartamento", price: "R$ 650.000",
+    location: "Faria Lima, São Paulo - SP", area: "45m²", bedrooms: 1, suites: 1, bathrooms: 1, parking: 1,
+    image: 3, features: ["Acabamento Premium"],
+    description: "Studio compacto e funcional na região mais valorizada da cidade, ideal para investimento ou moradia.",
+  },
+  {
+    id: "10", title: "Terreno Condomínio Fechado", type: "terreno", price: "R$ 890.000",
+    location: "Tamboré, Santana de Parnaíba - SP", area: "600m²", bedrooms: 0, suites: 0, bathrooms: 0, parking: 0,
+    image: 4, features: ["Vista Panorâmica"],
+    description: "Terreno em condomínio de alto padrão com segurança 24h, área verde preservada e infraestrutura completa.",
+  },
+  {
+    id: "11", title: "Apartamento Garden Premium", type: "apartamento", price: "R$ 2.100.000",
+    location: "Moema, São Paulo - SP", area: "210m²", bedrooms: 3, suites: 2, bathrooms: 4, parking: 3,
+    image: 5, features: ["Área Gourmet", "Varanda", "Acabamento Premium"],
+    description: "Garden com quintal privativo de 80m², perfeito para famílias que buscam espaço e sofisticação na cidade.",
+  },
+  {
+    id: "12", title: "Casa Contemporânea Brooklin", type: "casa", price: "R$ 4.500.000",
+    location: "Brooklin Novo, São Paulo - SP", area: "380m²", bedrooms: 4, suites: 4, bathrooms: 5, parking: 3,
+    image: 6, features: ["Piscina", "Área Gourmet", "Acabamento Premium", "Varanda"],
+    description: "Residência moderna com fachada em vidro e concreto aparente, piscina com deck e automação completa.",
+  },
 ];
