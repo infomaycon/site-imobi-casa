@@ -438,7 +438,6 @@ const GenericDemoSite = ({ model }: { model: DemoModel }) => {
                 : isModel9 ? <PropertyCardModel9 key={p.id} property={p} colors={c} onSelect={() => setSelectedProperty(p)} />
                 : <PropertyCard key={p.id} property={p} colors={c} onSelect={() => setSelectedProperty(p)} />
               )}
-              )}
             </div>
             {filtered.length > visibleCount && (
               <div className="flex justify-center mt-10">
