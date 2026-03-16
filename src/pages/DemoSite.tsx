@@ -251,7 +251,8 @@ const GenericDemoSite = ({ model }: { model: DemoModel }) => {
   const isModel8 = model.id === "prime-district";
   const isModel9 = model.id === "crown-city";
   const useCustomCards = isModel4 || isModel5 || isModel6 || isModel7 || isModel8 || isModel9;
-  const useShowcaseGrid = isModel7 || isModel8 || isModel9;
+  const useShowcaseGrid = isModel8 || isModel9;
+  const useHorizontalGrid = isModel7;
 
   const c = model.colors;
 
