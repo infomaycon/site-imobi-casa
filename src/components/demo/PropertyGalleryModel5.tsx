@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
 import { ArrowLeft, MapPin, Bed, Bath, Car, Maximize, ChefHat, Waves, Mountain, Fence, Gem, ChevronLeft, ChevronRight } from "lucide-react";
 import type { Property, DemoModel } from "@/data/models";
 import ImageLightbox from "./ImageLightbox";
