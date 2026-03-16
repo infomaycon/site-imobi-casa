@@ -80,7 +80,7 @@ const PropertyGalleryModel5 = ({
       {/* Immersive main image slider */}
       <div className="relative w-full mb-4 bg-black/5">
         <div className="container mx-auto px-6 max-w-5xl py-8">
-          <div className="relative w-full max-h-[70vh] flex items-center justify-center">
+          <div className="relative w-full max-h-[70vh] flex items-center justify-center overflow-hidden rounded-lg">
             {/* Navigation arrows */}
             {mainIndex > 0 && (
               <button
