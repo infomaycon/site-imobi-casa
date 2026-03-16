@@ -11,6 +11,9 @@ import DemoSiteModel3 from "@/components/demo/DemoSiteModel3";
 import PropertyCardModel4 from "@/components/demo/PropertyCardModel4";
 import PropertyCardModel5 from "@/components/demo/PropertyCardModel5";
 import PropertyCardModel6 from "@/components/demo/PropertyCardModel6";
+import PropertyGalleryModel4 from "@/components/demo/PropertyGalleryModel4";
+import PropertyGalleryModel5 from "@/components/demo/PropertyGalleryModel5";
+import PropertyGalleryModel6 from "@/components/demo/PropertyGalleryModel6";
 import ImageLightbox from "@/components/demo/ImageLightbox";
 
 import property1 from "@/assets/property-1.jpg";
