@@ -100,7 +100,7 @@ const PropertyGalleryModel5 = ({
             )}
 
             {/* Main image with crossfade */}
-            <AnimatePresence custom={direction} mode="popLayout">
+            <AnimatePresence mode="wait">
               <motion.div
                 key={mainIndex}
                 className="relative cursor-pointer w-full"
