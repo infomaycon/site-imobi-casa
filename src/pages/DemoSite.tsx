@@ -388,6 +388,9 @@ const GenericDemoSite = ({ model }: { model: DemoModel }) => {
                   isModel4 ? <PropertyCardModel4 key={p.id} property={p} colors={c} onSelect={() => setSelectedProperty(p)} />
                   : isModel5 ? <PropertyCardModel5 key={p.id} property={p} colors={c} onSelect={() => setSelectedProperty(p)} />
                   : isModel6 ? <PropertyCardModel6 key={p.id} property={p} colors={c} onSelect={() => setSelectedProperty(p)} />
+                  : isModel7 ? <PropertyCardModel7 key={p.id} property={p} colors={c} onSelect={() => setSelectedProperty(p)} />
+                  : isModel8 ? <PropertyCardModel8 key={p.id} property={p} colors={c} onSelect={() => setSelectedProperty(p)} />
+                  : isModel9 ? <PropertyCardModel9 key={p.id} property={p} colors={c} onSelect={() => setSelectedProperty(p)} />
                   : <PropertyCard key={p.id} property={p} colors={c} onSelect={() => setSelectedProperty(p)} />
                 )}
               </div>
