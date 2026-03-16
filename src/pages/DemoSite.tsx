@@ -303,6 +303,7 @@ const GenericDemoSite = ({ model }: { model: DemoModel }) => {
           <div className="hidden md:flex items-center gap-6">
             <NavLink label="Início" target="home" />
             <NavLink label="Imóveis" target="listing" />
+            <NavLink label="Galeria" target="gallery" />
             <NavLink label="Sobre" target="home" sectionId="about-section" />
             <NavLink label="Contato" target="home" sectionId="contact-section" />
           </div>
