@@ -58,11 +58,6 @@ const PropertyGalleryModel5 = ({
     return () => window.removeEventListener("keydown", handler);
   }, [mainIndex, goTo, galleryImages.length]);
 
-  const variants = {
-    enter: { opacity: 0, scale: 0.98 },
-    center: { opacity: 1, scale: 1 },
-    exit: { opacity: 0, scale: 0.98 },
-  };
 
   return (
     <section className="pb-16">
