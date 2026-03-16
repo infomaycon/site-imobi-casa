@@ -306,8 +306,8 @@ const GenericDemoSite = ({ model }: { model: DemoModel }) => {
 
       <nav className="sticky top-0 z-50 border-b backdrop-blur-xl" style={{ backgroundColor: c.bg + "ee", borderColor: c.text + "12" }}>
         <div className="container mx-auto px-6 h-16 flex items-center justify-between">
-          <button onClick={() => navigateWithinDemo("home")} className="font-display font-bold text-lg" style={{ color: c.primary }}>
-            {model.name}
+          <button onClick={() => navigateWithinDemo("home")}>
+            <ModelLogo model={model} />
           </button>
           <div className="hidden md:flex items-center gap-6">
             <NavLink label="Início" target="home" />
