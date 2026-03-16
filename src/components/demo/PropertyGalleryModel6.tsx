@@ -37,7 +37,7 @@ const PropertyGalleryModel6 = ({
 }) => {
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
-  const galleryImages = Array.from({ length: 6 }, (_, i) =>
+  const galleryImages = Array.from({ length: 15 }, (_, i) =>
     propertyImages[(property.image - 1 + i) % 6]
   );
 

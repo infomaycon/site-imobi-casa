@@ -37,7 +37,7 @@ const PropertyGalleryModel4 = ({
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState(0);
 
-  const galleryImages = Array.from({ length: 6 }, (_, i) =>
+  const galleryImages = Array.from({ length: 15 }, (_, i) =>
     propertyImages[(property.image - 1 + i) % 6]
   );
 

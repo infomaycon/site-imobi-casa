@@ -536,9 +536,9 @@ const PropertyDetail = ({ property, colors, featureIcon, onBack }: { property: P
           <img src={propertyImages[property.image - 1]} alt={property.title} className="w-full h-full object-cover" />
         </div>
         <div className="grid grid-cols-2 gap-4">
-          {[1, 2, 3, 4].map((i) => (
+          {Array.from({ length: 4 }, (_, i) => (
             <div key={i} className="rounded-xl overflow-hidden">
-              <img src={propertyImages[(property.image + i - 1) % 6]} alt="" className="w-full h-full object-cover" />
+              <img src={propertyImages[(property.image + i) % 6]} alt="" className="w-full h-full object-cover" />
             </div>
           ))}
         </div>

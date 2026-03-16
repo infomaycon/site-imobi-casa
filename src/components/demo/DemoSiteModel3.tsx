@@ -414,7 +414,7 @@ const ImageLightbox3 = ({ images, currentIndex, onClose, onNav }: { images: stri
 /* ── Detail: Masonry gallery layout with lightbox ── */
 const Model3Detail = ({ property, colors, onBack }: { property: Property; colors: DemoModel["colors"]; onBack: () => void }) => {
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
-  const allImages = [0, 1, 2, 3, 4, 5].map((i) => propertyImages[(property.image + i - 1) % 6]);
+  const allImages = Array.from({ length: 15 }, (_, i) => propertyImages[(property.image + i - 1) % 6]);
 
   const handleNav = useCallback((dir: number) => {
     setLightboxIndex((prev) => prev !== null ? (prev + dir + allImages.length) % allImages.length : null);
