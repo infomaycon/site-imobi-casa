@@ -248,6 +248,9 @@ const GenericDemoSite = ({ model }: { model: DemoModel }) => {
 
   const c = model.colors;
 
+  useEffect(() => { window.scrollTo(0, 0); }, []);
+  useEffect(() => { if (selectedProperty) window.scrollTo({ top: 0, behavior: "smooth" }); }, [selectedProperty]);
+
   const filtered = filter === "todos" ? properties : properties.filter((p) => {
     if (filter === "casas") return p.type === "casa";
     if (filter === "apartamentos") return p.type === "apartamento";
