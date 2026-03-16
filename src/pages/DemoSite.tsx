@@ -384,7 +384,7 @@ const GenericDemoSite = ({ model }: { model: DemoModel }) => {
                   </button>
                 ))}
               </div>
-              <div className={`grid grid-cols-1 md:grid-cols-2 ${useCustomCards ? 'lg:grid-cols-4' : 'lg:grid-cols-3'} gap-6`}>
+              <div className={`grid grid-cols-1 md:grid-cols-2 ${useShowcaseGrid ? 'xl:grid-cols-3' : useCustomCards ? 'lg:grid-cols-4' : 'lg:grid-cols-3'} gap-6`}>
                 {filtered.slice(0, visibleCount).map((p) =>
                   isModel4 ? <PropertyCardModel4 key={p.id} property={p} colors={c} onSelect={() => setSelectedProperty(p)} />
                   : isModel5 ? <PropertyCardModel5 key={p.id} property={p} colors={c} onSelect={() => setSelectedProperty(p)} />
