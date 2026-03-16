@@ -71,8 +71,8 @@ const DemoSiteModel1 = ({ model }: { model: DemoModel }) => {
       <nav className="sticky top-0 z-50 border-b" style={{ backgroundColor: c.bg, borderColor: c.text + "10" }}>
         <div className="container mx-auto px-6">
           <div className="flex items-center justify-center py-3">
-            <button onClick={() => { setPage("home"); setSelectedProperty(null); }} className="font-display font-black text-xl tracking-widest uppercase" style={{ color: c.primary }}>
-              {model.name}
+            <button onClick={() => { setPage("home"); setSelectedProperty(null); }}>
+              <ModelLogo model={model} />
             </button>
           </div>
           <div className="hidden md:flex items-center justify-center gap-8 pb-3">
