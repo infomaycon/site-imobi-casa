@@ -78,62 +78,64 @@ const PropertyGalleryModel5 = ({
       </div>
 
       {/* Immersive main image slider */}
-      <div className="relative w-full h-[55vh] md:h-[70vh] overflow-hidden mb-4">
-        {/* Navigation arrows */}
-        {mainIndex > 0 && (
-          <button
-            onClick={() => goTo(mainIndex - 1)}
-            className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-10 w-11 h-11 rounded-full bg-black/30 backdrop-blur-md flex items-center justify-center text-white/90 hover:bg-black/50 transition-colors"
-          >
-            <ChevronLeft className="w-5 h-5" />
-          </button>
-        )}
-        {mainIndex < galleryImages.length - 1 && (
-          <button
-            onClick={() => goTo(mainIndex + 1)}
-            className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-10 w-11 h-11 rounded-full bg-black/30 backdrop-blur-md flex items-center justify-center text-white/90 hover:bg-black/50 transition-colors"
-          >
-            <ChevronRight className="w-5 h-5" />
-          </button>
-        )}
+      <div className="relative w-full mb-4 bg-black/5">
+        <div className="container mx-auto px-6 max-w-5xl py-8">
+          <div className="relative w-full max-h-[70vh] flex items-center justify-center">
+            {/* Navigation arrows */}
+            {mainIndex > 0 && (
+              <button
+                onClick={() => goTo(mainIndex - 1)}
+                className="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 z-10 w-11 h-11 rounded-full bg-black/30 backdrop-blur-md flex items-center justify-center text-white/90 hover:bg-black/50 transition-colors"
+              >
+                <ChevronLeft className="w-5 h-5" />
+              </button>
+            )}
+            {mainIndex < galleryImages.length - 1 && (
+              <button
+                onClick={() => goTo(mainIndex + 1)}
+                className="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 z-10 w-11 h-11 rounded-full bg-black/30 backdrop-blur-md flex items-center justify-center text-white/90 hover:bg-black/50 transition-colors"
+              >
+                <ChevronRight className="w-5 h-5" />
+              </button>
+            )}
 
-        {/* Main image with crossfade */}
-        <AnimatePresence custom={direction} mode="popLayout">
-          <motion.div
-            key={mainIndex}
-            className="absolute inset-0 cursor-pointer"
-            onClick={() => setLightboxIndex(mainIndex)}
-            custom={direction}
-            variants={variants}
-            initial="enter"
-            animate="center"
-            exit="exit"
-            transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
-          >
-            <img
-              src={galleryImages[mainIndex]}
-              alt={property.title}
-              className="w-full h-full object-cover"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/10" />
-          </motion.div>
-        </AnimatePresence>
-
-        {/* Title overlay on image */}
-        <div className="absolute bottom-0 left-0 right-0 p-8 z-[5]">
-          <div className="max-w-6xl mx-auto">
-            <span
-              className="inline-block px-4 py-1.5 rounded-lg text-xs font-display font-bold capitalize mb-3"
-              style={{ backgroundColor: colors.primary, color: "#fff" }}
-            >
-              {property.type}
-            </span>
-            <h1 className="font-display font-black text-3xl md:text-5xl text-white mb-2 drop-shadow-lg">
-              {property.title}
-            </h1>
-            <p className="text-white/80 flex items-center gap-1 text-sm">
-              <MapPin className="w-4 h-4" /> {property.location}
-            </p>
+            {/* Main image with crossfade */}
+            <AnimatePresence custom={direction} mode="popLayout">
+              <motion.div
+                key={mainIndex}
+                className="relative cursor-pointer w-full"
+                onClick={() => setLightboxIndex(mainIndex)}
+                custom={direction}
+                variants={variants}
+                initial="enter"
+                animate="center"
+                exit="exit"
+                transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
+              >
+                <img
+                  src={galleryImages[mainIndex]}
+                  alt={property.title}
+                  className="w-full h-auto max-h-[70vh] object-contain rounded-lg shadow-2xl"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent rounded-lg pointer-events-none" />
+                
+                {/* Title overlay on image */}
+                <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
+                  <span
+                    className="inline-block px-4 py-1.5 rounded-lg text-xs font-display font-bold capitalize mb-2"
+                    style={{ backgroundColor: colors.primary, color: "#fff" }}
+                  >
+                    {property.type}
+                  </span>
+                  <h1 className="font-display font-black text-2xl md:text-4xl text-white mb-1 drop-shadow-lg">
+                    {property.title}
+                  </h1>
+                  <p className="text-white/90 flex items-center gap-1 text-sm drop-shadow">
+                    <MapPin className="w-4 h-4" /> {property.location}
+                  </p>
+                </div>
+              </motion.div>
+            </AnimatePresence>
           </div>
         </div>
       </div>
