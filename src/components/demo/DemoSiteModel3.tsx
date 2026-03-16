@@ -172,7 +172,7 @@ const DemoSiteModel3 = ({ model }: { model: DemoModel }) => {
               </div>
               {filtered.length > visibleCount && (
                 <div className="flex justify-center mt-10">
-                  <button onClick={() => setVisibleCount((v) => v + 12)} className="px-8 py-3 rounded-lg text-xs font-display font-bold capitalize transition-all border" style={{ backgroundColor: c.accent + "15", color: c.accent, borderColor: c.accent + "40" }}>Ver mais imóveis</button>
+                  <button onClick={() => setVisibleCount((v) => v + 8)} className="px-8 py-3 rounded-lg text-xs font-display font-bold capitalize transition-all border" style={{ backgroundColor: c.accent + "15", color: c.accent, borderColor: c.accent + "40" }}>Ver mais imóveis</button>
                 </div>
               )}
             </div>
@@ -215,7 +215,7 @@ const DemoSiteModel3 = ({ model }: { model: DemoModel }) => {
             </div>
             {filtered.length > visibleCount && (
               <div className="flex justify-center mt-10">
-                <button onClick={() => setVisibleCount((v) => v + 12)} className="px-8 py-3 rounded-lg text-xs font-display font-bold capitalize transition-all border" style={{ backgroundColor: c.accent + "15", color: c.accent, borderColor: c.accent + "40" }}>Ver mais imóveis</button>
+                <button onClick={() => setVisibleCount((v) => v + 8)} className="px-8 py-3 rounded-lg text-xs font-display font-bold capitalize transition-all border" style={{ backgroundColor: c.accent + "15", color: c.accent, borderColor: c.accent + "40" }}>Ver mais imóveis</button>
               </div>
             )}
           </div>

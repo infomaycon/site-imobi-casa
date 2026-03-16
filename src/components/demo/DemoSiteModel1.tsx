@@ -152,7 +152,7 @@ const DemoSiteModel1 = ({ model }: { model: DemoModel }) => {
               {filtered.length > visibleCount && (
                 <div className="flex justify-center mt-10">
                   <button
-                    onClick={() => setVisibleCount((v) => v + 12)}
+                    onClick={() => setVisibleCount((v) => v + 8)}
                     className="px-6 py-2.5 rounded-lg text-sm font-display font-semibold transition-all border hover:opacity-80"
                     style={{ borderColor: c.primary + "40", color: c.primary, backgroundColor: "transparent" }}
                   >
@@ -204,7 +204,7 @@ const DemoSiteModel1 = ({ model }: { model: DemoModel }) => {
             {filtered.length > visibleCount && (
               <div className="flex justify-center mt-10">
                 <button
-                  onClick={() => setVisibleCount((v) => v + 12)}
+                  onClick={() => setVisibleCount((v) => v + 8)}
                   className="px-6 py-2.5 rounded-lg text-sm font-display font-semibold transition-all border hover:opacity-80"
                   style={{ borderColor: c.primary + "40", color: c.primary, backgroundColor: "transparent" }}
                 >
