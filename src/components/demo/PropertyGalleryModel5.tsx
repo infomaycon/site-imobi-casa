@@ -148,11 +148,9 @@ const PropertyGalleryModel5 = ({
             >
               <img src={img} alt="" className="w-full h-full object-cover" />
               {i === mainIndex && (
-                <motion.div
+                <div
                   className="absolute inset-0"
                   style={{ boxShadow: `inset 0 0 0 3px ${colors.primary}` }}
-                  layoutId="thumb-indicator"
-                  transition={{ duration: 0.3 }}
                 />
               )}
             </button>
