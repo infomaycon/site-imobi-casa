@@ -247,7 +247,10 @@ const GenericDemoSite = ({ model }: { model: DemoModel }) => {
   const isModel4 = model.id === "villa-capital";
   const isModel5 = model.id === "urban-signature";
   const isModel6 = model.id === "infinity-city";
-  const useCustomCards = isModel4 || isModel5 || isModel6;
+  const isModel7 = model.id === "empire-urban";
+  const isModel8 = model.id === "prime-district";
+  const isModel9 = model.id === "crown-city";
+  const useCustomCards = isModel4 || isModel5 || isModel6 || isModel7 || isModel8 || isModel9;
 
   const c = model.colors;
 
