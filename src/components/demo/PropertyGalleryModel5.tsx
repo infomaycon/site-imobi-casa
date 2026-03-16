@@ -1,9 +1,8 @@
-import { useState } from "react";
-import { motion } from "framer-motion";
-import { ArrowLeft, MapPin, Bed, Bath, Car, Maximize, ChefHat, Waves, Mountain, Fence, Gem } from "lucide-react";
+import { useState, useCallback, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { ArrowLeft, MapPin, Bed, Bath, Car, Maximize, ChefHat, Waves, Mountain, Fence, Gem, ChevronLeft, ChevronRight } from "lucide-react";
 import type { Property, DemoModel } from "@/data/models";
 import ImageLightbox from "./ImageLightbox";
-import { AnimatePresence } from "framer-motion";
 
 import property1 from "@/assets/property-1.jpg";
 import property2 from "@/assets/property-2.jpg";
@@ -24,7 +23,8 @@ const featureIcon = (f: string) => {
 };
 
 /**
- * Modelo 5 — Elegant full-width hero image + horizontal scroll gallery strip.
+ * Modelo 5 — Galeria Imersiva com imagem principal full-width, setas de navegação,
+ * indicadores/miniaturas e lightbox ao clicar.
  */
 const PropertyGalleryModel5 = ({
   property,
@@ -35,11 +35,35 @@ const PropertyGalleryModel5 = ({
   colors: DemoModel["colors"];
   onBack: () => void;
 }) => {
+  const [mainIndex, setMainIndex] = useState(0);
+  const [direction, setDirection] = useState(0);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
   const galleryImages = Array.from({ length: 6 }, (_, i) =>
     propertyImages[(property.image - 1 + i) % 6]
   );
+
+  const goTo = useCallback((newIndex: number) => {
+    if (newIndex < 0 || newIndex >= galleryImages.length) return;
+    setDirection(newIndex > mainIndex ? 1 : -1);
+    setMainIndex(newIndex);
+  }, [mainIndex, galleryImages.length]);
+
+  // Keyboard navigation for main slider
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === "ArrowRight") goTo(Math.min(mainIndex + 1, galleryImages.length - 1));
+      if (e.key === "ArrowLeft") goTo(Math.max(mainIndex - 1, 0));
+    };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, [mainIndex, goTo, galleryImages.length]);
+
+  const variants = {
+    enter: (d: number) => ({ x: d > 0 ? "100%" : "-100%", opacity: 0.6 }),
+    center: { x: 0, opacity: 1 },
+    exit: (d: number) => ({ x: d > 0 ? "-100%" : "100%", opacity: 0.6 }),
+  };
 
   return (
     <section className="pb-16">
@@ -53,21 +77,50 @@ const PropertyGalleryModel5 = ({
         </button>
       </div>
 
-      {/* Hero main image */}
-      <motion.div
-        className="relative w-full h-[50vh] md:h-[60vh] overflow-hidden cursor-pointer group mb-4"
-        onClick={() => setLightboxIndex(0)}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.5 }}
-      >
-        <img
-          src={galleryImages[0]}
-          alt={property.title}
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-        />
-        <div className="absolute inset-0 bg-black/30 group-hover:bg-black/15 transition-colors duration-500" />
-        <div className="absolute bottom-0 left-0 right-0 p-8">
+      {/* Immersive main image slider */}
+      <div className="relative w-full h-[55vh] md:h-[70vh] overflow-hidden mb-4">
+        {/* Navigation arrows */}
+        {mainIndex > 0 && (
+          <button
+            onClick={() => goTo(mainIndex - 1)}
+            className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-10 w-11 h-11 rounded-full bg-black/30 backdrop-blur-md flex items-center justify-center text-white/90 hover:bg-black/50 transition-colors"
+          >
+            <ChevronLeft className="w-5 h-5" />
+          </button>
+        )}
+        {mainIndex < galleryImages.length - 1 && (
+          <button
+            onClick={() => goTo(mainIndex + 1)}
+            className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-10 w-11 h-11 rounded-full bg-black/30 backdrop-blur-md flex items-center justify-center text-white/90 hover:bg-black/50 transition-colors"
+          >
+            <ChevronRight className="w-5 h-5" />
+          </button>
+        )}
+
+        {/* Main image with crossfade */}
+        <AnimatePresence custom={direction} mode="popLayout">
+          <motion.div
+            key={mainIndex}
+            className="absolute inset-0 cursor-pointer"
+            onClick={() => setLightboxIndex(mainIndex)}
+            custom={direction}
+            variants={variants}
+            initial="enter"
+            animate="center"
+            exit="exit"
+            transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
+          >
+            <img
+              src={galleryImages[mainIndex]}
+              alt={property.title}
+              className="w-full h-full object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/10" />
+          </motion.div>
+        </AnimatePresence>
+
+        {/* Title overlay on image */}
+        <div className="absolute bottom-0 left-0 right-0 p-8 z-[5]">
           <div className="max-w-6xl mx-auto">
             <span
               className="inline-block px-4 py-1.5 rounded-lg text-xs font-display font-bold capitalize mb-3"
@@ -83,34 +136,32 @@ const PropertyGalleryModel5 = ({
             </p>
           </div>
         </div>
-      </motion.div>
+      </div>
 
-      {/* Horizontal scroll gallery strip */}
-      <div className="overflow-x-auto pb-2 mb-12">
-        <div className="flex gap-3 px-6 min-w-max">
-          {galleryImages.slice(1).map((img, i) => (
-            <motion.div
+      {/* Thumbnail indicators */}
+      <div className="container mx-auto px-6 max-w-6xl mb-12">
+        <div className="flex gap-2 overflow-x-auto pb-2">
+          {galleryImages.map((img, i) => (
+            <button
               key={i}
-              className="relative w-48 h-32 md:w-64 md:h-44 rounded-xl overflow-hidden cursor-pointer group flex-shrink-0"
-              onClick={() => setLightboxIndex(i + 1)}
-              initial={{ opacity: 0, x: 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.3, delay: i * 0.08 }}
-              whileHover={{ y: -4 }}
-              style={{ boxShadow: `0 4px 20px ${colors.text}12` }}
+              onClick={() => goTo(i)}
+              className="relative w-20 h-14 md:w-24 md:h-16 rounded-xl overflow-hidden flex-shrink-0 transition-all duration-300"
+              style={{
+                border: i === mainIndex ? `3px solid ${colors.primary}` : "3px solid transparent",
+                opacity: i === mainIndex ? 1 : 0.55,
+                transform: i === mainIndex ? "scale(1.05)" : "scale(1)",
+              }}
             >
-              <img
-                src={img}
-                alt={`${property.title} - ${i + 2}`}
-                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-              />
-              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300" />
-              <div
-                className="absolute bottom-0 left-0 right-0 h-1"
-                style={{ backgroundColor: colors.primary }}
-              />
-            </motion.div>
+              <img src={img} alt="" className="w-full h-full object-cover" />
+              {i === mainIndex && (
+                <motion.div
+                  className="absolute inset-0"
+                  style={{ boxShadow: `inset 0 0 0 3px ${colors.primary}` }}
+                  layoutId="thumb-indicator"
+                  transition={{ duration: 0.3 }}
+                />
+              )}
+            </button>
           ))}
         </div>
       </div>
