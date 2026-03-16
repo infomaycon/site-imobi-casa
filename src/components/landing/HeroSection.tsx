@@ -25,8 +25,8 @@ const HeroSection = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.15 }}
         >
-          Seu Próximo Cliente Pode Estar Procurando um Imóvel{" "}
-          <span className="text-gradient-primary">Agora</span>
+          Seu Próximo Cliente Pode Estar Procurando{" "}
+          <span className="text-accent">um Imóvel Agora</span>
         </motion.h1>
 
         <motion.p
