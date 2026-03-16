@@ -22,7 +22,7 @@ import property6 from "@/assets/property-6.jpg";
 
 const propertyImages = [property1, property2, property3, property4, property5, property6];
 
-type DemoPage = "home" | "listing" | "property" | "about" | "contact";
+type DemoPage = "home" | "listing" | "property" | "about" | "contact" | "gallery";
 
 const DemoSite = () => {
   const { modelId } = useParams();
