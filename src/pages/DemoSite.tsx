@@ -351,7 +351,7 @@ const GenericDemoSite = ({ model }: { model: DemoModel }) => {
           })()}
 
           <section id="listing-section" className="py-16">
-            <div className="container mx-auto px-6 max-w-6xl">
+            <div className={`container mx-auto px-6 ${useCustomCards ? 'max-w-7xl' : 'max-w-6xl'}`}>
               <h2 className="font-display font-bold text-2xl md:text-3xl text-center mb-8" style={{ color: c.text }}>Encontre seu Imóvel Ideal</h2>
               <div className="flex justify-center gap-3 mb-12 flex-wrap">
                 {["todos", "casas", "apartamentos", "terrenos"].map((f) => (
