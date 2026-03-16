@@ -19,6 +19,9 @@ import property3 from "@/assets/property-3.jpg";
 import property4 from "@/assets/property-4.jpg";
 import property5 from "@/assets/property-5.jpg";
 import property6 from "@/assets/property-6.jpg";
+import bannerModel4 from "@/assets/banner-model4.jpg";
+import bannerModel5 from "@/assets/banner-model5.jpg";
+import bannerModel6 from "@/assets/banner-model6.jpg";
 
 const propertyImages = [property1, property2, property3, property4, property5, property6];
 
