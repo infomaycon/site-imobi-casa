@@ -153,8 +153,8 @@ const DemoSiteModel1 = ({ model }: { model: DemoModel }) => {
                 <div className="flex justify-center mt-10">
                   <button
                     onClick={() => setVisibleCount((v) => v + 12)}
-                    className="px-8 py-3 rounded-lg text-sm font-display font-bold transition-all hover:brightness-110"
-                    style={{ backgroundColor: c.primary, color: "#fff" }}
+                    className="px-6 py-2.5 rounded-lg text-sm font-display font-semibold transition-all border hover:opacity-80"
+                    style={{ borderColor: c.primary + "40", color: c.primary, backgroundColor: "transparent" }}
                   >
                     Ver mais imóveis
                   </button>
@@ -205,8 +205,8 @@ const DemoSiteModel1 = ({ model }: { model: DemoModel }) => {
               <div className="flex justify-center mt-10">
                 <button
                   onClick={() => setVisibleCount((v) => v + 12)}
-                  className="px-8 py-3 rounded-lg text-sm font-display font-bold transition-all hover:brightness-110"
-                  style={{ backgroundColor: c.primary, color: "#fff" }}
+                  className="px-6 py-2.5 rounded-lg text-sm font-display font-semibold transition-all border hover:opacity-80"
+                  style={{ borderColor: c.primary + "40", color: c.primary, backgroundColor: "transparent" }}
                 >
                   Ver mais imóveis
                 </button>
@@ -388,10 +388,10 @@ const ImageLightbox = ({ images, currentIndex, onClose, onNav }: { images: strin
         src={images[currentIndex]}
         alt=""
         className="relative z-10 max-h-[80vh] max-w-[90vw] object-contain rounded-lg shadow-2xl"
-        initial={{ opacity: 0, scale: 0.9 }}
-        animate={{ opacity: 1, scale: 1 }}
-        exit={{ opacity: 0, scale: 0.9 }}
-        transition={{ duration: 0.3 }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.15 }}
       />
     </AnimatePresence>
     <div className="absolute bottom-6 flex gap-2 z-10">

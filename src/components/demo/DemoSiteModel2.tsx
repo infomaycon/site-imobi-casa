@@ -143,7 +143,7 @@ const DemoSiteModel2 = ({ model }: { model: DemoModel }) => {
               </div>
               {filtered.length > visibleCount && (
                 <div className="flex justify-center mt-10">
-                  <button onClick={() => setVisibleCount((v) => v + 12)} className="px-8 py-3 rounded-full text-sm font-display font-bold transition-all hover:brightness-110" style={{ backgroundColor: c.primary, color: "#fff" }}>Ver mais imóveis</button>
+                  <button onClick={() => setVisibleCount((v) => v + 12)} className="px-6 py-2.5 rounded-full text-sm font-display font-semibold transition-all border hover:opacity-80" style={{ borderColor: c.primary + "40", color: c.primary, backgroundColor: "transparent" }}>Ver mais imóveis</button>
                 </div>
               )}
             </div>
@@ -185,7 +185,7 @@ const DemoSiteModel2 = ({ model }: { model: DemoModel }) => {
             </div>
             {filtered.length > visibleCount && (
               <div className="flex justify-center mt-10">
-                <button onClick={() => setVisibleCount((v) => v + 12)} className="px-8 py-3 rounded-full text-sm font-display font-bold transition-all hover:brightness-110" style={{ backgroundColor: c.primary, color: "#fff" }}>Ver mais imóveis</button>
+                <button onClick={() => setVisibleCount((v) => v + 12)} className="px-6 py-2.5 rounded-full text-sm font-display font-semibold transition-all border hover:opacity-80" style={{ borderColor: c.primary + "40", color: c.primary, backgroundColor: "transparent" }}>Ver mais imóveis</button>
               </div>
             )}
           </div>
@@ -357,10 +357,10 @@ const Model2Overlay = ({ property, colors, onClose }: { property: Property; colo
             src={allImages[currentImage]}
             alt=""
             className="max-h-[70vh] max-w-[85vw] object-contain rounded-lg"
-            initial={{ opacity: 0, x: 100 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -100 }}
-            transition={{ duration: 0.3 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.15 }}
             drag="x"
             dragConstraints={{ left: 0, right: 0 }}
             dragElastic={0.2}
