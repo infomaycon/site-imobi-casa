@@ -2,6 +2,8 @@ import { useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { properties, type Property, type DemoModel } from "@/data/models";
+import ModelLogo from "./ModelLogo";
+import ModelFooter from "./ModelFooter";
 import { ArrowLeft, Phone, Mail, MapPin, Bed, Bath, Car, Maximize, ChefHat, Waves, Mountain, Fence, Gem, Menu, X, MessageCircle, ChevronLeft, ChevronRight, Award, TrendingUp, Users } from "lucide-react";
 import { getSearchFilter } from "@/components/demo/SearchFilters";
 
