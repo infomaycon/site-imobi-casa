@@ -11,6 +11,9 @@ import DemoSiteModel3 from "@/components/demo/DemoSiteModel3";
 import PropertyCardModel4 from "@/components/demo/PropertyCardModel4";
 import PropertyCardModel5 from "@/components/demo/PropertyCardModel5";
 import PropertyCardModel6 from "@/components/demo/PropertyCardModel6";
+import PropertyCardModel7 from "@/components/demo/PropertyCardModel7";
+import PropertyCardModel8 from "@/components/demo/PropertyCardModel8";
+import PropertyCardModel9 from "@/components/demo/PropertyCardModel9";
 import PropertyGalleryModel4 from "@/components/demo/PropertyGalleryModel4";
 import PropertyGalleryModel5 from "@/components/demo/PropertyGalleryModel5";
 import PropertyGalleryModel6 from "@/components/demo/PropertyGalleryModel6";
@@ -244,7 +247,10 @@ const GenericDemoSite = ({ model }: { model: DemoModel }) => {
   const isModel4 = model.id === "villa-capital";
   const isModel5 = model.id === "urban-signature";
   const isModel6 = model.id === "infinity-city";
-  const useCustomCards = isModel4 || isModel5 || isModel6;
+  const isModel7 = model.id === "empire-urban";
+  const isModel8 = model.id === "prime-district";
+  const isModel9 = model.id === "crown-city";
+  const useCustomCards = isModel4 || isModel5 || isModel6 || isModel7 || isModel8 || isModel9;
 
   const c = model.colors;
 
@@ -382,6 +388,9 @@ const GenericDemoSite = ({ model }: { model: DemoModel }) => {
                   isModel4 ? <PropertyCardModel4 key={p.id} property={p} colors={c} onSelect={() => setSelectedProperty(p)} />
                   : isModel5 ? <PropertyCardModel5 key={p.id} property={p} colors={c} onSelect={() => setSelectedProperty(p)} />
                   : isModel6 ? <PropertyCardModel6 key={p.id} property={p} colors={c} onSelect={() => setSelectedProperty(p)} />
+                  : isModel7 ? <PropertyCardModel7 key={p.id} property={p} colors={c} onSelect={() => setSelectedProperty(p)} />
+                  : isModel8 ? <PropertyCardModel8 key={p.id} property={p} colors={c} onSelect={() => setSelectedProperty(p)} />
+                  : isModel9 ? <PropertyCardModel9 key={p.id} property={p} colors={c} onSelect={() => setSelectedProperty(p)} />
                   : <PropertyCard key={p.id} property={p} colors={c} onSelect={() => setSelectedProperty(p)} />
                 )}
               </div>
@@ -424,6 +433,9 @@ const GenericDemoSite = ({ model }: { model: DemoModel }) => {
                 isModel4 ? <PropertyCardModel4 key={p.id} property={p} colors={c} onSelect={() => setSelectedProperty(p)} />
                 : isModel5 ? <PropertyCardModel5 key={p.id} property={p} colors={c} onSelect={() => setSelectedProperty(p)} />
                 : isModel6 ? <PropertyCardModel6 key={p.id} property={p} colors={c} onSelect={() => setSelectedProperty(p)} />
+                : isModel7 ? <PropertyCardModel7 key={p.id} property={p} colors={c} onSelect={() => setSelectedProperty(p)} />
+                : isModel8 ? <PropertyCardModel8 key={p.id} property={p} colors={c} onSelect={() => setSelectedProperty(p)} />
+                : isModel9 ? <PropertyCardModel9 key={p.id} property={p} colors={c} onSelect={() => setSelectedProperty(p)} />
                 : <PropertyCard key={p.id} property={p} colors={c} onSelect={() => setSelectedProperty(p)} />
               )}
             </div>
