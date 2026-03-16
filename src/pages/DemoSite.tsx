@@ -414,12 +414,51 @@ const GenericDemoSite = ({ model }: { model: DemoModel }) => {
         </section>
       )}
 
+      {page === "gallery" && !selectedProperty && (
+        <section className="py-16">
+          <div className="container mx-auto px-6 max-w-6xl">
+            <h2 className="font-display font-bold text-3xl text-center mb-4" style={{ color: c.text }}>Galeria de Imóveis</h2>
+            <p className="text-center mb-10" style={{ color: c.text + "77" }}>Explore as imagens do nosso portfólio</p>
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
+              {propertyImages.map((img, i) => (
+                <motion.div
+                  key={i}
+                  className="relative overflow-hidden rounded-xl cursor-pointer group aspect-[4/3]"
+                  style={{ boxShadow: `0 2px 8px ${c.text}08` }}
+                  whileHover={{ y: -3, boxShadow: `0 8px 24px ${c.text}15` }}
+                  whileTap={{ scale: 0.98 }}
+                  onClick={() => setLightboxIndex(i)}
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.3, delay: i * 0.05 }}
+                >
+                  <img src={img} alt={`Imóvel ${i + 1}`} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300" />
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
       {selectedProperty && (
         <PropertyDetail property={selectedProperty} colors={c} featureIcon={featureIcon} onBack={() => setSelectedProperty(null)} />
       )}
 
       {page === "about" && !selectedProperty && <BrokerSection colors={c} model={model} />}
       {page === "contact" && !selectedProperty && <ContactSection colors={c} model={model} form={contactForm} onFieldChange={updateContactField} />}
+
+      <AnimatePresence>
+        {lightboxIndex !== null && (
+          <ImageLightbox
+            images={propertyImages}
+            initialIndex={lightboxIndex}
+            onClose={() => setLightboxIndex(null)}
+          />
+        )}
+      </AnimatePresence>
+
 
       <footer className="py-12 border-t" style={{ borderColor: c.text + "10", backgroundColor: c.text + "05" }}>
         <div className="container mx-auto px-6 max-w-6xl">
