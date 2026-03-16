@@ -328,8 +328,8 @@ const GenericDemoSite = ({ model }: { model: DemoModel }) => {
       {page === "home" && !selectedProperty && (
         <>
           <section className="relative h-[80vh] flex items-center justify-center overflow-hidden">
-            <img src={propertyImages[0]} alt="" className="absolute inset-0 w-full h-full object-cover" />
-            <div className="absolute inset-0" style={{ background: `linear-gradient(to bottom, ${c.bg}cc, ${c.bg}ee)` }} />
+            <img src={isModel4 ? bannerModel4 : isModel5 ? bannerModel5 : isModel6 ? bannerModel6 : propertyImages[0]} alt="" className="absolute inset-0 w-full h-full object-cover" />
+            <div className="absolute inset-0 bg-black/40" />
             <div className="relative z-10 text-center px-6 max-w-3xl">
               <motion.h1 className="font-display font-black text-4xl md:text-6xl mb-4" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} style={{ color: c.text }}>
                 {model.name}
