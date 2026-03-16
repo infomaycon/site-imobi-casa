@@ -250,12 +250,7 @@ const DemoSiteModel3 = ({ model }: { model: DemoModel }) => {
         <ContactSection3 colors={c} modelId={model.id} />
       )}
 
-      <footer className="py-8 border-t" style={{ borderColor: c.text + "10" }}>
-        <div className="container mx-auto px-6 text-center">
-          <p className="font-display font-bold text-sm" style={{ color: c.accent }}>{model.name}</p>
-          <p className="text-xs mt-1" style={{ color: c.text + "55" }}>© 2026 Todos os direitos reservados.</p>
-        </div>
-      </footer>
+      <ModelFooter model={model} onNavigate={(target) => navTo(target as any)} />
     </div>
   );
 };
