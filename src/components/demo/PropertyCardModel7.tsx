@@ -11,10 +11,6 @@ import property6 from "@/assets/property-6.jpg";
 
 const propertyImages = [property1, property2, property3, property4, property5, property6];
 
-/**
- * Modelo 7 — Card Diagonal Overlay
- * Imagem como fundo + caixa branca sobreposta com separação diagonal.
- */
 const PropertyCardModel7 = ({
   property,
   colors,
@@ -25,89 +21,97 @@ const PropertyCardModel7 = ({
   onSelect: () => void;
 }) => (
   <motion.div
-    className="relative rounded-2xl overflow-hidden cursor-pointer group h-[420px]"
-    style={{ boxShadow: `0 4px 20px ${colors.text}12` }}
+    className="group relative h-[430px] cursor-pointer overflow-hidden rounded-[28px]"
+    style={{ boxShadow: `0 18px 44px ${colors.text}18` }}
     onClick={onSelect}
     initial={{ opacity: 0, y: 24 }}
     whileInView={{ opacity: 1, y: 0 }}
     viewport={{ once: true }}
-    whileHover={{
-      y: -6,
-      boxShadow: `0 12px 40px ${colors.text}20`,
-    }}
-    whileTap={{ scale: 0.985 }}
+    whileHover={{ y: -8, boxShadow: `0 28px 60px ${colors.text}22` }}
+    whileTap={{ scale: 0.99 }}
     transition={{ duration: 0.3 }}
   >
-    {/* Full background image */}
     <img
       src={propertyImages[property.image - 1]}
       alt={property.title}
-      className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+      className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
     />
+    <div className="absolute inset-0" style={{ background: `linear-gradient(180deg, transparent 12%, ${colors.text}22 58%, ${colors.text}66 100%)` }} />
 
-    {/* Type badge */}
-    <div className="absolute top-4 left-4 z-10">
+    <div className="absolute left-5 top-5 z-10">
       <span
-        className="px-3 py-1.5 rounded-lg text-[11px] font-display font-bold capitalize"
+        className="rounded-full px-3 py-1.5 text-[11px] font-display font-bold uppercase tracking-[0.18em]"
         style={{ backgroundColor: colors.primary, color: "#fff" }}
       >
         {property.type}
       </span>
     </div>
 
-    {/* Diagonal overlay info box */}
-    <div className="absolute bottom-0 left-0 right-0 z-10">
-      {/* Diagonal SVG separator */}
-      <svg
-        viewBox="0 0 400 40"
-        preserveAspectRatio="none"
-        className="w-full h-8 block"
-        style={{ filter: `drop-shadow(0 -2px 4px ${colors.text}10)` }}
-      >
-        <polygon
-          points="0,40 400,0 400,40"
-          fill={colors.bg}
-        />
-      </svg>
-
-      {/* Info box */}
-      <div className="px-5 pb-5 pt-1" style={{ backgroundColor: colors.bg }}>
-        <div className="flex items-start justify-between mb-2">
-          <h3 className="font-display font-bold text-sm leading-tight flex-1 pr-2" style={{ color: colors.text }}>
-            {property.title}
-          </h3>
-          <span className="flex items-center gap-1 text-[10px] font-display font-semibold shrink-0" style={{ color: colors.text + "55" }}>
-            <Hash className="w-3 h-3" />{property.id}
+    <div className="absolute inset-x-0 bottom-0 z-10">
+      <div className="h-16 w-full" style={{ clipPath: "polygon(0 100%, 100% 8%, 100% 100%)", backgroundColor: colors.bg }} />
+      <div className="-mt-px px-5 pb-5 pt-2" style={{ backgroundColor: colors.bg }}>
+        <div className="mb-3 flex items-start justify-between gap-3">
+          <div>
+            <h3 className="font-display text-lg font-black leading-tight" style={{ color: colors.text }}>
+              {property.title}
+            </h3>
+            <p className="mt-1 flex items-center gap-1 text-xs" style={{ color: colors.text + "77" }}>
+              <MapPin className="h-3.5 w-3.5" style={{ color: colors.primary }} />
+              {property.location}
+            </p>
+          </div>
+          <span
+            className="inline-flex shrink-0 items-center gap-1 rounded-full px-2.5 py-1 text-[10px] font-display font-bold"
+            style={{ backgroundColor: colors.primary + "10", color: colors.primary }}
+          >
+            <Hash className="h-3 w-3" /> {property.id}
           </span>
         </div>
 
-        <p className="text-xs flex items-center gap-1 mb-3" style={{ color: colors.text + "66" }}>
-          <MapPin className="w-3 h-3" style={{ color: colors.primary }} />
-          {property.location}
-        </p>
-
         {property.type !== "terreno" ? (
-          <div className="flex items-center gap-3 mb-3">
+          <div className="mb-4 grid grid-cols-2 gap-2 text-[11px] sm:grid-cols-4">
             {[
-              { icon: Bed, val: property.bedrooms },
-              { icon: Bath, val: property.bathrooms },
-              { icon: Car, val: property.parking },
-              { icon: Maximize, val: property.area },
-            ].map(({ icon: Icon, val }, i) => (
-              <span key={i} className="flex items-center gap-1 text-[11px]" style={{ color: colors.text + "66" }}>
-                <Icon className="w-3.5 h-3.5" style={{ color: colors.primary + "99" }} /> {val}
+              { icon: Bed, label: `${property.bedrooms} quartos` },
+              { icon: Bath, label: `${property.bathrooms} ban.` },
+              { icon: Car, label: `${property.parking} vagas` },
+              { icon: Maximize, label: property.area },
+            ].map(({ icon: Icon, label }, index) => (
+              <span
+                key={index}
+                className="inline-flex items-center gap-1.5 rounded-xl px-2.5 py-2 font-display font-semibold"
+                style={{ backgroundColor: colors.text + "06", color: colors.text + "88" }}
+              >
+                <Icon className="h-3.5 w-3.5" style={{ color: colors.primary }} />
+                {label}
               </span>
             ))}
           </div>
         ) : (
-          <div className="flex items-center gap-1 mb-3 text-[11px]" style={{ color: colors.text + "66" }}>
-            <Maximize className="w-3.5 h-3.5" style={{ color: colors.primary + "99" }} /> {property.area}
+          <div className="mb-4">
+            <span
+              className="inline-flex items-center gap-1.5 rounded-xl px-3 py-2 text-[11px] font-display font-semibold"
+              style={{ backgroundColor: colors.text + "06", color: colors.text + "88" }}
+            >
+              <Maximize className="h-3.5 w-3.5" style={{ color: colors.primary }} />
+              {property.area}
+            </span>
           </div>
         )}
 
-        <p className="font-display font-black text-lg" style={{ color: colors.primary }}>
-          {property.price}
-        </p>
+        <div className="flex items-end justify-between gap-4 border-t pt-4" style={{ borderColor: colors.text + "10" }}>
+          <div>
+            <p className="text-[10px] font-display font-semibold uppercase tracking-[0.18em]" style={{ color: colors.text + "55" }}>
+              Valor
+            </p>
+            <p className="font-display text-2xl font-black" style={{ color: colors.primary }}>
+              {property.price}
+            </p>
+          </div>
+          <div className="h-10 w-px" style={{ backgroundColor: colors.primary + "25" }} />
+          <p className="max-w-[110px] text-right text-[11px] font-body leading-relaxed" style={{ color: colors.text + "70" }}>
+            Overlay diagonal com leitura editorial.
+          </p>
+        </div>
       </div>
     </div>
   </motion.div>
