@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { demoModels, properties, type Property, type DemoModel } from "@/data/models";
@@ -247,6 +247,9 @@ const GenericDemoSite = ({ model }: { model: DemoModel }) => {
   const useCustomCards = isModel4 || isModel5 || isModel6;
 
   const c = model.colors;
+
+  useEffect(() => { window.scrollTo(0, 0); }, []);
+  useEffect(() => { if (selectedProperty) window.scrollTo({ top: 0, behavior: "smooth" }); }, [selectedProperty]);
 
   const filtered = filter === "todos" ? properties : properties.filter((p) => {
     if (filter === "casas") return p.type === "casa";
