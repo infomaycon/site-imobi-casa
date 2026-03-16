@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { MapPin, Bed, Bath, Car, Maximize, Hash } from "lucide-react";
+import { MapPin, Bed, Bath, Car, Maximize, ChevronRight, Hash } from "lucide-react";
 import type { Property, DemoModel } from "@/data/models";
 
 import property1 from "@/assets/property-1.jpg";
@@ -12,8 +12,8 @@ import property6 from "@/assets/property-6.jpg";
 const propertyImages = [property1, property2, property3, property4, property5, property6];
 
 /**
- * Modelo 7 — Card Diagonal Overlay
- * Imagem ocupa todo o fundo. Caixa branca sobreposta com corte diagonal entre imagem e info.
+ * Modelo 7 — Card Diagonal Overlay (estilo referência)
+ * Imagem à esquerda/topo, caixa de info à direita/baixo com diagonal verde separando.
  */
 const PropertyCardModel7 = ({
   property,
@@ -23,112 +23,109 @@ const PropertyCardModel7 = ({
   property: Property;
   colors: DemoModel["colors"];
   onSelect: () => void;
-}) => (
-  <motion.div
-    className="group relative cursor-pointer overflow-hidden rounded-2xl"
-    style={{ boxShadow: `0 6px 24px ${colors.text}14` }}
-    onClick={onSelect}
-    initial={{ opacity: 0, y: 24 }}
-    whileInView={{ opacity: 1, y: 0 }}
-    viewport={{ once: true }}
-    whileHover={{ y: -6, boxShadow: `0 18px 48px ${colors.text}22` }}
-    whileTap={{ scale: 0.99 }}
-    transition={{ duration: 0.3 }}
-  >
-    {/* ── Image background ── */}
-    <div className="relative h-[240px] overflow-hidden">
-      <img
-        src={propertyImages[property.image - 1]}
-        alt={property.title}
-        className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
-      />
-      {/* Subtle gradient so badge is readable */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-transparent" />
+}) => {
+  const feats = property.type !== "terreno"
+    ? [
+        { icon: Maximize, val: property.area },
+        { icon: Bed, val: String(property.bedrooms) },
+        { icon: Car, val: String(property.parking) },
+        { icon: Bath, val: String(property.bathrooms) },
+      ]
+    : [{ icon: Maximize, val: property.area }];
 
-      {/* Type badge */}
-      <span
-        className="absolute left-4 top-4 rounded-full px-3 py-1 text-[11px] font-display font-bold uppercase tracking-wider"
-        style={{ backgroundColor: colors.primary, color: "#fff" }}
-      >
-        {property.type}
-      </span>
-    </div>
+  return (
+    <motion.div
+      className="group relative grid cursor-pointer overflow-hidden rounded-xl bg-white"
+      style={{
+        gridTemplateColumns: "1fr 1fr",
+        boxShadow: `0 2px 12px ${colors.text}10`,
+      }}
+      onClick={onSelect}
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      whileHover={{ y: -4, boxShadow: `0 10px 36px ${colors.text}1c` }}
+      whileTap={{ scale: 0.995 }}
+      transition={{ duration: 0.3 }}
+    >
+      {/* ── Left: image with diagonal clip ── */}
+      <div className="relative h-full min-h-[220px] overflow-hidden">
+        <img
+          src={propertyImages[property.image - 1]}
+          alt={property.title}
+          className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
+        />
 
-    {/* ── Diagonal separator — the key visual element ── */}
-    <div className="relative -mt-8">
-      <svg
-        viewBox="0 0 500 50"
-        preserveAspectRatio="none"
-        className="block h-10 w-full"
-      >
-        <polygon points="0,50 500,0 500,50" fill={colors.bg} />
-      </svg>
-    </div>
+        {/* Diagonal colored line — sits on top-right edge of the image */}
+        <div
+          className="pointer-events-none absolute right-0 top-0 h-full w-[6px] origin-top-right"
+          style={{
+            backgroundColor: colors.primary,
+            transform: "skewX(-4deg)",
+            zIndex: 2,
+          }}
+        />
 
-    {/* ── White info box ── */}
-    <div className="-mt-px px-5 pb-5 pt-0" style={{ backgroundColor: colors.bg }}>
-      {/* Title + code */}
-      <div className="mb-2 flex items-start justify-between gap-2">
-        <h3 className="font-display text-[15px] font-bold leading-snug" style={{ color: colors.text }}>
-          {property.title}
-        </h3>
-        <span
-          className="mt-0.5 inline-flex shrink-0 items-center gap-0.5 rounded-md px-2 py-0.5 text-[10px] font-display font-semibold"
-          style={{ backgroundColor: colors.text + "08", color: colors.text + "60" }}
-        >
-          <Hash className="h-2.5 w-2.5" />
-          {property.id}
-        </span>
+        {/* White diagonal overlap that creates the cut effect */}
+        <div
+          className="pointer-events-none absolute -right-1 top-0 h-full w-6"
+          style={{
+            backgroundColor: "#fff",
+            clipPath: "polygon(100% 0, 100% 100%, 0 100%)",
+            zIndex: 1,
+          }}
+        />
       </div>
 
-      {/* Location */}
-      <p className="mb-3 flex items-center gap-1.5 text-xs" style={{ color: colors.text + "70" }}>
-        <MapPin className="h-3.5 w-3.5" style={{ color: colors.primary }} />
-        {property.location}
-      </p>
+      {/* ── Right: info panel ── */}
+      <div className="relative flex flex-col justify-between p-4 sm:p-5" style={{ backgroundColor: "#fff" }}>
+        {/* Type + title + location + code */}
+        <div>
+          <p className="mb-0.5 text-xs font-display font-bold capitalize" style={{ color: colors.text + "88" }}>
+            {property.type} - Venda
+          </p>
+          <h3 className="font-display text-sm font-bold leading-snug sm:text-[15px]" style={{ color: colors.text }}>
+            {property.title}
+          </h3>
+          <p className="mt-1 flex items-center gap-1 text-[11px]" style={{ color: colors.text + "70" }}>
+            <MapPin className="h-3 w-3" style={{ color: colors.primary }} />
+            {property.location}
+          </p>
+          <p className="mt-0.5 flex items-center gap-0.5 text-[11px] font-display font-semibold" style={{ color: colors.primary }}>
+            <Hash className="h-3 w-3" />
+            Cod: {property.id}
+          </p>
+        </div>
 
-      {/* Features */}
-      {property.type !== "terreno" ? (
-        <div className="mb-4 flex flex-wrap gap-x-4 gap-y-1.5">
-          {[
-            { icon: Bed, val: `${property.bedrooms} Quartos` },
-            { icon: Bath, val: `${property.bathrooms} Banh.` },
-            { icon: Car, val: `${property.parking} Vagas` },
-            { icon: Maximize, val: property.area },
-          ].map(({ icon: Icon, val }, i) => (
+        {/* Features in 2×2 grid */}
+        <div className="mt-3 grid grid-cols-2 gap-x-4 gap-y-1.5">
+          {feats.map(({ icon: Icon, val }, i) => (
             <span
               key={i}
-              className="flex items-center gap-1 text-[11px] font-display font-medium"
-              style={{ color: colors.text + "66" }}
+              className="flex items-center gap-1.5 text-[12px] font-display font-medium"
+              style={{ color: colors.text + "77" }}
             >
-              <Icon className="h-3.5 w-3.5" style={{ color: colors.primary + "bb" }} />
+              <Icon className="h-4 w-4" style={{ color: colors.primary }} />
               {val}
             </span>
           ))}
         </div>
-      ) : (
-        <div className="mb-4">
-          <span className="flex items-center gap-1 text-[11px] font-display font-medium" style={{ color: colors.text + "66" }}>
-            <Maximize className="h-3.5 w-3.5" style={{ color: colors.primary + "bb" }} />
-            {property.area}
+
+        {/* Price bar */}
+        <div className="mt-4 flex items-center overflow-hidden rounded-lg" style={{ backgroundColor: colors.primary }}>
+          <span className="flex-1 px-4 py-2.5 font-display text-sm font-black text-white sm:text-base">
+            {property.price}
+          </span>
+          <span
+            className="flex h-full items-center justify-center border-l px-3 py-2.5"
+            style={{ borderColor: "rgba(255,255,255,0.3)" }}
+          >
+            <ChevronRight className="h-5 w-5 text-white" />
           </span>
         </div>
-      )}
-
-      {/* Price — highlighted */}
-      <div
-        className="flex items-center justify-between rounded-xl px-4 py-3"
-        style={{ backgroundColor: colors.primary + "0c" }}
-      >
-        <span className="text-[10px] font-display font-semibold uppercase tracking-widest" style={{ color: colors.text + "55" }}>
-          Valor
-        </span>
-        <span className="font-display text-xl font-black" style={{ color: colors.primary }}>
-          {property.price}
-        </span>
       </div>
-    </div>
-  </motion.div>
-);
+    </motion.div>
+  );
+};
 
 export default PropertyCardModel7;
