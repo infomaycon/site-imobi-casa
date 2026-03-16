@@ -344,7 +344,7 @@ const GenericDemoSite = ({ model }: { model: DemoModel }) => {
                 <button onClick={() => navigateWithinDemo("listing")} className="px-8 py-3 rounded-lg font-display font-bold transition-all hover:brightness-110" style={{ backgroundColor: c.primary, color: "#fff" }}>
                   Ver Imóveis
                 </button>
-                <button onClick={() => navigateWithinDemo("home", "contact-section")} className="px-8 py-3 rounded-lg font-display font-semibold border-2 transition-all" style={{ borderColor: c.primary + "40", color: c.text }}>
+                <button onClick={() => navigateWithinDemo("home", "contact-section")} className="px-8 py-3 rounded-lg font-display font-semibold border-2 transition-all" style={{ borderColor: "#ffffff40", color: "#fff" }}>
                   Fale Conosco
                 </button>
               </motion.div>
