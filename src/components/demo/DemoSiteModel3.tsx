@@ -2,6 +2,8 @@ import { useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { properties, type Property, type DemoModel } from "@/data/models";
+import ModelLogo from "./ModelLogo";
+import ModelFooter from "./ModelFooter";
 import { ArrowLeft, Phone, Mail, MapPin, Bed, Bath, Car, Maximize, ChefHat, Waves, Mountain, Fence, Gem, Menu, X, MessageCircle, ArrowRight, ChevronLeft, ChevronRight, Award, TrendingUp, Users } from "lucide-react";
 import { getSearchFilter } from "@/components/demo/SearchFilters";
 
@@ -61,8 +63,8 @@ const DemoSiteModel3 = ({ model }: { model: DemoModel }) => {
       {/* Navbar */}
       <nav className="sticky top-0 z-50 backdrop-blur-xl border-b" style={{ backgroundColor: c.bg + "ee", borderColor: c.text + "10" }}>
         <div className="container mx-auto px-6 h-16 flex items-center justify-between">
-          <button onClick={() => navTo("home")} className="font-display font-bold text-lg" style={{ color: c.accent }}>
-            {model.name}
+          <button onClick={() => navTo("home")}>
+            <ModelLogo model={model} />
           </button>
           <div className="hidden md:flex items-center gap-8">
             {(["home", "listing", "about", "contact"] as DemoPage[]).map((p) => {
@@ -248,12 +250,7 @@ const DemoSiteModel3 = ({ model }: { model: DemoModel }) => {
         <ContactSection3 colors={c} modelId={model.id} />
       )}
 
-      <footer className="py-8 border-t" style={{ borderColor: c.text + "10" }}>
-        <div className="container mx-auto px-6 text-center">
-          <p className="font-display font-bold text-sm" style={{ color: c.accent }}>{model.name}</p>
-          <p className="text-xs mt-1" style={{ color: c.text + "55" }}>© 2026 Todos os direitos reservados.</p>
-        </div>
-      </footer>
+      <ModelFooter model={model} onNavigate={(target) => navTo(target as any)} />
     </div>
   );
 };

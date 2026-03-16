@@ -2,6 +2,8 @@ import { useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { properties, type Property, type DemoModel } from "@/data/models";
+import ModelLogo from "./ModelLogo";
+import ModelFooter from "./ModelFooter";
 import { ArrowLeft, Phone, Mail, MapPin, Bed, Bath, Car, Maximize, ChefHat, Waves, Mountain, Fence, Gem, Menu, X, MessageCircle, ChevronLeft, ChevronRight, Award, TrendingUp, Users } from "lucide-react";
 import { getSearchFilter } from "@/components/demo/SearchFilters";
 
@@ -69,8 +71,8 @@ const DemoSiteModel1 = ({ model }: { model: DemoModel }) => {
       <nav className="sticky top-0 z-50 border-b" style={{ backgroundColor: c.bg, borderColor: c.text + "10" }}>
         <div className="container mx-auto px-6">
           <div className="flex items-center justify-center py-3">
-            <button onClick={() => { setPage("home"); setSelectedProperty(null); }} className="font-display font-black text-xl tracking-widest uppercase" style={{ color: c.primary }}>
-              {model.name}
+            <button onClick={() => { setPage("home"); setSelectedProperty(null); }}>
+              <ModelLogo model={model} />
             </button>
           </div>
           <div className="hidden md:flex items-center justify-center gap-8 pb-3">
@@ -243,12 +245,7 @@ const DemoSiteModel1 = ({ model }: { model: DemoModel }) => {
         <ContactSection colors={c} modelId={model.id} variant="classic" />
       )}
 
-      <footer className="py-8 border-t" style={{ borderColor: c.text + "10" }}>
-        <div className="container mx-auto px-6 text-center">
-          <p className="font-display font-bold text-sm tracking-widest uppercase" style={{ color: c.primary }}>{model.name}</p>
-          <p className="text-xs mt-1" style={{ color: c.text + "55" }}>© 2026 Todos os direitos reservados. Site demonstrativo.</p>
-        </div>
-      </footer>
+      <ModelFooter model={model} onNavigate={(target) => { setPage(target as any); setSelectedProperty(null); window.scrollTo({ top: 0, behavior: "smooth" }); }} />
     </div>
   );
 };
