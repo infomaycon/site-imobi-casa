@@ -63,8 +63,8 @@ const DemoSiteModel3 = ({ model }: { model: DemoModel }) => {
       {/* Navbar */}
       <nav className="sticky top-0 z-50 backdrop-blur-xl border-b" style={{ backgroundColor: c.bg + "ee", borderColor: c.text + "10" }}>
         <div className="container mx-auto px-6 h-16 flex items-center justify-between">
-          <button onClick={() => navTo("home")} className="font-display font-bold text-lg" style={{ color: c.accent }}>
-            {model.name}
+          <button onClick={() => navTo("home")}>
+            <ModelLogo model={model} />
           </button>
           <div className="hidden md:flex items-center gap-8">
             {(["home", "listing", "about", "contact"] as DemoPage[]).map((p) => {
