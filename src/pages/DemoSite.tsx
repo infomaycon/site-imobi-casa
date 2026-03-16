@@ -475,6 +475,7 @@ const GenericDemoSite = ({ model }: { model: DemoModel }) => {
                 {[
                   { label: "Início", target: "home" as DemoPage },
                   { label: "Imóveis", target: "listing" as DemoPage },
+                  { label: "Galeria", target: "gallery" as DemoPage },
                   { label: "Sobre", target: "home" as DemoPage, sectionId: "about-section" },
                   { label: "Contato", target: "home" as DemoPage, sectionId: "contact-section" },
                 ].map((item) => (
