@@ -482,56 +482,7 @@ const GenericDemoSite = ({ model }: { model: DemoModel }) => {
       </AnimatePresence>
 
 
-      <footer className="py-12 border-t" style={{ borderColor: c.text + "10", backgroundColor: c.text + "05" }}>
-        <div className="container mx-auto px-6 max-w-6xl">
-          <div className="grid md:grid-cols-3 gap-10 mb-10">
-            <div>
-              <h4 className="font-display font-bold text-lg mb-4" style={{ color: c.primary }}>{model.name}</h4>
-              <p className="text-sm leading-relaxed font-body" style={{ color: c.text + "77" }}>
-                Especialistas em imóveis de alto padrão. Encontre a residência dos seus sonhos com atendimento personalizado e exclusivo.
-              </p>
-            </div>
-            <div>
-              <h4 className="font-display font-bold text-sm mb-4" style={{ color: c.text }}>Navegação</h4>
-              <div className="space-y-2">
-                {[
-                  { label: "Início", target: "home" as DemoPage },
-                  { label: "Imóveis", target: "listing" as DemoPage },
-                  { label: "Galeria", target: "gallery" as DemoPage },
-                  { label: "Sobre", target: "home" as DemoPage, sectionId: "about-section" },
-                  { label: "Contato", target: "home" as DemoPage, sectionId: "contact-section" },
-                ].map((item) => (
-                  <button
-                    key={item.label}
-                    onClick={() => navigateWithinDemo(item.target, item.sectionId)}
-                    className="block text-sm font-body transition-colors hover:opacity-80"
-                    style={{ color: c.text + "77" }}
-                  >
-                    {item.label}
-                  </button>
-                ))}
-              </div>
-            </div>
-            <div>
-              <h4 className="font-display font-bold text-sm mb-4" style={{ color: c.text }}>Contato</h4>
-              <div className="space-y-3">
-                <div className="flex items-center gap-2 text-sm font-body" style={{ color: c.text + "77" }}>
-                  <Phone className="w-4 h-4" style={{ color: c.primary }} /> (11) 99999-0000
-                </div>
-                <div className="flex items-center gap-2 text-sm font-body" style={{ color: c.text + "77" }}>
-                  <Mail className="w-4 h-4" style={{ color: c.primary }} /> contato@{model.id}.com.br
-                </div>
-                <div className="flex items-center gap-2 text-sm font-body" style={{ color: c.text + "77" }}>
-                  <MapPin className="w-4 h-4" style={{ color: c.primary }} /> Av. Paulista, 1000 - SP
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="border-t pt-6 text-center" style={{ borderColor: c.text + "10" }}>
-            <p className="text-xs font-body" style={{ color: c.text + "55" }}>© 2026 {model.name}. Todos os direitos reservados. Site demonstrativo ImobiCasa.</p>
-          </div>
-        </div>
-      </footer>
+      <ModelFooter model={model} onNavigate={(target, sectionId) => navigateWithinDemo(target as DemoPage, sectionId)} />
     </div>
   );
 };
