@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
 import { ArrowLeft, MapPin, Bed, Bath, Car, Maximize, ChefHat, Waves, Mountain, Fence, Gem, ChevronLeft, ChevronRight } from "lucide-react";
 import type { Property, DemoModel } from "@/data/models";
 import ImageLightbox from "./ImageLightbox";
@@ -36,7 +36,7 @@ const PropertyGalleryModel5 = ({
   onBack: () => void;
 }) => {
   const [mainIndex, setMainIndex] = useState(0);
-  const [direction, setDirection] = useState(0);
+  
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
   const galleryImages = Array.from({ length: 6 }, (_, i) =>
@@ -45,9 +45,8 @@ const PropertyGalleryModel5 = ({
 
   const goTo = useCallback((newIndex: number) => {
     if (newIndex < 0 || newIndex >= galleryImages.length) return;
-    setDirection(newIndex > mainIndex ? 1 : -1);
     setMainIndex(newIndex);
-  }, [mainIndex, galleryImages.length]);
+  }, [galleryImages.length]);
 
   // Keyboard navigation for main slider
   useEffect(() => {
@@ -59,11 +58,6 @@ const PropertyGalleryModel5 = ({
     return () => window.removeEventListener("keydown", handler);
   }, [mainIndex, goTo, galleryImages.length]);
 
-  const variants = {
-    enter: { opacity: 0, scale: 0.98 },
-    center: { opacity: 1, scale: 1 },
-    exit: { opacity: 0, scale: 0.98 },
-  };
 
   return (
     <section className="pb-16">
@@ -99,43 +93,35 @@ const PropertyGalleryModel5 = ({
               </button>
             )}
 
-            {/* Main image with crossfade */}
-            <AnimatePresence mode="wait">
-              <motion.div
+            {/* Main image with fade */}
+            <div
+              className="relative cursor-pointer w-full"
+              onClick={() => setLightboxIndex(mainIndex)}
+            >
+              <img
                 key={mainIndex}
-                className="relative cursor-pointer w-full"
-                onClick={() => setLightboxIndex(mainIndex)}
-                custom={direction}
-                variants={variants}
-                initial="enter"
-                animate="center"
-                exit="exit"
-                transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
-              >
-                <img
-                  src={galleryImages[mainIndex]}
-                  alt={property.title}
-                  className="w-full h-auto max-h-[70vh] object-contain rounded-lg shadow-2xl"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent rounded-lg pointer-events-none" />
-                
-                {/* Title overlay on image */}
-                <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
-                  <span
-                    className="inline-block px-4 py-1.5 rounded-lg text-xs font-display font-bold capitalize mb-2"
-                    style={{ backgroundColor: colors.primary, color: "#fff" }}
-                  >
-                    {property.type}
-                  </span>
-                  <h1 className="font-display font-black text-2xl md:text-4xl text-white mb-1 drop-shadow-lg">
-                    {property.title}
-                  </h1>
-                  <p className="text-white/90 flex items-center gap-1 text-sm drop-shadow">
-                    <MapPin className="w-4 h-4" /> {property.location}
-                  </p>
-                </div>
-              </motion.div>
-            </AnimatePresence>
+                src={galleryImages[mainIndex]}
+                alt={property.title}
+                className="w-full h-auto max-h-[70vh] object-contain rounded-lg shadow-2xl transition-opacity duration-300"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent rounded-lg pointer-events-none" />
+              
+              {/* Title overlay on image */}
+              <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
+                <span
+                  className="inline-block px-4 py-1.5 rounded-lg text-xs font-display font-bold capitalize mb-2"
+                  style={{ backgroundColor: colors.primary, color: "#fff" }}
+                >
+                  {property.type}
+                </span>
+                <h1 className="font-display font-black text-2xl md:text-4xl text-white mb-1 drop-shadow-lg">
+                  {property.title}
+                </h1>
+                <p className="text-white/90 flex items-center gap-1 text-sm drop-shadow">
+                  <MapPin className="w-4 h-4" /> {property.location}
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -156,11 +142,9 @@ const PropertyGalleryModel5 = ({
             >
               <img src={img} alt="" className="w-full h-full object-cover" />
               {i === mainIndex && (
-                <motion.div
+                <div
                   className="absolute inset-0"
                   style={{ boxShadow: `inset 0 0 0 3px ${colors.primary}` }}
-                  layoutId="thumb-indicator"
-                  transition={{ duration: 0.3 }}
                 />
               )}
             </button>
