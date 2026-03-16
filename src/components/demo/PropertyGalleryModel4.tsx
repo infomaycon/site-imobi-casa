@@ -1,9 +1,7 @@
-import { useState } from "react";
-import { motion } from "framer-motion";
-import { ArrowLeft, MapPin, Bed, Bath, Car, Maximize, ChefHat, Waves, Mountain, Fence, Gem } from "lucide-react";
+import { useState, useCallback, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { ArrowLeft, MapPin, Bed, Bath, Car, Maximize, ChefHat, Waves, Mountain, Fence, Gem, Camera, X, ChevronLeft, ChevronRight } from "lucide-react";
 import type { Property, DemoModel } from "@/data/models";
-import ImageLightbox from "./ImageLightbox";
-import { AnimatePresence } from "framer-motion";
 
 import property1 from "@/assets/property-1.jpg";
 import property2 from "@/assets/property-2.jpg";
@@ -24,7 +22,7 @@ const featureIcon = (f: string) => {
 };
 
 /**
- * Modelo 4 — Gallery with masonry-style grid, accent borders, and elegant spacing.
+ * Modelo 4 — Galeria Fullscreen com hero image, modo tela cheia, miniaturas e navegação completa.
  */
 const PropertyGalleryModel4 = ({
   property,
@@ -35,12 +33,39 @@ const PropertyGalleryModel4 = ({
   colors: DemoModel["colors"];
   onBack: () => void;
 }) => {
-  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+  const [fullscreen, setFullscreen] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [direction, setDirection] = useState(0);
 
-  // Build gallery images array from property image cycling through available images
   const galleryImages = Array.from({ length: 6 }, (_, i) =>
     propertyImages[(property.image - 1 + i) % 6]
   );
+
+  const goTo = useCallback((newIndex: number) => {
+    if (newIndex < 0 || newIndex >= galleryImages.length) return;
+    setDirection(newIndex > currentIndex ? 1 : -1);
+    setCurrentIndex(newIndex);
+  }, [currentIndex, galleryImages.length]);
+
+  useEffect(() => {
+    if (!fullscreen) return;
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setFullscreen(false);
+      if (e.key === "ArrowRight") goTo(Math.min(currentIndex + 1, galleryImages.length - 1));
+      if (e.key === "ArrowLeft") goTo(Math.max(currentIndex - 1, 0));
+    };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, [fullscreen, currentIndex, goTo, galleryImages.length]);
+
+  // Swipe
+  const [touchStart, setTouchStart] = useState<number | null>(null);
+
+  const variants = {
+    enter: (d: number) => ({ x: d > 0 ? 500 : -500, opacity: 0 }),
+    center: { x: 0, opacity: 1 },
+    exit: (d: number) => ({ x: d > 0 ? -500 : 500, opacity: 0 }),
+  };
 
   return (
     <section className="py-16">
@@ -54,7 +79,7 @@ const PropertyGalleryModel4 = ({
         </button>
 
         {/* Property header */}
-        <div className="mb-10">
+        <div className="mb-8">
           <div className="flex flex-wrap items-center gap-3 mb-3">
             <span
               className="px-4 py-1.5 rounded-full text-xs font-display font-bold capitalize"
@@ -75,43 +100,37 @@ const PropertyGalleryModel4 = ({
           </p>
         </div>
 
-        {/* Masonry-style gallery grid */}
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-12">
-          {galleryImages.map((img, i) => (
-            <motion.div
-              key={i}
-              className={`relative overflow-hidden cursor-pointer group ${
-                i === 0 ? "col-span-2 row-span-2 md:col-span-2 md:row-span-2" : ""
-              }`}
-              style={{
-                borderRadius: "16px",
-                border: `2px solid ${colors.primary}15`,
-              }}
-              onClick={() => setLightboxIndex(i)}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.3, delay: i * 0.05 }}
-              whileHover={{ scale: 1.02 }}
-            >
-              <img
-                src={img}
-                alt={`${property.title} - Imagem ${i + 1}`}
-                className={`w-full object-cover group-hover:scale-110 transition-transform duration-700 ${
-                  i === 0 ? "h-[400px] md:h-[500px]" : "h-[200px] md:h-[240px]"
-                }`}
-              />
-              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300" />
-              {/* Accent corner */}
+        {/* Hero image with "Ver todas as fotos" */}
+        <div
+          className="relative w-full h-[350px] md:h-[500px] rounded-2xl overflow-hidden cursor-pointer group mb-12"
+          onClick={() => { setCurrentIndex(0); setFullscreen(true); }}
+        >
+          <img
+            src={galleryImages[0]}
+            alt={property.title}
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
+          <button
+            className="absolute bottom-6 right-6 flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-display font-bold text-white backdrop-blur-md transition-all hover:scale-105"
+            style={{ backgroundColor: colors.primary + "dd" }}
+            onClick={(e) => { e.stopPropagation(); setCurrentIndex(0); setFullscreen(true); }}
+          >
+            <Camera className="w-4 h-4" />
+            Ver todas as fotos ({galleryImages.length})
+          </button>
+          {/* Small preview thumbnails */}
+          <div className="absolute bottom-6 left-6 flex gap-2">
+            {galleryImages.slice(1, 4).map((img, i) => (
               <div
-                className="absolute top-0 left-0 w-12 h-12 opacity-60"
-                style={{
-                  background: `linear-gradient(135deg, ${colors.primary}40, transparent)`,
-                  borderRadius: "16px 0 0 0",
-                }}
-              />
-            </motion.div>
-          ))}
+                key={i}
+                className="w-16 h-12 md:w-20 md:h-14 rounded-lg overflow-hidden border-2 border-white/40 cursor-pointer hover:border-white transition-colors"
+                onClick={(e) => { e.stopPropagation(); setCurrentIndex(i + 1); setFullscreen(true); }}
+              >
+                <img src={img} alt="" className="w-full h-full object-cover" />
+              </div>
+            ))}
+          </div>
         </div>
 
         {/* Property details */}
@@ -179,13 +198,99 @@ const PropertyGalleryModel4 = ({
         </div>
       </div>
 
+      {/* ============ FULLSCREEN GALLERY ============ */}
       <AnimatePresence>
-        {lightboxIndex !== null && (
-          <ImageLightbox
-            images={galleryImages}
-            initialIndex={lightboxIndex}
-            onClose={() => setLightboxIndex(null)}
-          />
+        {fullscreen && (
+          <motion.div
+            className="fixed inset-0 z-[100] flex flex-col"
+            style={{ backgroundColor: "#0a0a0a" }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            {/* Top bar */}
+            <div className="flex items-center justify-between px-6 py-4">
+              <span className="text-white/60 text-sm font-display">
+                {currentIndex + 1} / {galleryImages.length}
+              </span>
+              <button
+                onClick={() => setFullscreen(false)}
+                className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-white/80 hover:bg-white/20 transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Main image area */}
+            <div
+              className="flex-1 relative flex items-center justify-center px-4 md:px-20 overflow-hidden"
+              onTouchStart={(e) => setTouchStart(e.touches[0].clientX)}
+              onTouchEnd={(e) => {
+                if (touchStart === null) return;
+                const diff = e.changedTouches[0].clientX - touchStart;
+                if (Math.abs(diff) > 50) {
+                  if (diff < 0 && currentIndex < galleryImages.length - 1) goTo(currentIndex + 1);
+                  if (diff > 0 && currentIndex > 0) goTo(currentIndex - 1);
+                }
+                setTouchStart(null);
+              }}
+            >
+              {/* Arrows */}
+              {currentIndex > 0 && (
+                <button
+                  onClick={() => goTo(currentIndex - 1)}
+                  className="absolute left-3 md:left-8 z-10 w-12 h-12 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center text-white/80 hover:bg-white/20 transition-colors"
+                >
+                  <ChevronLeft className="w-6 h-6" />
+                </button>
+              )}
+              {currentIndex < galleryImages.length - 1 && (
+                <button
+                  onClick={() => goTo(currentIndex + 1)}
+                  className="absolute right-3 md:right-8 z-10 w-12 h-12 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center text-white/80 hover:bg-white/20 transition-colors"
+                >
+                  <ChevronRight className="w-6 h-6" />
+                </button>
+              )}
+
+              <AnimatePresence custom={direction} mode="popLayout">
+                <motion.img
+                  key={currentIndex}
+                  src={galleryImages[currentIndex]}
+                  alt=""
+                  className="max-w-full max-h-full object-contain rounded-lg select-none"
+                  style={{ maxHeight: "calc(100vh - 200px)" }}
+                  custom={direction}
+                  variants={variants}
+                  initial="enter"
+                  animate="center"
+                  exit="exit"
+                  transition={{ duration: 0.3, ease: "easeInOut" }}
+                  draggable={false}
+                />
+              </AnimatePresence>
+            </div>
+
+            {/* Thumbnails bar */}
+            <div className="py-4 px-6 overflow-x-auto">
+              <div className="flex gap-2 justify-center min-w-max mx-auto">
+                {galleryImages.map((img, i) => (
+                  <button
+                    key={i}
+                    onClick={() => goTo(i)}
+                    className="w-16 h-12 md:w-20 md:h-14 rounded-lg overflow-hidden flex-shrink-0 transition-all duration-200"
+                    style={{
+                      border: i === currentIndex ? `2px solid ${colors.primary}` : "2px solid transparent",
+                      opacity: i === currentIndex ? 1 : 0.5,
+                    }}
+                  >
+                    <img src={img} alt="" className="w-full h-full object-cover" />
+                  </button>
+                ))}
+              </div>
+            </div>
+          </motion.div>
         )}
       </AnimatePresence>
     </section>

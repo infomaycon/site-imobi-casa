@@ -1,9 +1,8 @@
 import { useState } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { ArrowLeft, MapPin, Bed, Bath, Car, Maximize, ChefHat, Waves, Mountain, Fence, Gem, ZoomIn } from "lucide-react";
 import type { Property, DemoModel } from "@/data/models";
 import ImageLightbox from "./ImageLightbox";
-import { AnimatePresence } from "framer-motion";
 
 import property1 from "@/assets/property-1.jpg";
 import property2 from "@/assets/property-2.jpg";
@@ -24,7 +23,8 @@ const featureIcon = (f: string) => {
 };
 
 /**
- * Modelo 6 — Minimalist grid with uniform square tiles and zoom icon overlay.
+ * Modelo 6 — Galeria Grid Moderno com 3-4 colunas, cards arredondados com sombra,
+ * hover zoom e lightbox com navegação.
  */
 const PropertyGalleryModel6 = ({
   property,
@@ -52,7 +52,7 @@ const PropertyGalleryModel6 = ({
           <ArrowLeft className="w-4 h-4" /> Voltar aos imóveis
         </button>
 
-        {/* Minimal header: price prominent */}
+        {/* Header */}
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-10 pb-6 border-b" style={{ borderColor: colors.text + "10" }}>
           <div>
             <span
@@ -74,36 +74,43 @@ const PropertyGalleryModel6 = ({
           </p>
         </div>
 
-        {/* Uniform square grid with zoom icons */}
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-5 mb-14">
+        {/* Modern grid gallery — 2 cols mobile, 3 cols tablet, 4 cols desktop */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-5 mb-14">
           {galleryImages.map((img, i) => (
             <motion.div
               key={i}
-              className="relative aspect-square overflow-hidden cursor-pointer group"
+              className="relative overflow-hidden cursor-pointer group"
               style={{
-                borderRadius: "12px",
-                boxShadow: `0 2px 12px ${colors.text}06`,
+                borderRadius: "16px",
+                boxShadow: `0 4px 16px ${colors.text}0a`,
               }}
               onClick={() => setLightboxIndex(i)}
-              initial={{ opacity: 0, scale: 0.95 }}
-              whileInView={{ opacity: 1, scale: 1 }}
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.3, delay: i * 0.06 }}
-              whileHover={{ boxShadow: `0 8px 30px ${colors.text}18` }}
+              transition={{ duration: 0.4, delay: i * 0.07 }}
             >
-              <img
-                src={img}
-                alt={`${property.title} - ${i + 1}`}
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-              />
-              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors duration-300 flex items-center justify-center">
+              <div className="aspect-[4/3] overflow-hidden">
+                <img
+                  src={img}
+                  alt={`${property.title} - ${i + 1}`}
+                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                />
+              </div>
+              {/* Hover overlay with zoom icon */}
+              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/35 transition-colors duration-300 flex items-center justify-center rounded-[16px]">
                 <div
-                  className="w-12 h-12 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 scale-75 group-hover:scale-100"
+                  className="w-12 h-12 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 scale-50 group-hover:scale-100 backdrop-blur-sm"
                   style={{ backgroundColor: colors.primary + "cc" }}
                 >
                   <ZoomIn className="w-5 h-5 text-white" />
                 </div>
               </div>
+              {/* Bottom accent line */}
+              <div
+                className="absolute bottom-0 left-0 right-0 h-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                style={{ backgroundColor: colors.primary }}
+              />
             </motion.div>
           ))}
         </div>
