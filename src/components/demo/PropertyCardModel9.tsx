@@ -11,11 +11,6 @@ import property6 from "@/assets/property-6.jpg";
 
 const propertyImages = [property1, property2, property3, property4, property5, property6];
 
-/**
- * Modelo 9 — Card Floating Info
- * Imagem ocupa todo o card + pequeno card flutuante sobreposto com sombra.
- * Hover: card levanta levemente (floating effect).
- */
 const PropertyCardModel9 = ({
   property,
   colors,
@@ -26,28 +21,29 @@ const PropertyCardModel9 = ({
   onSelect: () => void;
 }) => (
   <motion.div
-    className="relative rounded-2xl overflow-visible cursor-pointer group"
+    className="group relative cursor-pointer pb-16"
     onClick={onSelect}
     initial={{ opacity: 0, y: 24 }}
     whileInView={{ opacity: 1, y: 0 }}
     viewport={{ once: true }}
+    whileHover={{ y: -8 }}
+    whileTap={{ scale: 0.99 }}
     transition={{ duration: 0.3 }}
   >
-    {/* Image container */}
-    <div className="relative rounded-2xl overflow-hidden h-[280px]"
-      style={{ boxShadow: `0 4px 16px ${colors.text}10` }}
+    <div
+      className="relative h-[330px] overflow-hidden rounded-[30px]"
+      style={{ boxShadow: `0 20px 44px ${colors.text}14` }}
     >
       <img
         src={propertyImages[property.image - 1]}
         alt={property.title}
-        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+        className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
       />
-      <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
+      <div className="absolute inset-0" style={{ background: `linear-gradient(180deg, transparent 20%, ${colors.text}44 72%, ${colors.text}55 100%)` }} />
 
-      {/* Type badge */}
-      <div className="absolute top-4 left-4 z-10">
+      <div className="absolute left-5 top-5 z-10">
         <span
-          className="px-3 py-1.5 rounded-lg text-[11px] font-display font-bold capitalize"
+          className="rounded-full px-3 py-1.5 text-[11px] font-display font-bold uppercase tracking-[0.16em]"
           style={{ backgroundColor: colors.primary, color: "#fff" }}
         >
           {property.type}
@@ -55,49 +51,58 @@ const PropertyCardModel9 = ({
       </div>
     </div>
 
-    {/* Floating info card */}
     <motion.div
-      className="relative mx-4 -mt-12 rounded-xl p-4 z-10"
+      className="absolute bottom-0 left-1/2 z-10 w-[86%] -translate-x-1/2 rounded-[26px] p-5"
       style={{
         backgroundColor: colors.bg,
-        boxShadow: `0 8px 30px ${colors.text}15`,
-        border: `1px solid ${colors.text}08`,
+        border: `1px solid ${colors.text}10`,
+        boxShadow: `0 20px 50px ${colors.text}16`,
       }}
-      whileHover={{ y: -8, boxShadow: `0 16px 48px ${colors.text}22` }}
-      transition={{ duration: 0.3 }}
+      whileHover={{ y: -10, boxShadow: `0 30px 64px ${colors.text}24` }}
+      transition={{ duration: 0.28 }}
     >
-      <h3 className="font-display font-bold text-sm leading-tight mb-1.5" style={{ color: colors.text }}>
-        {property.title}
-      </h3>
-      <p className="text-xs flex items-center gap-1 mb-3" style={{ color: colors.text + "66" }}>
-        <MapPin className="w-3 h-3" style={{ color: colors.primary }} />
-        {property.location}
-      </p>
-
-      <div className="flex items-center justify-between">
-        <p className="font-display font-black text-lg" style={{ color: colors.primary }}>
+      <div className="mb-3 flex items-start justify-between gap-4">
+        <div>
+          <h3 className="font-display text-lg font-black leading-tight" style={{ color: colors.text }}>
+            {property.title}
+          </h3>
+          <p className="mt-1 flex items-center gap-1 text-xs" style={{ color: colors.text + "70" }}>
+            <MapPin className="h-3.5 w-3.5" style={{ color: colors.primary }} />
+            {property.location}
+          </p>
+        </div>
+        <p className="shrink-0 text-right font-display text-xl font-black" style={{ color: colors.primary }}>
           {property.price}
         </p>
-
-        {property.type !== "terreno" ? (
-          <div className="flex items-center gap-2.5">
-            {[
-              { icon: Bed, val: property.bedrooms },
-              { icon: Bath, val: property.bathrooms },
-              { icon: Car, val: property.parking },
-              { icon: Maximize, val: property.area },
-            ].map(({ icon: Icon, val }, i) => (
-              <span key={i} className="flex items-center gap-0.5 text-[10px]" style={{ color: colors.text + "55" }}>
-                <Icon className="w-3 h-3" style={{ color: colors.primary + "88" }} /> {val}
-              </span>
-            ))}
-          </div>
-        ) : (
-          <span className="flex items-center gap-1 text-[10px]" style={{ color: colors.text + "55" }}>
-            <Maximize className="w-3 h-3" style={{ color: colors.primary + "88" }} /> {property.area}
-          </span>
-        )}
       </div>
+
+      {property.type !== "terreno" ? (
+        <div className="flex flex-wrap gap-2">
+          {[
+            { icon: Bed, label: `${property.bedrooms} qt` },
+            { icon: Bath, label: `${property.bathrooms} ban` },
+            { icon: Car, label: `${property.parking} vg` },
+            { icon: Maximize, label: property.area },
+          ].map(({ icon: Icon, label }, index) => (
+            <span
+              key={index}
+              className="inline-flex items-center gap-1.5 rounded-full px-3 py-2 text-[11px] font-display font-semibold"
+              style={{ backgroundColor: colors.primary + "10", color: colors.text + "88" }}
+            >
+              <Icon className="h-3.5 w-3.5" style={{ color: colors.primary }} />
+              {label}
+            </span>
+          ))}
+        </div>
+      ) : (
+        <span
+          className="inline-flex items-center gap-1.5 rounded-full px-3 py-2 text-[11px] font-display font-semibold"
+          style={{ backgroundColor: colors.primary + "10", color: colors.text + "88" }}
+        >
+          <Maximize className="h-3.5 w-3.5" style={{ color: colors.primary }} />
+          {property.area}
+        </span>
+      )}
     </motion.div>
   </motion.div>
 );
