@@ -45,9 +45,8 @@ const PropertyGalleryModel5 = ({
 
   const goTo = useCallback((newIndex: number) => {
     if (newIndex < 0 || newIndex >= galleryImages.length) return;
-    setDirection(newIndex > mainIndex ? 1 : -1);
     setMainIndex(newIndex);
-  }, [mainIndex, galleryImages.length]);
+  }, [galleryImages.length]);
 
   // Keyboard navigation for main slider
   useEffect(() => {
