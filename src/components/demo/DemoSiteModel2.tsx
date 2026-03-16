@@ -68,8 +68,8 @@ const DemoSiteModel2 = ({ model }: { model: DemoModel }) => {
       {/* Navbar – light bar */}
       <nav className="sticky top-0 z-50 border-b" style={{ backgroundColor: c.bg, borderColor: c.text + "10" }}>
         <div className="container mx-auto px-6 h-14 flex items-center justify-between">
-          <button onClick={() => { setPage("home"); setSelectedProperty(null); }} className="font-display font-bold text-lg tracking-tight" style={{ color: c.primary }}>
-            {model.name}
+          <button onClick={() => { setPage("home"); setSelectedProperty(null); }}>
+            <ModelLogo model={model} />
           </button>
           <div className="hidden md:flex items-center gap-8">
             <NavLink label="Início" target="home" />
