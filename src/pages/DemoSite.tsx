@@ -383,7 +383,7 @@ const GenericDemoSite = ({ model }: { model: DemoModel }) => {
 
       {page === "listing" && !selectedProperty && (
         <section className="py-16">
-          <div className="container mx-auto px-6 max-w-6xl">
+          <div className={`container mx-auto px-6 ${useCustomCards ? 'max-w-7xl' : 'max-w-6xl'}`}>
             <h2 className="font-display font-bold text-3xl text-center mb-4" style={{ color: c.text }}>Nossos Imóveis</h2>
             <p className="text-center mb-8" style={{ color: c.text + "77" }}>Explore nosso portfólio exclusivo de imóveis de alto padrão</p>
             {(() => {
