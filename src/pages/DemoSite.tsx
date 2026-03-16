@@ -449,7 +449,10 @@ const GenericDemoSite = ({ model }: { model: DemoModel }) => {
       )}
 
       {selectedProperty && (
-        <PropertyDetail property={selectedProperty} colors={c} featureIcon={featureIcon} onBack={() => setSelectedProperty(null)} />
+        isModel4 ? <PropertyGalleryModel4 property={selectedProperty} colors={c} onBack={() => setSelectedProperty(null)} />
+        : isModel5 ? <PropertyGalleryModel5 property={selectedProperty} colors={c} onBack={() => setSelectedProperty(null)} />
+        : isModel6 ? <PropertyGalleryModel6 property={selectedProperty} colors={c} onBack={() => setSelectedProperty(null)} />
+        : <PropertyDetail property={selectedProperty} colors={c} featureIcon={featureIcon} onBack={() => setSelectedProperty(null)} />
       )}
 
       {page === "about" && !selectedProperty && <BrokerSection colors={c} model={model} />}
