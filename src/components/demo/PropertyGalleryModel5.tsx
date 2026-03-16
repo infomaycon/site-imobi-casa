@@ -60,9 +60,9 @@ const PropertyGalleryModel5 = ({
   }, [mainIndex, goTo, galleryImages.length]);
 
   const variants = {
-    enter: (d: number) => ({ x: d > 0 ? "100%" : "-100%", opacity: 0.6 }),
-    center: { x: 0, opacity: 1 },
-    exit: (d: number) => ({ x: d > 0 ? "-100%" : "100%", opacity: 0.6 }),
+    enter: { opacity: 0, scale: 0.98 },
+    center: { opacity: 1, scale: 1 },
+    exit: { opacity: 0, scale: 0.98 },
   };
 
   return (
@@ -80,7 +80,7 @@ const PropertyGalleryModel5 = ({
       {/* Immersive main image slider */}
       <div className="relative w-full mb-4 bg-black/5">
         <div className="container mx-auto px-6 max-w-5xl py-8">
-          <div className="relative w-full max-h-[70vh] flex items-center justify-center">
+          <div className="relative w-full max-h-[70vh] flex items-center justify-center overflow-hidden rounded-lg">
             {/* Navigation arrows */}
             {mainIndex > 0 && (
               <button
@@ -100,7 +100,7 @@ const PropertyGalleryModel5 = ({
             )}
 
             {/* Main image with crossfade */}
-            <AnimatePresence custom={direction} mode="popLayout">
+            <AnimatePresence mode="wait">
               <motion.div
                 key={mainIndex}
                 className="relative cursor-pointer w-full"
