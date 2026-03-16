@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { demoModels, properties, type Property, type DemoModel } from "@/data/models";
 import { ArrowLeft, Phone, Mail, MapPin, Bed, Bath, Car, Maximize, ChefHat, Waves, Mountain, Fence, Gem, Menu, X, MessageCircle, Award, TrendingUp, Users } from "lucide-react";
 import brokerPhoto from "@/assets/broker-photo.jpg";
@@ -8,6 +8,10 @@ import { getSearchFilter } from "@/components/demo/SearchFilters";
 import DemoSiteModel1 from "@/components/demo/DemoSiteModel1";
 import DemoSiteModel2 from "@/components/demo/DemoSiteModel2";
 import DemoSiteModel3 from "@/components/demo/DemoSiteModel3";
+import PropertyCardModel4 from "@/components/demo/PropertyCardModel4";
+import PropertyCardModel5 from "@/components/demo/PropertyCardModel5";
+import PropertyCardModel6 from "@/components/demo/PropertyCardModel6";
+import ImageLightbox from "@/components/demo/ImageLightbox";
 
 import property1 from "@/assets/property-1.jpg";
 import property2 from "@/assets/property-2.jpg";
@@ -18,7 +22,7 @@ import property6 from "@/assets/property-6.jpg";
 
 const propertyImages = [property1, property2, property3, property4, property5, property6];
 
-type DemoPage = "home" | "listing" | "property" | "about" | "contact";
+type DemoPage = "home" | "listing" | "property" | "about" | "contact" | "gallery";
 
 const DemoSite = () => {
   const { modelId } = useParams();
@@ -226,6 +230,12 @@ const GenericDemoSite = ({ model }: { model: DemoModel }) => {
   const [selectedProperty, setSelectedProperty] = useState<Property | null>(null);
   const [mobileMenu, setMobileMenu] = useState(false);
   const [contactForm, setContactForm] = useState<ContactFormState>({ name: "", email: "", phone: "", message: "" });
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+
+  const isModel4 = model.id === "villa-capital";
+  const isModel5 = model.id === "urban-signature";
+  const isModel6 = model.id === "infinity-city";
+  const useCustomCards = isModel4 || isModel5 || isModel6;
 
   const c = model.colors;
 
@@ -293,6 +303,7 @@ const GenericDemoSite = ({ model }: { model: DemoModel }) => {
           <div className="hidden md:flex items-center gap-6">
             <NavLink label="Início" target="home" />
             <NavLink label="Imóveis" target="listing" />
+            <NavLink label="Galeria" target="gallery" />
             <NavLink label="Sobre" target="home" sectionId="about-section" />
             <NavLink label="Contato" target="home" sectionId="contact-section" />
           </div>
@@ -304,6 +315,7 @@ const GenericDemoSite = ({ model }: { model: DemoModel }) => {
           <div className="md:hidden p-6 space-y-4 border-t" style={{ borderColor: c.text + "12" }}>
             <NavLink label="Início" target="home" />
             <NavLink label="Imóveis" target="listing" />
+            <NavLink label="Galeria" target="gallery" />
             <NavLink label="Sobre" target="home" sectionId="about-section" />
             <NavLink label="Contato" target="home" sectionId="contact-section" />
           </div>
@@ -339,7 +351,7 @@ const GenericDemoSite = ({ model }: { model: DemoModel }) => {
           })()}
 
           <section id="listing-section" className="py-16">
-            <div className="container mx-auto px-6 max-w-6xl">
+            <div className={`container mx-auto px-6 ${useCustomCards ? 'max-w-7xl' : 'max-w-6xl'}`}>
               <h2 className="font-display font-bold text-2xl md:text-3xl text-center mb-8" style={{ color: c.text }}>Encontre seu Imóvel Ideal</h2>
               <div className="flex justify-center gap-3 mb-12 flex-wrap">
                 {["todos", "casas", "apartamentos", "terrenos"].map((f) => (
@@ -353,10 +365,13 @@ const GenericDemoSite = ({ model }: { model: DemoModel }) => {
                   </button>
                 ))}
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {filtered.map((p) => (
-                  <PropertyCard key={p.id} property={p} colors={c} onSelect={() => setSelectedProperty(p)} />
-                ))}
+              <div className={`grid grid-cols-1 md:grid-cols-2 ${useCustomCards ? 'lg:grid-cols-4' : 'lg:grid-cols-3'} gap-6`}>
+                {filtered.map((p) =>
+                  isModel4 ? <PropertyCardModel4 key={p.id} property={p} colors={c} onSelect={() => setSelectedProperty(p)} />
+                  : isModel5 ? <PropertyCardModel5 key={p.id} property={p} colors={c} onSelect={() => setSelectedProperty(p)} />
+                  : isModel6 ? <PropertyCardModel6 key={p.id} property={p} colors={c} onSelect={() => setSelectedProperty(p)} />
+                  : <PropertyCard key={p.id} property={p} colors={c} onSelect={() => setSelectedProperty(p)} />
+                )}
               </div>
             </div>
           </section>
@@ -368,7 +383,7 @@ const GenericDemoSite = ({ model }: { model: DemoModel }) => {
 
       {page === "listing" && !selectedProperty && (
         <section className="py-16">
-          <div className="container mx-auto px-6 max-w-6xl">
+          <div className={`container mx-auto px-6 ${useCustomCards ? 'max-w-7xl' : 'max-w-6xl'}`}>
             <h2 className="font-display font-bold text-3xl text-center mb-4" style={{ color: c.text }}>Nossos Imóveis</h2>
             <p className="text-center mb-8" style={{ color: c.text + "77" }}>Explore nosso portfólio exclusivo de imóveis de alto padrão</p>
             {(() => {
@@ -387,9 +402,40 @@ const GenericDemoSite = ({ model }: { model: DemoModel }) => {
                 </button>
               ))}
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filtered.map((p) => (
-                <PropertyCard key={p.id} property={p} colors={c} onSelect={() => setSelectedProperty(p)} />
+            <div className={`grid grid-cols-1 md:grid-cols-2 ${useCustomCards ? 'lg:grid-cols-4' : 'lg:grid-cols-3'} gap-6`}>
+              {filtered.map((p) =>
+                isModel4 ? <PropertyCardModel4 key={p.id} property={p} colors={c} onSelect={() => setSelectedProperty(p)} />
+                : isModel5 ? <PropertyCardModel5 key={p.id} property={p} colors={c} onSelect={() => setSelectedProperty(p)} />
+                : isModel6 ? <PropertyCardModel6 key={p.id} property={p} colors={c} onSelect={() => setSelectedProperty(p)} />
+                : <PropertyCard key={p.id} property={p} colors={c} onSelect={() => setSelectedProperty(p)} />
+              )}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {page === "gallery" && !selectedProperty && (
+        <section className="py-16">
+          <div className="container mx-auto px-6 max-w-6xl">
+            <h2 className="font-display font-bold text-3xl text-center mb-4" style={{ color: c.text }}>Galeria de Imóveis</h2>
+            <p className="text-center mb-10" style={{ color: c.text + "77" }}>Explore as imagens do nosso portfólio</p>
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
+              {propertyImages.map((img, i) => (
+                <motion.div
+                  key={i}
+                  className="relative overflow-hidden rounded-xl cursor-pointer group aspect-[4/3]"
+                  style={{ boxShadow: `0 2px 8px ${c.text}08` }}
+                  whileHover={{ y: -3, boxShadow: `0 8px 24px ${c.text}15` }}
+                  whileTap={{ scale: 0.98 }}
+                  onClick={() => setLightboxIndex(i)}
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.3, delay: i * 0.05 }}
+                >
+                  <img src={img} alt={`Imóvel ${i + 1}`} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300" />
+                </motion.div>
               ))}
             </div>
           </div>
@@ -402,6 +448,17 @@ const GenericDemoSite = ({ model }: { model: DemoModel }) => {
 
       {page === "about" && !selectedProperty && <BrokerSection colors={c} model={model} />}
       {page === "contact" && !selectedProperty && <ContactSection colors={c} model={model} form={contactForm} onFieldChange={updateContactField} />}
+
+      <AnimatePresence>
+        {lightboxIndex !== null && (
+          <ImageLightbox
+            images={propertyImages}
+            initialIndex={lightboxIndex}
+            onClose={() => setLightboxIndex(null)}
+          />
+        )}
+      </AnimatePresence>
+
 
       <footer className="py-12 border-t" style={{ borderColor: c.text + "10", backgroundColor: c.text + "05" }}>
         <div className="container mx-auto px-6 max-w-6xl">
@@ -418,6 +475,7 @@ const GenericDemoSite = ({ model }: { model: DemoModel }) => {
                 {[
                   { label: "Início", target: "home" as DemoPage },
                   { label: "Imóveis", target: "listing" as DemoPage },
+                  { label: "Galeria", target: "gallery" as DemoPage },
                   { label: "Sobre", target: "home" as DemoPage, sectionId: "about-section" },
                   { label: "Contato", target: "home" as DemoPage, sectionId: "contact-section" },
                 ].map((item) => (
