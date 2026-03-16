@@ -36,7 +36,7 @@ const PropertyGalleryModel5 = ({
   onBack: () => void;
 }) => {
   const [mainIndex, setMainIndex] = useState(0);
-  const [direction, setDirection] = useState(0);
+  
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
   const galleryImages = Array.from({ length: 6 }, (_, i) =>
