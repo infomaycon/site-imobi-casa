@@ -333,7 +333,7 @@ const Model2Card = ({ property, colors, onSelect }: { property: Property; colors
 /* ── Overlay Gallery: Full-screen image gallery with swipe ── */
 const Model2Overlay = ({ property, colors, onClose }: { property: Property; colors: DemoModel["colors"]; onClose: () => void }) => {
   const [currentImage, setCurrentImage] = useState(0);
-  const allImages = [0, 1, 2, 3, 4, 5].map((i) => propertyImages[(property.image + i - 1) % 6]);
+  const allImages = Array.from({ length: 15 }, (_, i) => propertyImages[(property.image + i - 1) % 6]);
 
   const paginate = useCallback((dir: number) => {
     setCurrentImage((prev) => (prev + dir + allImages.length) % allImages.length);
