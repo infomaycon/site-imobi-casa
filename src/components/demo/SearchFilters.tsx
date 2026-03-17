@@ -201,23 +201,27 @@ export const FilterAdvancedDropdowns = ({ colors, onFilterChange }: FilterProps)
 };
 
 // ── Modelo 5: Urban Signature – Ícones Visuais ──
-export const FilterVisualIcons = ({ colors }: FilterProps) => {
+export const FilterVisualIcons = ({ colors, onFilterChange }: FilterProps) => {
   const [selected, setSelected] = useState<string | null>(null);
   const c = colors;
   const inputStyle = { backgroundColor: c.text + "06", borderColor: c.text + "18", color: c.text };
   const types = [
-    { id: "casa", label: "Casa", icon: Home },
-    { id: "apartamento", label: "Apartamento", icon: Building2 },
-    { id: "terreno", label: "Terreno", icon: Trees },
-    { id: "cobertura", label: "Cobertura", icon: Mountain },
+    { id: "casa", label: "Casa", icon: Home, filter: "casas" },
+    { id: "apartamento", label: "Apartamento", icon: Building2, filter: "apartamentos" },
+    { id: "terreno", label: "Terreno", icon: Trees, filter: "terrenos" },
+    { id: "cobertura", label: "Cobertura", icon: Mountain, filter: "todos" },
   ];
+  const handleSearch = () => {
+    const type = types.find((t) => t.id === selected);
+    onFilterChange?.(type?.filter || "todos");
+  };
   return (
     <div className="py-8">
       <div className="container mx-auto px-6 max-w-5xl text-center">
         <h3 className="font-display font-bold text-lg mb-5" style={{ color: c.text }}>O que você procura?</h3>
         <div className="flex justify-center gap-4 mb-6 flex-wrap">
           {types.map((t) => (
-            <button key={t.id} onClick={() => setSelected(t.id === selected ? null : t.id)}
+            <button key={t.id} onClick={() => { setSelected(t.id === selected ? null : t.id); if (t.id !== selected) onFilterChange?.(t.filter); else onFilterChange?.("todos"); }}
               className="flex flex-col items-center gap-2 px-6 py-4 rounded-xl border-2 transition-all min-w-[100px]"
               style={{ borderColor: selected === t.id ? c.primary : c.text + "15", backgroundColor: selected === t.id ? c.primary + "10" : "transparent" }}>
               <t.icon className="w-7 h-7" style={{ color: selected === t.id ? c.primary : c.text + "55" }} />
@@ -231,7 +235,7 @@ export const FilterVisualIcons = ({ colors }: FilterProps) => {
             <select className="px-3 py-2.5 rounded-lg border text-sm font-body" style={inputStyle}>
               <option>Faixa de Preço</option><option>Até R$ 1M</option><option>R$ 1M - 3M</option><option>R$ 3M+</option>
             </select>
-            <button className="py-2.5 rounded-lg font-display font-bold text-sm transition-all hover:brightness-110 flex items-center justify-center gap-2" style={{ backgroundColor: c.primary, color: "#fff" }}>
+            <button onClick={handleSearch} className="py-2.5 rounded-lg font-display font-bold text-sm transition-all hover:brightness-110 flex items-center justify-center gap-2" style={{ backgroundColor: c.primary, color: "#fff" }}>
               <Search className="w-4 h-4" /> Buscar
             </button>
           </div>
