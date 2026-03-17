@@ -49,10 +49,10 @@ const DemoSiteModel1 = ({ model }: { model: DemoModel }) => {
     return true;
   });
 
-  const NavLink = ({ label, target }: { label: string; target: DemoPage }) => (
+  const NavLink = ({ label, target, mobile }: { label: string; target: DemoPage; mobile?: boolean }) => (
     <button
       onClick={() => { setPage(target); setMobileMenu(false); setSelectedProperty(null); }}
-      className="text-sm font-medium tracking-wide uppercase transition-all border-b-2 pb-1"
+      className={`text-sm font-medium tracking-wide uppercase transition-all ${mobile ? 'block w-full text-center py-2.5 border-b' : 'border-b-2 pb-1'}`}
       style={{
         color: page === target ? c.primary : c.text + "77",
         borderColor: page === target ? c.primary : "transparent",
