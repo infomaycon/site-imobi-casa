@@ -8,9 +8,14 @@ interface FilterProps {
 }
 
 // ── Modelo 1: Aurora Prime – Filtro Horizontal Clássico ──
-export const FilterHorizontalClassic = ({ colors }: FilterProps) => {
+export const FilterHorizontalClassic = ({ colors, onFilterChange }: FilterProps) => {
   const c = colors;
+  const [selectedType, setSelectedType] = useState("Todos");
   const inputStyle = { backgroundColor: c.text + "06", borderColor: c.text + "18", color: c.text };
+  const handleSearch = () => {
+    const map: Record<string, string> = { "Todos": "todos", "Casa": "casas", "Apartamento": "apartamentos", "Terreno": "terrenos" };
+    onFilterChange?.(map[selectedType] || "todos");
+  };
   return (
     <div className="py-6">
       <div className="container mx-auto px-6 max-w-6xl">
@@ -18,7 +23,7 @@ export const FilterHorizontalClassic = ({ colors }: FilterProps) => {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
             <div>
               <label className="text-xs font-display font-semibold mb-1.5 block" style={{ color: c.text + "77" }}>Tipo de Imóvel</label>
-              <select className="w-full px-3 py-2.5 rounded-lg border text-sm font-body" style={inputStyle}>
+              <select className="w-full px-3 py-2.5 rounded-lg border text-sm font-body" style={inputStyle} value={selectedType} onChange={(e) => setSelectedType(e.target.value)}>
                 <option>Todos</option><option>Casa</option><option>Apartamento</option><option>Terreno</option>
               </select>
             </div>
@@ -39,7 +44,7 @@ export const FilterHorizontalClassic = ({ colors }: FilterProps) => {
               </select>
             </div>
             <div className="flex items-end">
-              <button className="w-full py-2.5 rounded-lg font-display font-bold text-sm transition-all hover:brightness-110 flex items-center justify-center gap-2" style={{ backgroundColor: c.primary, color: "#fff" }}>
+              <button onClick={handleSearch} className="w-full py-2.5 rounded-lg font-display font-bold text-sm transition-all hover:brightness-110 flex items-center justify-center gap-2" style={{ backgroundColor: c.primary, color: "#fff" }}>
                 <Search className="w-4 h-4" /> Buscar
               </button>
             </div>
