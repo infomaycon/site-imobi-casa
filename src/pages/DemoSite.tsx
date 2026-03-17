@@ -366,7 +366,7 @@ const GenericDemoSite = ({ model }: { model: DemoModel }) => {
 
           {(() => {
             const FilterComponent = getSearchFilter(model.id);
-            return FilterComponent ? <FilterComponent colors={c} /> : null;
+            return FilterComponent ? <FilterComponent colors={c} onFilterChange={setFilter} /> : null;
           })()}
 
           <section id="listing-section" className="py-16">
