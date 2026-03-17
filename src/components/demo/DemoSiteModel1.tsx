@@ -49,10 +49,10 @@ const DemoSiteModel1 = ({ model }: { model: DemoModel }) => {
     return true;
   });
 
-  const NavLink = ({ label, target }: { label: string; target: DemoPage }) => (
+  const NavLink = ({ label, target, mobile }: { label: string; target: DemoPage; mobile?: boolean }) => (
     <button
       onClick={() => { setPage(target); setMobileMenu(false); setSelectedProperty(null); }}
-      className="text-sm font-medium tracking-wide uppercase transition-all border-b-2 pb-1"
+      className={`text-sm font-medium tracking-wide uppercase transition-all ${mobile ? 'block w-full text-center py-2.5 border-b' : 'border-b-2 pb-1'}`}
       style={{
         color: page === target ? c.primary : c.text + "77",
         borderColor: page === target ? c.primary : "transparent",
@@ -90,11 +90,11 @@ const DemoSiteModel1 = ({ model }: { model: DemoModel }) => {
           </button>
         </div>
         {mobileMenu && (
-          <div className="md:hidden p-6 space-y-4 border-t flex flex-col items-center" style={{ borderColor: c.text + "12" }}>
-            <NavLink label="Início" target="home" />
-            <NavLink label="Imóveis" target="listing" />
-            <NavLink label="Sobre" target="about" />
-            <NavLink label="Contato" target="contact" />
+          <div className="md:hidden p-6 flex flex-col gap-1 border-t" style={{ borderColor: c.text + "12", backgroundColor: c.bg }}>
+            <NavLink label="Início" target="home" mobile />
+            <NavLink label="Imóveis" target="listing" mobile />
+            <NavLink label="Sobre" target="about" mobile />
+            <NavLink label="Contato" target="contact" mobile />
           </div>
         )}
       </nav>
@@ -128,7 +128,7 @@ const DemoSiteModel1 = ({ model }: { model: DemoModel }) => {
           {/* Search Filter */}
           {(() => {
             const FilterComponent = getSearchFilter(model.id);
-            return FilterComponent ? <FilterComponent colors={c} /> : null;
+            return FilterComponent ? <FilterComponent colors={c} onFilterChange={setFilter} /> : null;
           })()}
 
           {/* Properties grid */}
@@ -188,7 +188,7 @@ const DemoSiteModel1 = ({ model }: { model: DemoModel }) => {
             </div>
             {(() => {
               const FilterComponent = getSearchFilter(model.id);
-              return FilterComponent ? <div className="mb-8"><FilterComponent colors={c} /></div> : null;
+              return FilterComponent ? <div className="mb-8"><FilterComponent colors={c} onFilterChange={setFilter} /></div> : null;
             })()}
             <div className="flex justify-center gap-3 mb-12 flex-wrap">
               {["todos", "casas", "apartamentos", "terrenos"].map((f) => (

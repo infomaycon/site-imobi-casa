@@ -293,10 +293,10 @@ const GenericDemoSite = ({ model }: { model: DemoModel }) => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  const NavLink = ({ label, target, sectionId }: { label: string; target: DemoPage; sectionId?: string }) => (
+  const NavLink = ({ label, target, sectionId, mobile }: { label: string; target: DemoPage; sectionId?: string; mobile?: boolean }) => (
     <button
       onClick={() => navigateWithinDemo(target, sectionId)}
-      className="text-sm font-medium transition-colors hover:opacity-80"
+      className={`text-sm font-medium transition-colors hover:opacity-80 ${mobile ? 'block w-full text-left py-2' : ''}`}
       style={{ color: page === target && !sectionId ? c.primary : c.text + "88" }}
     >
       {label}
@@ -331,12 +331,12 @@ const GenericDemoSite = ({ model }: { model: DemoModel }) => {
           </button>
         </div>
         {mobileMenu && (
-          <div className="md:hidden p-6 space-y-4 border-t" style={{ borderColor: c.text + "12" }}>
-            <NavLink label="Início" target="home" />
-            <NavLink label="Imóveis" target="listing" />
-            <NavLink label="Galeria" target="gallery" />
-            <NavLink label="Sobre" target="home" sectionId="about-section" />
-            <NavLink label="Contato" target="home" sectionId="contact-section" />
+          <div className="md:hidden p-6 flex flex-col gap-1 border-t" style={{ borderColor: c.text + "12", backgroundColor: c.bg }}>
+            <NavLink label="Início" target="home" mobile />
+            <NavLink label="Imóveis" target="listing" mobile />
+            <NavLink label="Galeria" target="gallery" mobile />
+            <NavLink label="Sobre" target="home" sectionId="about-section" mobile />
+            <NavLink label="Contato" target="home" sectionId="contact-section" mobile />
           </div>
         )}
       </nav>
@@ -366,7 +366,7 @@ const GenericDemoSite = ({ model }: { model: DemoModel }) => {
 
           {(() => {
             const FilterComponent = getSearchFilter(model.id);
-            return FilterComponent ? <FilterComponent colors={c} /> : null;
+            return FilterComponent ? <FilterComponent colors={c} onFilterChange={setFilter} /> : null;
           })()}
 
           <section id="listing-section" className="py-16">
@@ -415,7 +415,7 @@ const GenericDemoSite = ({ model }: { model: DemoModel }) => {
             <p className="text-center mb-8" style={{ color: c.text + "77" }}>Explore nosso portfólio exclusivo de imóveis de alto padrão</p>
             {(() => {
               const FilterComponent = getSearchFilter(model.id);
-              return FilterComponent ? <div className="mb-8"><FilterComponent colors={c} /></div> : null;
+              return FilterComponent ? <div className="mb-8"><FilterComponent colors={c} onFilterChange={setFilter} /></div> : null;
             })()}
             <div className="flex justify-center gap-3 mb-12 flex-wrap">
               {["todos", "casas", "apartamentos", "terrenos"].map((f) => (
