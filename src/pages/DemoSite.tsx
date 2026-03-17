@@ -293,10 +293,10 @@ const GenericDemoSite = ({ model }: { model: DemoModel }) => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  const NavLink = ({ label, target, sectionId }: { label: string; target: DemoPage; sectionId?: string }) => (
+  const NavLink = ({ label, target, sectionId, mobile }: { label: string; target: DemoPage; sectionId?: string; mobile?: boolean }) => (
     <button
       onClick={() => navigateWithinDemo(target, sectionId)}
-      className="text-sm font-medium transition-colors hover:opacity-80"
+      className={`text-sm font-medium transition-colors hover:opacity-80 ${mobile ? 'block w-full text-left py-2' : ''}`}
       style={{ color: page === target && !sectionId ? c.primary : c.text + "88" }}
     >
       {label}
