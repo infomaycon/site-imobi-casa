@@ -17,6 +17,9 @@ import PropertyCardModel9 from "@/components/demo/PropertyCardModel9";
 import PropertyGalleryModel4 from "@/components/demo/PropertyGalleryModel4";
 import PropertyGalleryModel5 from "@/components/demo/PropertyGalleryModel5";
 import PropertyGalleryModel6 from "@/components/demo/PropertyGalleryModel6";
+import PropertyGalleryModel7 from "@/components/demo/PropertyGalleryModel7";
+import PropertyGalleryModel8 from "@/components/demo/PropertyGalleryModel8";
+import PropertyGalleryModel9 from "@/components/demo/PropertyGalleryModel9";
 import ImageLightbox from "@/components/demo/ImageLightbox";
 import ModelLogo from "@/components/demo/ModelLogo";
 import ModelFooter from "@/components/demo/ModelFooter";
@@ -481,6 +484,9 @@ const GenericDemoSite = ({ model }: { model: DemoModel }) => {
         isModel4 ? <PropertyGalleryModel4 property={selectedProperty} colors={c} onBack={() => setSelectedProperty(null)} />
         : isModel5 ? <PropertyGalleryModel5 property={selectedProperty} colors={c} onBack={() => setSelectedProperty(null)} />
         : isModel6 ? <PropertyGalleryModel6 property={selectedProperty} colors={c} onBack={() => setSelectedProperty(null)} />
+        : isModel7 ? <PropertyGalleryModel7 property={selectedProperty} colors={c} onBack={() => setSelectedProperty(null)} />
+        : isModel8 ? <PropertyGalleryModel8 property={selectedProperty} colors={c} onBack={() => setSelectedProperty(null)} />
+        : isModel9 ? <PropertyGalleryModel9 property={selectedProperty} colors={c} onBack={() => setSelectedProperty(null)} />
         : <PropertyDetail property={selectedProperty} colors={c} featureIcon={featureIcon} onBack={() => setSelectedProperty(null)} />
       )}
 
