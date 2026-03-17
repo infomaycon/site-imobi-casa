@@ -415,7 +415,7 @@ const GenericDemoSite = ({ model }: { model: DemoModel }) => {
             <p className="text-center mb-8" style={{ color: c.text + "77" }}>Explore nosso portfólio exclusivo de imóveis de alto padrão</p>
             {(() => {
               const FilterComponent = getSearchFilter(model.id);
-              return FilterComponent ? <div className="mb-8"><FilterComponent colors={c} /></div> : null;
+              return FilterComponent ? <div className="mb-8"><FilterComponent colors={c} onFilterChange={setFilter} /></div> : null;
             })()}
             <div className="flex justify-center gap-3 mb-12 flex-wrap">
               {["todos", "casas", "apartamentos", "terrenos"].map((f) => (

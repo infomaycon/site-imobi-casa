@@ -188,7 +188,7 @@ const DemoSiteModel1 = ({ model }: { model: DemoModel }) => {
             </div>
             {(() => {
               const FilterComponent = getSearchFilter(model.id);
-              return FilterComponent ? <div className="mb-8"><FilterComponent colors={c} /></div> : null;
+              return FilterComponent ? <div className="mb-8"><FilterComponent colors={c} onFilterChange={setFilter} /></div> : null;
             })()}
             <div className="flex justify-center gap-3 mb-12 flex-wrap">
               {["todos", "casas", "apartamentos", "terrenos"].map((f) => (

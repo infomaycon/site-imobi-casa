@@ -200,7 +200,7 @@ const DemoSiteModel3 = ({ model }: { model: DemoModel }) => {
             <p className="mb-8" style={{ color: c.text + "66" }}>Imóveis exclusivos selecionados para o mais exigente comprador</p>
             {(() => {
               const FilterComponent = getSearchFilter(model.id);
-              return FilterComponent ? <div className="mb-8"><FilterComponent colors={c} /></div> : null;
+              return FilterComponent ? <div className="mb-8"><FilterComponent colors={c} onFilterChange={setFilter} /></div> : null;
             })()}
             <div className="flex gap-3 mb-8 flex-wrap">
               {["todos", "casas", "apartamentos", "terrenos"].map((f) => (
