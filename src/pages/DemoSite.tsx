@@ -331,12 +331,12 @@ const GenericDemoSite = ({ model }: { model: DemoModel }) => {
           </button>
         </div>
         {mobileMenu && (
-          <div className="md:hidden p-6 space-y-4 border-t" style={{ borderColor: c.text + "12" }}>
-            <NavLink label="Início" target="home" />
-            <NavLink label="Imóveis" target="listing" />
-            <NavLink label="Galeria" target="gallery" />
-            <NavLink label="Sobre" target="home" sectionId="about-section" />
-            <NavLink label="Contato" target="home" sectionId="contact-section" />
+          <div className="md:hidden p-6 flex flex-col gap-1 border-t" style={{ borderColor: c.text + "12", backgroundColor: c.bg }}>
+            <NavLink label="Início" target="home" mobile />
+            <NavLink label="Imóveis" target="listing" mobile />
+            <NavLink label="Galeria" target="gallery" mobile />
+            <NavLink label="Sobre" target="home" sectionId="about-section" mobile />
+            <NavLink label="Contato" target="home" sectionId="contact-section" mobile />
           </div>
         )}
       </nav>

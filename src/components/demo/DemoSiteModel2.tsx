@@ -85,11 +85,17 @@ const DemoSiteModel2 = ({ model }: { model: DemoModel }) => {
           </button>
         </div>
         {mobileMenu && (
-          <div className="md:hidden px-6 pb-4 space-y-3">
-            <NavLink label="Início" target="home" />
-            <NavLink label="Imóveis" target="listing" />
-            <NavLink label="Sobre" target="about" />
-            <NavLink label="Contato" target="contact" />
+          <div className="md:hidden px-6 pb-4 flex flex-col gap-1" style={{ backgroundColor: c.bg }}>
+            {(["home", "listing", "about", "contact"] as DemoPage[]).map((p) => {
+              const labels: Record<DemoPage, string> = { home: "Início", listing: "Imóveis", about: "Sobre", contact: "Contato", property: "" };
+              return (
+                <button key={p} onClick={() => { setPage(p); setMobileMenu(false); setSelectedProperty(null); }}
+                  className="block w-full text-left py-2.5 text-sm font-medium transition-colors"
+                  style={{ color: page === p ? c.primary : c.text + "55" }}>
+                  {labels[p]}
+                </button>
+              );
+            })}
           </div>
         )}
       </nav>
