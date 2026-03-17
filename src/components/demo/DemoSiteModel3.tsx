@@ -147,7 +147,7 @@ const DemoSiteModel3 = ({ model }: { model: DemoModel }) => {
           {/* Search Filter */}
           {(() => {
             const FilterComponent = getSearchFilter(model.id);
-            return FilterComponent ? <FilterComponent colors={c} /> : null;
+            return FilterComponent ? <FilterComponent colors={c} onFilterChange={setFilter} /> : null;
           })()}
 
           {/* Properties */}
