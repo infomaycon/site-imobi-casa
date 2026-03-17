@@ -107,9 +107,14 @@ export const FilterWithTabs = ({ colors, onFilterChange }: FilterProps) => {
 };
 
 // ── Modelo 3: Metropolitan Elite – Busca Inteligente Central ──
-export const FilterSmartSearch = ({ colors }: FilterProps) => {
+export const FilterSmartSearch = ({ colors, onFilterChange }: FilterProps) => {
   const c = colors;
+  const [selectedType, setSelectedType] = useState("Tipo de Imóvel");
   const inputStyle = { backgroundColor: c.text + "06", borderColor: c.text + "18", color: c.text };
+  const handleSearch = () => {
+    const map: Record<string, string> = { "Tipo de Imóvel": "todos", "Casa": "casas", "Apartamento": "apartamentos", "Terreno": "terrenos" };
+    onFilterChange?.(map[selectedType] || "todos");
+  };
   return (
     <div className="py-8">
       <div className="container mx-auto px-6 max-w-4xl text-center">
@@ -118,8 +123,8 @@ export const FilterSmartSearch = ({ colors }: FilterProps) => {
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5" style={{ color: c.primary }} />
           <input type="text" placeholder="Busque por cidade, bairro ou condomínio..." className="w-full pl-12 pr-4 py-4 rounded-xl border text-base font-body" style={{ ...inputStyle, boxShadow: `0 4px 20px ${c.primary}12` }} />
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <select className="px-3 py-2.5 rounded-lg border text-sm font-body" style={inputStyle}>
+        <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
+          <select className="px-3 py-2.5 rounded-lg border text-sm font-body" style={inputStyle} value={selectedType} onChange={(e) => setSelectedType(e.target.value)}>
             <option>Tipo de Imóvel</option><option>Casa</option><option>Apartamento</option><option>Terreno</option>
           </select>
           <select className="px-3 py-2.5 rounded-lg border text-sm font-body" style={inputStyle}>
@@ -128,6 +133,9 @@ export const FilterSmartSearch = ({ colors }: FilterProps) => {
           <select className="px-3 py-2.5 rounded-lg border text-sm font-body" style={inputStyle}>
             <option>Quartos</option><option>1+</option><option>2+</option><option>3+</option><option>4+</option>
           </select>
+          <button onClick={handleSearch} className="py-2.5 rounded-lg font-display font-bold text-sm transition-all hover:brightness-110 flex items-center justify-center gap-2" style={{ backgroundColor: c.primary, color: "#fff" }}>
+            <Search className="w-4 h-4" /> Buscar
+          </button>
         </div>
       </div>
     </div>
