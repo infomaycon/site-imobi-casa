@@ -484,6 +484,9 @@ const GenericDemoSite = ({ model }: { model: DemoModel }) => {
         isModel4 ? <PropertyGalleryModel4 property={selectedProperty} colors={c} onBack={() => setSelectedProperty(null)} />
         : isModel5 ? <PropertyGalleryModel5 property={selectedProperty} colors={c} onBack={() => setSelectedProperty(null)} />
         : isModel6 ? <PropertyGalleryModel6 property={selectedProperty} colors={c} onBack={() => setSelectedProperty(null)} />
+        : isModel7 ? <PropertyGalleryModel7 property={selectedProperty} colors={c} onBack={() => setSelectedProperty(null)} />
+        : isModel8 ? <PropertyGalleryModel8 property={selectedProperty} colors={c} onBack={() => setSelectedProperty(null)} />
+        : isModel9 ? <PropertyGalleryModel9 property={selectedProperty} colors={c} onBack={() => setSelectedProperty(null)} />
         : <PropertyDetail property={selectedProperty} colors={c} featureIcon={featureIcon} onBack={() => setSelectedProperty(null)} />
       )}
 
