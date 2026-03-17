@@ -295,15 +295,19 @@ export const FilterChips = ({ colors, onFilterChange }: FilterProps) => {
 };
 
 // ── Modelo 7: Empire Urban – Busca com Mapa ──
-export const FilterWithMap = ({ colors }: FilterProps) => {
+export const FilterWithMap = ({ colors, onFilterChange }: FilterProps) => {
   const c = colors;
+  const [selectedType, setSelectedType] = useState("Tipo de Imóvel");
   const inputStyle = { backgroundColor: c.text + "06", borderColor: c.text + "18", color: c.text };
+  const handleSearch = () => {
+    const map: Record<string, string> = { "Tipo de Imóvel": "todos", "Casa": "casas", "Apartamento": "apartamentos", "Terreno": "terrenos" };
+    onFilterChange?.(map[selectedType] || "todos");
+  };
   return (
     <div className="py-6">
       <div className="container mx-auto px-6 max-w-6xl">
         <div className="rounded-2xl border overflow-hidden" style={{ backgroundColor: c.bg, borderColor: c.text + "12", boxShadow: `0 8px 32px ${c.primary}10` }}>
           <div className="grid grid-cols-1 lg:grid-cols-5">
-            {/* Filters sidebar */}
             <div className="lg:col-span-2 p-6 space-y-4 border-b lg:border-b-0 lg:border-r" style={{ borderColor: c.text + "12" }}>
               <h3 className="font-display font-bold text-sm flex items-center gap-2" style={{ color: c.primary }}>
                 <SlidersHorizontal className="w-4 h-4" /> Filtros
@@ -326,14 +330,13 @@ export const FilterWithMap = ({ colors }: FilterProps) => {
                   </select>
                 </div>
               </div>
-              <select className="w-full px-3 py-2.5 rounded-lg border text-sm font-body" style={inputStyle}>
+              <select className="w-full px-3 py-2.5 rounded-lg border text-sm font-body" style={inputStyle} value={selectedType} onChange={(e) => setSelectedType(e.target.value)}>
                 <option>Tipo de Imóvel</option><option>Casa</option><option>Apartamento</option><option>Terreno</option>
               </select>
-              <button className="w-full py-2.5 rounded-lg font-display font-bold text-sm transition-all hover:brightness-110 flex items-center justify-center gap-2" style={{ backgroundColor: c.primary, color: "#fff" }}>
+              <button onClick={handleSearch} className="w-full py-2.5 rounded-lg font-display font-bold text-sm transition-all hover:brightness-110 flex items-center justify-center gap-2" style={{ backgroundColor: c.primary, color: "#fff" }}>
                 <Search className="w-4 h-4" /> Buscar no Mapa
               </button>
             </div>
-            {/* Map placeholder */}
             <div className="lg:col-span-3 relative min-h-[280px]" style={{ backgroundColor: c.text + "08" }}>
               <div className="absolute inset-0 flex items-center justify-center">
                 <div className="text-center">
@@ -342,7 +345,6 @@ export const FilterWithMap = ({ colors }: FilterProps) => {
                   <p className="text-xs" style={{ color: c.text + "33" }}>Os imóveis serão exibidos aqui</p>
                 </div>
               </div>
-              {/* Simulated map pins */}
               {[{ top: "25%", left: "30%" }, { top: "45%", left: "55%" }, { top: "60%", left: "40%" }, { top: "35%", left: "70%" }].map((pos, i) => (
                 <div key={i} className="absolute w-6 h-6 rounded-full flex items-center justify-center shadow-md animate-pulse" style={{ top: pos.top, left: pos.left, backgroundColor: c.primary }}>
                   <Home className="w-3 h-3 text-white" />
