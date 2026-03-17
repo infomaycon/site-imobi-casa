@@ -246,12 +246,23 @@ export const FilterVisualIcons = ({ colors, onFilterChange }: FilterProps) => {
 };
 
 // ── Modelo 6: Infinity City – Tags/Chips Selecionáveis ──
-export const FilterChips = ({ colors }: FilterProps) => {
+export const FilterChips = ({ colors, onFilterChange }: FilterProps) => {
   const [selectedChips, setSelectedChips] = useState<string[]>([]);
   const c = colors;
   const inputStyle = { backgroundColor: c.text + "06", borderColor: c.text + "18", color: c.text };
   const chips = ["Casa", "Apartamento", "2 quartos", "3 quartos", "4+ quartos", "Piscina", "Condomínio Fechado", "Cobertura"];
-  const toggle = (chip: string) => setSelectedChips((prev) => prev.includes(chip) ? prev.filter((c) => c !== chip) : [...prev, chip]);
+  const toggle = (chip: string) => {
+    setSelectedChips((prev) => prev.includes(chip) ? prev.filter((c) => c !== chip) : [...prev, chip]);
+  };
+  const handleSearch = () => {
+    const typeChips = selectedChips.filter((c) => ["Casa", "Apartamento"].includes(c));
+    if (typeChips.length === 1) {
+      const map: Record<string, string> = { "Casa": "casas", "Apartamento": "apartamentos" };
+      onFilterChange?.(map[typeChips[0]] || "todos");
+    } else {
+      onFilterChange?.("todos");
+    }
+  };
   return (
     <div className="py-6">
       <div className="container mx-auto px-6 max-w-5xl">
@@ -273,7 +284,7 @@ export const FilterChips = ({ colors }: FilterProps) => {
             <select className="px-3 py-2.5 rounded-lg border text-sm font-body" style={inputStyle}>
               <option>Faixa de Preço</option><option>Até R$ 1M</option><option>R$ 1M - 3M</option><option>R$ 3M+</option>
             </select>
-            <button className="py-2.5 rounded-lg font-display font-bold text-sm transition-all hover:brightness-110 flex items-center justify-center gap-2" style={{ backgroundColor: c.primary, color: "#fff" }}>
+            <button onClick={handleSearch} className="py-2.5 rounded-lg font-display font-bold text-sm transition-all hover:brightness-110 flex items-center justify-center gap-2" style={{ backgroundColor: c.primary, color: "#fff" }}>
               <Search className="w-4 h-4" /> Buscar
             </button>
           </div>
