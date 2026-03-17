@@ -21,7 +21,7 @@ const PropertyCardModel9 = ({
   onSelect: () => void;
 }) => (
   <motion.div
-    className="group relative cursor-pointer pb-16"
+    className="group relative cursor-pointer h-[460px]"
     onClick={onSelect}
     initial={{ opacity: 0, y: 24 }}
     whileInView={{ opacity: 1, y: 0 }}
@@ -51,15 +51,13 @@ const PropertyCardModel9 = ({
       </div>
     </div>
 
-    <motion.div
+    <div
       className="absolute bottom-0 left-1/2 z-10 w-[86%] -translate-x-1/2 rounded-[26px] p-5"
       style={{
         backgroundColor: colors.bg,
         border: `1px solid ${colors.text}10`,
         boxShadow: `0 20px 50px ${colors.text}16`,
       }}
-      whileHover={{ y: -10, boxShadow: `0 30px 64px ${colors.text}24` }}
-      transition={{ duration: 0.28 }}
     >
       <div className="mb-3 flex items-start justify-between gap-4">
         <div>
@@ -103,7 +101,7 @@ const PropertyCardModel9 = ({
           {property.area}
         </span>
       )}
-    </motion.div>
+    </div>
   </motion.div>
 );
 
