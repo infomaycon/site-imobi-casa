@@ -4,6 +4,7 @@ import type { DemoModel } from "@/data/models";
 
 interface FilterProps {
   colors: DemoModel["colors"];
+  onFilterChange?: (type: string) => void;
 }
 
 // ── Modelo 1: Aurora Prime – Filtro Horizontal Clássico ──
