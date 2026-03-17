@@ -430,10 +430,15 @@ export const FilterExpandable = ({ colors, onFilterChange }: FilterProps) => {
 };
 
 // ── Modelo 9: Crown City – Premium Completo ──
-export const FilterPremiumComplete = ({ colors }: FilterProps) => {
+export const FilterPremiumComplete = ({ colors, onFilterChange }: FilterProps) => {
   const [showAdvanced, setShowAdvanced] = useState(false);
+  const [selectedType, setSelectedType] = useState("Todos");
   const c = colors;
   const inputStyle = { backgroundColor: c.text + "06", borderColor: c.text + "18", color: c.text };
+  const handleSearch = () => {
+    const map: Record<string, string> = { "Todos": "todos", "Casa": "casas", "Apartamento": "apartamentos", "Terreno": "terrenos" };
+    onFilterChange?.(map[selectedType] || "todos");
+  };
   return (
     <div className="py-6">
       <div className="container mx-auto px-6 max-w-6xl">
@@ -449,7 +454,7 @@ export const FilterPremiumComplete = ({ colors }: FilterProps) => {
             </div>
             <div>
               <label className="text-xs font-display font-semibold mb-1.5 block" style={{ color: c.text + "77" }}>Tipo de Imóvel</label>
-              <select className="w-full px-3 py-2.5 rounded-lg border text-sm font-body" style={inputStyle}>
+              <select className="w-full px-3 py-2.5 rounded-lg border text-sm font-body" style={inputStyle} value={selectedType} onChange={(e) => setSelectedType(e.target.value)}>
                 <option>Todos</option><option>Casa</option><option>Apartamento</option><option>Terreno</option><option>Cobertura</option>
               </select>
             </div>
@@ -466,7 +471,7 @@ export const FilterPremiumComplete = ({ colors }: FilterProps) => {
               </select>
             </div>
             <div className="flex items-end">
-              <button className="w-full py-2.5 rounded-lg font-display font-bold text-sm transition-all hover:brightness-110 flex items-center justify-center gap-2" style={{ backgroundColor: c.primary, color: "#fff" }}>
+              <button onClick={handleSearch} className="w-full py-2.5 rounded-lg font-display font-bold text-sm transition-all hover:brightness-110 flex items-center justify-center gap-2" style={{ backgroundColor: c.primary, color: "#fff" }}>
                 <Search className="w-4 h-4" /> Buscar
               </button>
             </div>
