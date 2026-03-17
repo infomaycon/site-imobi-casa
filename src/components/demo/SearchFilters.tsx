@@ -143,14 +143,25 @@ export const FilterSmartSearch = ({ colors, onFilterChange }: FilterProps) => {
 };
 
 // ── Modelo 4: Villa Capital – Dropdowns Avançados ──
-export const FilterAdvancedDropdowns = ({ colors }: FilterProps) => {
+export const FilterAdvancedDropdowns = ({ colors, onFilterChange }: FilterProps) => {
   const [open, setOpen] = useState<string | null>(null);
+  const [selectedType, setSelectedType] = useState<string | null>(null);
   const c = colors;
   const options: Record<string, string[]> = {
     cidade: ["São Paulo", "Rio de Janeiro", "Curitiba", "Brasília"],
     tipo: ["Casa", "Apartamento", "Terreno", "Cobertura"],
     preco: ["Até R$ 1M", "R$ 1M - 3M", "R$ 3M - 5M", "R$ 5M+"],
     quartos: ["1 quarto", "2 quartos", "3 quartos", "4+ quartos"],
+  };
+  const [selected, setSelected] = useState<Record<string, string>>({});
+  const handleSelect = (key: string, value: string) => {
+    setSelected((prev) => ({ ...prev, [key]: value }));
+    setOpen(null);
+    if (key === "tipo") setSelectedType(value);
+  };
+  const handleSearch = () => {
+    const map: Record<string, string> = { "Casa": "casas", "Apartamento": "apartamentos", "Terreno": "terrenos" };
+    onFilterChange?.(selectedType ? (map[selectedType] || "todos") : "todos");
   };
   return (
     <div className="py-6">
@@ -162,13 +173,13 @@ export const FilterAdvancedDropdowns = ({ colors }: FilterProps) => {
                 <label className="text-xs font-display font-semibold mb-1.5 block capitalize" style={{ color: c.text + "77" }}>{key}</label>
                 <button onClick={() => setOpen(open === key ? null : key)} className="w-full px-3 py-2.5 rounded-lg border text-sm font-body text-left flex items-center justify-between"
                   style={{ backgroundColor: c.text + "06", borderColor: open === key ? c.primary : c.text + "18", color: c.text }}>
-                  <span style={{ color: c.text + "77" }}>Selecione</span>
+                  <span style={{ color: selected[key] ? c.text : c.text + "77" }}>{selected[key] || "Selecione"}</span>
                   <ChevronDown className="w-4 h-4" style={{ color: c.text + "55", transform: open === key ? "rotate(180deg)" : "none", transition: "transform 0.2s" }} />
                 </button>
                 {open === key && (
                   <div className="absolute z-20 top-full mt-1 w-full rounded-lg border shadow-lg py-1" style={{ backgroundColor: c.bg, borderColor: c.text + "15" }}>
                     {opts.map((o) => (
-                      <button key={o} onClick={() => setOpen(null)} className="w-full text-left px-3 py-2 text-sm font-body hover:brightness-95 transition-all"
+                      <button key={o} onClick={() => handleSelect(key, o)} className="w-full text-left px-3 py-2 text-sm font-body hover:brightness-95 transition-all"
                         style={{ color: c.text + "aa" }} onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = c.primary + "10")} onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "transparent")}>
                         {o}
                       </button>
@@ -178,7 +189,7 @@ export const FilterAdvancedDropdowns = ({ colors }: FilterProps) => {
               </div>
             ))}
             <div className="flex items-end">
-              <button className="w-full py-2.5 rounded-lg font-display font-bold text-sm transition-all hover:brightness-110 flex items-center justify-center gap-2" style={{ backgroundColor: c.primary, color: "#fff" }}>
+              <button onClick={handleSearch} className="w-full py-2.5 rounded-lg font-display font-bold text-sm transition-all hover:brightness-110 flex items-center justify-center gap-2" style={{ backgroundColor: c.primary, color: "#fff" }}>
                 <Search className="w-4 h-4" /> Buscar
               </button>
             </div>
