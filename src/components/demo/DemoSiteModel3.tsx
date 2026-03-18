@@ -6,6 +6,7 @@ import ModelLogo from "./ModelLogo";
 import ModelFooter from "./ModelFooter";
 import { ArrowLeft, Phone, Mail, MapPin, Bed, Bath, Car, Maximize, ChefHat, Waves, Mountain, Fence, Gem, Menu, X, MessageCircle, ArrowRight, ChevronLeft, ChevronRight, Award, TrendingUp, Users } from "lucide-react";
 import { getSearchFilter } from "@/components/demo/SearchFilters";
+import RentalHighlightSection from "@/components/demo/RentalHighlightSection";
 
 import property1 from "@/assets/property-1.jpg";
 import property2 from "@/assets/property-2.jpg";
@@ -182,7 +183,10 @@ const DemoSiteModel3 = ({ model }: { model: DemoModel }) => {
                 </div>
               )}
             </div>
-          </section>
+           </section>
+
+          {/* Rental Highlight */}
+          <RentalHighlightSection colors={c} onSelect={(p) => setSelectedProperty(p)} />
 
           {/* Sobre o Corretor */}
           <BrokerSection3 colors={c} />

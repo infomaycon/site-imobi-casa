@@ -5,7 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Save, CheckCircle2, Facebook, Instagram } from "lucide-react";
+import { Switch } from "@/components/ui/switch";
+import { Save, CheckCircle2, Facebook, Instagram, Key } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const SiteContentPage = () => {
@@ -17,6 +18,7 @@ const SiteContentPage = () => {
     about_title: "Sobre", about_description: "",
     footer_text: "", footer_rights: "", footer_extra_info: "",
     facebook_url: "", instagram_url: "",
+    show_rental_highlight: true,
   });
 
   useEffect(() => {
@@ -36,6 +38,7 @@ const SiteContentPage = () => {
           footer_extra_info: (data as any).footer_extra_info || "",
           facebook_url: (data as any).facebook_url || "",
           instagram_url: (data as any).instagram_url || "",
+          show_rental_highlight: (data as any).show_rental_highlight ?? true,
         });
       }
     });
@@ -55,7 +58,7 @@ const SiteContentPage = () => {
     setTimeout(() => setSaved(false), 3000);
   };
 
-  const Field = ({ label, field, textarea, icon }: { label: string; field: keyof typeof form; textarea?: boolean; icon?: React.ReactNode }) => (
+  const Field = ({ label, field, textarea, icon }: { label: string; field: Exclude<keyof typeof form, 'show_rental_highlight'>; textarea?: boolean; icon?: React.ReactNode }) => (
     <div className="space-y-2">
       <Label className="font-body text-foreground flex items-center gap-2">{icon}{label}</Label>
       {textarea ? (
@@ -89,6 +92,25 @@ const SiteContentPage = () => {
           <h2 className="font-display font-semibold text-foreground text-lg">Seção Sobre</h2>
           <Field label="Título" field="about_title" />
           <Field label="Descrição" field="about_description" textarea />
+        </div>
+
+        {/* Rental Highlight Toggle */}
+        <div className="bg-card rounded-xl p-6 shadow-soft space-y-4">
+          <h2 className="font-display font-semibold text-foreground text-lg flex items-center gap-2">
+            <Key className="w-5 h-5 text-primary" /> Destaque de Aluguel
+          </h2>
+          <p className="text-sm text-muted-foreground font-body">
+            Quando ativado, o site exibirá uma seção especial com imóveis para aluguel em destaque, com visual diferenciado dos demais imóveis.
+          </p>
+          <div className="flex items-center gap-3">
+            <Switch
+              checked={form.show_rental_highlight}
+              onCheckedChange={(v) => setForm((p) => ({ ...p, show_rental_highlight: v }))}
+            />
+            <Label className="font-body text-foreground cursor-pointer">
+              {form.show_rental_highlight ? "Seção de aluguel ativada" : "Seção de aluguel desativada"}
+            </Label>
+          </div>
         </div>
 
         <div className="bg-card rounded-xl p-6 shadow-soft space-y-4">

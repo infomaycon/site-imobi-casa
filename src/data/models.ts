@@ -76,6 +76,7 @@ export interface Property {
   id: string;
   title: string;
   type: "casa" | "apartamento" | "terreno";
+  status?: "venda" | "aluguel";
   price: string;
   location: string;
   area: string;
@@ -120,7 +121,7 @@ export const properties: Property[] = [
     description: "Mansão espetacular com piscina de borda infinita, home theater, adega climatizada e jardim paisagístico.",
   },
   {
-    id: "6", title: "Loft Design Premium", type: "apartamento", price: "R$ 980.000",
+    id: "6", title: "Loft Design Premium", type: "apartamento", status: "aluguel", price: "R$ 6.500/mês",
     location: "Pinheiros, São Paulo - SP", area: "95m²", bedrooms: 1, suites: 1, bathrooms: 2, parking: 1,
     image: 6, features: ["Acabamento Premium", "Varanda"],
     description: "Loft com pé-direito duplo, cozinha gourmet integrada e acabamentos assinados por designers renomados.",
@@ -138,7 +139,7 @@ export const properties: Property[] = [
     description: "Casa de campo em condomínio fechado com amplo jardim, churrasqueira gourmet e quadra de tênis.",
   },
   {
-    id: "9", title: "Studio Moderno Faria Lima", type: "apartamento", price: "R$ 650.000",
+    id: "9", title: "Studio Moderno Faria Lima", type: "apartamento", status: "aluguel", price: "R$ 4.200/mês",
     location: "Faria Lima, São Paulo - SP", area: "45m²", bedrooms: 1, suites: 1, bathrooms: 1, parking: 1,
     image: 3, features: ["Acabamento Premium"],
     description: "Studio compacto e funcional na região mais valorizada da cidade, ideal para investimento ou moradia.",
@@ -150,7 +151,7 @@ export const properties: Property[] = [
     description: "Terreno em condomínio de alto padrão com segurança 24h, área verde preservada e infraestrutura completa.",
   },
   {
-    id: "11", title: "Apartamento Garden Premium", type: "apartamento", price: "R$ 2.100.000",
+    id: "11", title: "Apartamento Garden Premium", type: "apartamento", status: "aluguel", price: "R$ 12.000/mês",
     location: "Moema, São Paulo - SP", area: "210m²", bedrooms: 3, suites: 2, bathrooms: 4, parking: 3,
     image: 5, features: ["Área Gourmet", "Varanda", "Acabamento Premium"],
     description: "Garden com quintal privativo de 80m², perfeito para famílias que buscam espaço e sofisticação na cidade.",

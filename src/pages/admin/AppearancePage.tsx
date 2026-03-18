@@ -1,32 +1,50 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
+import { demoModels } from "@/data/models";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Layout, Palette, Save, CheckCircle2, ExternalLink } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
-import previewModel1 from "@/assets/preview-aurora-prime.jpg";
-import previewModel2 from "@/assets/preview-skyline-urban.jpg";
-import previewModel3 from "@/assets/preview-metropolitan-elite.jpg";
-import previewModel4 from "@/assets/preview-villa-capital.jpg";
-import previewModel5 from "@/assets/preview-urban-signature.jpg";
-import previewModel6 from "@/assets/preview-infinity-city.jpg";
-import previewModel7 from "@/assets/preview-empire-urban.jpg";
-import previewModel8 from "@/assets/preview-prime-district.jpg";
-import previewModel9 from "@/assets/preview-crown-city.jpg";
+import previewAuroraPrime from "@/assets/preview-aurora-prime.png";
+import previewSkylineUrban from "@/assets/preview-skyline-urban.png";
+import previewMetropolitanElite from "@/assets/preview-metropolitan-elite.png";
+import previewVillaCapital from "@/assets/preview-villa-capital.png";
+import previewUrbanSignature from "@/assets/preview-urban-signature.png";
+import previewInfinityCity from "@/assets/preview-infinity-city.png";
+import previewEmpireUrban from "@/assets/preview-empire-urban.png";
+import previewPrimeDistrict from "@/assets/preview-prime-district.png";
+import previewCrownCity from "@/assets/preview-crown-city.png";
 
-const themes = [
-  { id: "model1", name: "Modelo 1", desc: "Clean e moderno", preview: previewModel1 },
-  { id: "model2", name: "Modelo 2", desc: "Elegante e minimalista", preview: previewModel2 },
-  { id: "model3", name: "Modelo 3", desc: "Profissional premium", preview: previewModel3 },
-  { id: "model4", name: "Modelo 4", desc: "Fullscreen imersivo", preview: previewModel4 },
-  { id: "model5", name: "Modelo 5", desc: "Cinematográfico", preview: previewModel5 },
-  { id: "model6", name: "Modelo 6", desc: "Grid moderno", preview: previewModel6 },
-  { id: "model7", name: "Modelo 7", desc: "Clean expandido", preview: previewModel7 },
-  { id: "model8", name: "Modelo 8", desc: "Glass luxo", preview: previewModel8 },
-  { id: "model9", name: "Modelo 9", desc: "Flutuante moderno", preview: previewModel9 },
-];
+const previewMap: Record<string, string> = {
+  "aurora-prime": previewAuroraPrime,
+  "skyline-urban": previewSkylineUrban,
+  "metropolitan-elite": previewMetropolitanElite,
+  "villa-capital": previewVillaCapital,
+  "urban-signature": previewUrbanSignature,
+  "infinity-city": previewInfinityCity,
+  "empire-urban": previewEmpireUrban,
+  "prime-district": previewPrimeDistrict,
+  "crown-city": previewCrownCity,
+};
+
+// Map model IDs to the theme IDs used in site_settings
+const modelIdToThemeId: Record<string, string> = {
+  "aurora-prime": "model1",
+  "skyline-urban": "model2",
+  "metropolitan-elite": "model3",
+  "villa-capital": "model4",
+  "urban-signature": "model5",
+  "infinity-city": "model6",
+  "empire-urban": "model7",
+  "prime-district": "model8",
+  "crown-city": "model9",
+};
+
+const themeIdToModelId: Record<string, string> = Object.fromEntries(
+  Object.entries(modelIdToThemeId).map(([k, v]) => [v, k])
+);
 
 const accentColors = [
   { hex: "#1E3A8A", name: "Azul Marinho" },
@@ -83,6 +101,8 @@ const AppearancePage = () => {
     setTimeout(() => setSaved(false), 3000);
   };
 
+  const selectedModelId = themeIdToModelId[selectedTheme] || "aurora-prime";
+
   return (
     <div className="max-w-5xl mx-auto">
       <div className="mb-6">
@@ -96,32 +116,76 @@ const AppearancePage = () => {
           <TabsTrigger value="colors" className="h-10 px-4 font-body"><Palette className="w-4 h-4 mr-2" />Cores</TabsTrigger>
         </TabsList>
 
-        {/* Themes */}
+        {/* Themes - matching landing page ModelsSection */}
         <TabsContent value="theme">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {themes.map((theme) => (
-              <button
-                key={theme.id}
-                onClick={() => setSelectedTheme(theme.id)}
-                className={`bg-card rounded-xl overflow-hidden shadow-soft text-left transition-all hover:shadow-md ${selectedTheme === theme.id ? "ring-2 ring-primary" : ""}`}
-              >
-                <div className="w-full aspect-video overflow-hidden">
-                  <img src={theme.preview} alt={theme.name} className="w-full h-full object-cover object-top" />
-                </div>
-                <div className="p-4">
-                  <h3 className="font-display font-semibold text-foreground">{theme.name}</h3>
-                  <p className="text-muted-foreground text-sm font-body">{theme.desc}</p>
-                  <div className="flex items-center justify-between mt-2">
-                    {selectedTheme === theme.id && (
-                      <span className="text-xs bg-primary/10 text-primary px-2 py-1 rounded-full font-body">Ativo</span>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {demoModels.map((model, i) => {
+              const themeId = modelIdToThemeId[model.id];
+              const isSelected = selectedTheme === themeId;
+
+              return (
+                <motion.div
+                  key={model.id}
+                  className={`group relative rounded-2xl overflow-hidden border transition-all duration-500 bg-card shadow-soft hover:shadow-lg cursor-pointer ${isSelected ? "ring-2 ring-primary border-primary/30" : "border-border hover:border-primary/30"}`}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: i * 0.08 }}
+                  onClick={() => setSelectedTheme(themeId)}
+                >
+                  {/* Preview Image */}
+                  <div className="relative overflow-hidden aspect-video">
+                    <img
+                      src={previewMap[model.id]}
+                      alt={`Preview do modelo ${model.name}`}
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-black/30" />
+                    {/* Large number */}
+                    <span
+                      className="absolute top-3 left-4 font-display font-black text-6xl leading-none select-none pointer-events-none text-white drop-shadow-lg"
+                      style={{ opacity: 0.9 }}
+                    >
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                    {/* Selected badge */}
+                    {isSelected && (
+                      <div className="absolute top-3 right-3">
+                        <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-display font-bold bg-primary text-primary-foreground shadow-lg">
+                          <CheckCircle2 className="w-3.5 h-3.5" /> Ativo
+                        </span>
+                      </div>
                     )}
-                    <a href={`/demo/${theme.id}`} target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()} className="text-xs text-primary hover:underline font-body flex items-center gap-1 ml-auto">
-                      <ExternalLink className="w-3 h-3" />Ver demo
+                  </div>
+
+                  {/* Color bar */}
+                  <div className="h-1 w-full" style={{ background: `linear-gradient(90deg, ${model.colors.primary}, ${model.colors.secondary})` }} />
+
+                  <div className="p-6">
+                    <h3 className="font-display font-bold text-lg mb-1.5 text-foreground">{model.name}</h3>
+                    <p className="text-sm mb-3 font-body italic text-muted-foreground">"{model.tagline}"</p>
+
+                    {/* Color palette */}
+                    <div className="flex items-center gap-2 mb-5">
+                      <div className="w-5 h-5 rounded-full border border-border shadow-sm" style={{ backgroundColor: model.colors.primary }} />
+                      <span className="text-xs font-body text-muted-foreground ml-1">{model.style}</span>
+                    </div>
+
+                    <a
+                      href={`/demo/${model.id}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={(e) => e.stopPropagation()}
+                      className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-display font-semibold transition-all hover:brightness-110 w-full justify-center text-white"
+                      style={{ backgroundColor: "#00bf63" }}
+                    >
+                      Ver Demonstração
+                      <ExternalLink className="w-4 h-4" />
                     </a>
                   </div>
-                </div>
-              </button>
-            ))}
+                </motion.div>
+              );
+            })}
           </div>
 
           <div className="flex items-center gap-4 mt-6">

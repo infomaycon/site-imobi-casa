@@ -5,6 +5,7 @@ import { demoModels, properties, type Property, type DemoModel } from "@/data/mo
 import { ArrowLeft, Phone, Mail, MapPin, Bed, Bath, Car, Maximize, ChefHat, Waves, Mountain, Fence, Gem, Menu, X, MessageCircle, Award, TrendingUp, Users } from "lucide-react";
 import brokerPhoto from "@/assets/broker-photo.jpg";
 import { getSearchFilter } from "@/components/demo/SearchFilters";
+import RentalHighlightSection from "@/components/demo/RentalHighlightSection";
 import DemoSiteModel1 from "@/components/demo/DemoSiteModel1";
 import DemoSiteModel2 from "@/components/demo/DemoSiteModel2";
 import DemoSiteModel3 from "@/components/demo/DemoSiteModel3";
@@ -405,6 +406,9 @@ const GenericDemoSite = ({ model }: { model: DemoModel }) => {
               )}
             </div>
           </section>
+
+          {/* Rental Highlight */}
+          <RentalHighlightSection colors={c} onSelect={(p) => setSelectedProperty(p)} />
 
           <BrokerSection colors={c} model={model} />
           <ContactSection colors={c} model={model} form={contactForm} onFieldChange={updateContactField} />

@@ -1,0 +1,1 @@
+ALTER TABLE public.site_settings ADD COLUMN IF NOT EXISTS show_rental_highlight boolean NOT NULL DEFAULT true;
