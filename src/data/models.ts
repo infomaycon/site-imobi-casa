@@ -121,7 +121,7 @@ export const properties: Property[] = [
     description: "Mansão espetacular com piscina de borda infinita, home theater, adega climatizada e jardim paisagístico.",
   },
   {
-    id: "6", title: "Loft Design Premium", type: "apartamento", price: "R$ 980.000",
+    id: "6", title: "Loft Design Premium", type: "apartamento", status: "aluguel", price: "R$ 6.500/mês",
     location: "Pinheiros, São Paulo - SP", area: "95m²", bedrooms: 1, suites: 1, bathrooms: 2, parking: 1,
     image: 6, features: ["Acabamento Premium", "Varanda"],
     description: "Loft com pé-direito duplo, cozinha gourmet integrada e acabamentos assinados por designers renomados.",
