@@ -1,4 +1,4 @@
-import { PlusCircle, List, Palette, FileText, MessageSquare, Settings, User, ExternalLink, LogOut } from "lucide-react";
+import { PlusCircle, List, Palette, FileText, MessageSquare, Settings, User, ExternalLink, LogOut, HelpCircle } from "lucide-react";
 import { NavLink } from "@/components/NavLink";
 import { useAuth } from "@/hooks/useAuth";
 import { useNavigate } from "react-router-dom";
@@ -23,6 +23,7 @@ const menuItems = [
   { title: "Leads", url: "/admin/leads", icon: MessageSquare },
   { title: "Configurações", url: "/admin/settings", icon: Settings },
   { title: "Conta", url: "/admin/account", icon: User },
+  { title: "Ajuda", url: "/admin/help", icon: HelpCircle },
 ];
 
 const AdminSidebar = () => {

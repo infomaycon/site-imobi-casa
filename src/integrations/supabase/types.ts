@@ -123,9 +123,12 @@ export type Database = {
           creci: string | null
           domain: string | null
           email: string | null
+          facebook_url: string | null
+          footer_extra_info: string | null
           footer_rights: string | null
           footer_text: string | null
           id: string
+          instagram_url: string | null
           phone: string | null
           selected_card_model: string | null
           selected_gallery_model: string | null
@@ -148,9 +151,12 @@ export type Database = {
           creci?: string | null
           domain?: string | null
           email?: string | null
+          facebook_url?: string | null
+          footer_extra_info?: string | null
           footer_rights?: string | null
           footer_text?: string | null
           id?: string
+          instagram_url?: string | null
           phone?: string | null
           selected_card_model?: string | null
           selected_gallery_model?: string | null
@@ -173,9 +179,12 @@ export type Database = {
           creci?: string | null
           domain?: string | null
           email?: string | null
+          facebook_url?: string | null
+          footer_extra_info?: string | null
           footer_rights?: string | null
           footer_text?: string | null
           id?: string
+          instagram_url?: string | null
           phone?: string | null
           selected_card_model?: string | null
           selected_gallery_model?: string | null
