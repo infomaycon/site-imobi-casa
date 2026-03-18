@@ -151,7 +151,7 @@ export const properties: Property[] = [
     description: "Terreno em condomínio de alto padrão com segurança 24h, área verde preservada e infraestrutura completa.",
   },
   {
-    id: "11", title: "Apartamento Garden Premium", type: "apartamento", price: "R$ 2.100.000",
+    id: "11", title: "Apartamento Garden Premium", type: "apartamento", status: "aluguel", price: "R$ 12.000/mês",
     location: "Moema, São Paulo - SP", area: "210m²", bedrooms: 3, suites: 2, bathrooms: 4, parking: 3,
     image: 5, features: ["Área Gourmet", "Varanda", "Acabamento Premium"],
     description: "Garden com quintal privativo de 80m², perfeito para famílias que buscam espaço e sofisticação na cidade.",
