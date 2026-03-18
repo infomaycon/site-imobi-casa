@@ -15,6 +15,7 @@ import SiteContentPage from "./pages/admin/SiteContentPage.tsx";
 import LeadsPage from "./pages/admin/LeadsPage.tsx";
 import SettingsPage from "./pages/admin/SettingsPage.tsx";
 import AccountPage from "./pages/admin/AccountPage.tsx";
+import HelpPage from "./pages/admin/HelpPage.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
 const queryClient = new QueryClient();
