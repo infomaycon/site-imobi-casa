@@ -6,6 +6,7 @@ import ModelLogo from "./ModelLogo";
 import ModelFooter from "./ModelFooter";
 import { ArrowLeft, Phone, Mail, MapPin, Bed, Bath, Car, Maximize, ChefHat, Waves, Mountain, Fence, Gem, Menu, X, MessageCircle, ChevronLeft, ChevronRight, Award, TrendingUp, Users } from "lucide-react";
 import { getSearchFilter } from "@/components/demo/SearchFilters";
+import RentalHighlightSection from "@/components/demo/RentalHighlightSection";
 
 import property1 from "@/assets/property-1.jpg";
 import property2 from "@/assets/property-2.jpg";
