@@ -38,6 +38,7 @@ const SiteContentPage = () => {
           footer_extra_info: (data as any).footer_extra_info || "",
           facebook_url: (data as any).facebook_url || "",
           instagram_url: (data as any).instagram_url || "",
+          show_rental_highlight: (data as any).show_rental_highlight ?? true,
         });
       }
     });
