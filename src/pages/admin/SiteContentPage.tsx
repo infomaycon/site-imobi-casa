@@ -5,7 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Save, CheckCircle2, Facebook, Instagram } from "lucide-react";
+import { Switch } from "@/components/ui/switch";
+import { Save, CheckCircle2, Facebook, Instagram, Key } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const SiteContentPage = () => {
