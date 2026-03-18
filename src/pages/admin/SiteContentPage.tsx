@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Save, CheckCircle2 } from "lucide-react";
+import { Save, CheckCircle2, Facebook, Instagram } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const SiteContentPage = () => {
@@ -15,8 +15,8 @@ const SiteContentPage = () => {
   const [form, setForm] = useState({
     broker_name: "", creci: "", phone: "", whatsapp: "", email: "",
     about_title: "Sobre", about_description: "",
-    contact_title: "Contato", contact_text: "", contact_address: "",
-    footer_text: "", footer_rights: "",
+    footer_text: "", footer_rights: "", footer_extra_info: "",
+    facebook_url: "", instagram_url: "",
   });
 
   useEffect(() => {
@@ -31,11 +31,11 @@ const SiteContentPage = () => {
           email: data.email || "",
           about_title: data.about_title || "Sobre",
           about_description: data.about_description || "",
-          contact_title: data.contact_title || "Contato",
-          contact_text: data.contact_text || "",
-          contact_address: data.contact_address || "",
           footer_text: data.footer_text || "",
           footer_rights: data.footer_rights || "",
+          footer_extra_info: (data as any).footer_extra_info || "",
+          facebook_url: (data as any).facebook_url || "",
+          instagram_url: (data as any).instagram_url || "",
         });
       }
     });
@@ -46,18 +46,18 @@ const SiteContentPage = () => {
     setSaving(true);
     const { data: existing } = await supabase.from("site_settings").select("id").single();
     if (existing) {
-      await supabase.from("site_settings").update(form).eq("id", existing.id);
+      await supabase.from("site_settings").update(form as any).eq("id", existing.id);
     } else {
-      await supabase.from("site_settings").insert({ ...form, user_id: user.id });
+      await supabase.from("site_settings").insert({ ...form, user_id: user.id } as any);
     }
     setSaved(true);
     setSaving(false);
     setTimeout(() => setSaved(false), 3000);
   };
 
-  const Field = ({ label, field, textarea }: { label: string; field: keyof typeof form; textarea?: boolean }) => (
+  const Field = ({ label, field, textarea, icon }: { label: string; field: keyof typeof form; textarea?: boolean; icon?: React.ReactNode }) => (
     <div className="space-y-2">
-      <Label className="font-body text-foreground">{label}</Label>
+      <Label className="font-body text-foreground flex items-center gap-2">{icon}{label}</Label>
       {textarea ? (
         <Textarea value={form[field]} onChange={(e) => setForm((p) => ({ ...p, [field]: e.target.value }))} rows={3} />
       ) : (
@@ -92,16 +92,17 @@ const SiteContentPage = () => {
         </div>
 
         <div className="bg-card rounded-xl p-6 shadow-soft space-y-4">
-          <h2 className="font-display font-semibold text-foreground text-lg">Seção Contato</h2>
-          <Field label="Título" field="contact_title" />
-          <Field label="Texto" field="contact_text" textarea />
-          <Field label="Endereço" field="contact_address" />
-        </div>
-
-        <div className="bg-card rounded-xl p-6 shadow-soft space-y-4">
           <h2 className="font-display font-semibold text-foreground text-lg">Rodapé</h2>
           <Field label="Texto do rodapé" field="footer_text" />
           <Field label="Direitos" field="footer_rights" />
+          <Field label="Informações adicionais" field="footer_extra_info" textarea />
+          <div className="pt-2 border-t border-border">
+            <p className="text-sm text-muted-foreground font-body mb-3">Redes sociais (aparecerão no rodapé do site)</p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <Field label="Facebook" field="facebook_url" icon={<Facebook className="w-4 h-4 text-blue-600" />} />
+              <Field label="Instagram" field="instagram_url" icon={<Instagram className="w-4 h-4 text-pink-500" />} />
+            </div>
+          </div>
         </div>
 
         <div className="flex items-center gap-4">
