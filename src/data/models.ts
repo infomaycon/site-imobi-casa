@@ -76,6 +76,7 @@ export interface Property {
   id: string;
   title: string;
   type: "casa" | "apartamento" | "terreno";
+  status?: "venda" | "aluguel";
   price: string;
   location: string;
   area: string;
