@@ -23,6 +23,7 @@ const menuItems = [
   { title: "Leads", url: "/admin/leads", icon: MessageSquare },
   { title: "Configurações", url: "/admin/settings", icon: Settings },
   { title: "Conta", url: "/admin/account", icon: User },
+  { title: "Ajuda", url: "/admin/help", icon: HelpCircle },
 ];
 
 const AdminSidebar = () => {
