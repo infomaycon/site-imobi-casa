@@ -18,6 +18,7 @@ const SiteContentPage = () => {
     about_title: "Sobre", about_description: "",
     footer_text: "", footer_rights: "", footer_extra_info: "",
     facebook_url: "", instagram_url: "",
+    show_rental_highlight: true,
   });
 
   useEffect(() => {
