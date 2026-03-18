@@ -407,6 +407,9 @@ const GenericDemoSite = ({ model }: { model: DemoModel }) => {
             </div>
           </section>
 
+          {/* Rental Highlight */}
+          <RentalHighlightSection colors={c} onSelect={(p) => setSelectedProperty(p)} />
+
           <BrokerSection colors={c} model={model} />
           <ContactSection colors={c} model={model} form={contactForm} onFieldChange={updateContactField} />
         </>

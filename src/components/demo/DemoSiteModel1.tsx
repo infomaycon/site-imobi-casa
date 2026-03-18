@@ -168,7 +168,10 @@ const DemoSiteModel1 = ({ model }: { model: DemoModel }) => {
                 </div>
               )}
             </div>
-          </section>
+           </section>
+
+          {/* Rental Highlight */}
+          <RentalHighlightSection colors={c} onSelect={(p) => setSelectedProperty(p)} />
 
           {/* Sobre o Corretor */}
           <BrokerSection colors={c} modelName={model.name} />

@@ -183,7 +183,10 @@ const DemoSiteModel3 = ({ model }: { model: DemoModel }) => {
                 </div>
               )}
             </div>
-          </section>
+           </section>
+
+          {/* Rental Highlight */}
+          <RentalHighlightSection colors={c} onSelect={(p) => setSelectedProperty(p)} />
 
           {/* Sobre o Corretor */}
           <BrokerSection3 colors={c} />
