@@ -94,6 +94,25 @@ const SiteContentPage = () => {
           <Field label="Descrição" field="about_description" textarea />
         </div>
 
+        {/* Rental Highlight Toggle */}
+        <div className="bg-card rounded-xl p-6 shadow-soft space-y-4">
+          <h2 className="font-display font-semibold text-foreground text-lg flex items-center gap-2">
+            <Key className="w-5 h-5 text-primary" /> Destaque de Aluguel
+          </h2>
+          <p className="text-sm text-muted-foreground font-body">
+            Quando ativado, o site exibirá uma seção especial com imóveis para aluguel em destaque, com visual diferenciado dos demais imóveis.
+          </p>
+          <div className="flex items-center gap-3">
+            <Switch
+              checked={form.show_rental_highlight}
+              onCheckedChange={(v) => setForm((p) => ({ ...p, show_rental_highlight: v }))}
+            />
+            <Label className="font-body text-foreground cursor-pointer">
+              {form.show_rental_highlight ? "Seção de aluguel ativada" : "Seção de aluguel desativada"}
+            </Label>
+          </div>
+        </div>
+
         <div className="bg-card rounded-xl p-6 shadow-soft space-y-4">
           <h2 className="font-display font-semibold text-foreground text-lg">Rodapé</h2>
           <Field label="Texto do rodapé" field="footer_text" />
