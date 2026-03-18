@@ -1,4 +1,4 @@
-import { PlusCircle, List, Palette, FileText, MessageSquare, Settings, User, ExternalLink, LogOut } from "lucide-react";
+import { PlusCircle, List, Palette, FileText, MessageSquare, Settings, User, ExternalLink, LogOut, HelpCircle } from "lucide-react";
 import { NavLink } from "@/components/NavLink";
 import { useAuth } from "@/hooks/useAuth";
 import { useNavigate } from "react-router-dom";
