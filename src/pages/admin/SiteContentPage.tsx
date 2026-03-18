@@ -58,7 +58,7 @@ const SiteContentPage = () => {
     setTimeout(() => setSaved(false), 3000);
   };
 
-  const Field = ({ label, field, textarea, icon }: { label: string; field: keyof typeof form; textarea?: boolean; icon?: React.ReactNode }) => (
+  const Field = ({ label, field, textarea, icon }: { label: string; field: Exclude<keyof typeof form, 'show_rental_highlight'>; textarea?: boolean; icon?: React.ReactNode }) => (
     <div className="space-y-2">
       <Label className="font-body text-foreground flex items-center gap-2">{icon}{label}</Label>
       {textarea ? (
