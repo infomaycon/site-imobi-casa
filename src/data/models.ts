@@ -139,7 +139,7 @@ export const properties: Property[] = [
     description: "Casa de campo em condomínio fechado com amplo jardim, churrasqueira gourmet e quadra de tênis.",
   },
   {
-    id: "9", title: "Studio Moderno Faria Lima", type: "apartamento", price: "R$ 650.000",
+    id: "9", title: "Studio Moderno Faria Lima", type: "apartamento", status: "aluguel", price: "R$ 4.200/mês",
     location: "Faria Lima, São Paulo - SP", area: "45m²", bedrooms: 1, suites: 1, bathrooms: 1, parking: 1,
     image: 3, features: ["Acabamento Premium"],
     description: "Studio compacto e funcional na região mais valorizada da cidade, ideal para investimento ou moradia.",
