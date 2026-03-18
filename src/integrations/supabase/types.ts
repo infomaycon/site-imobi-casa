@@ -133,6 +133,7 @@ export type Database = {
           selected_card_model: string | null
           selected_gallery_model: string | null
           selected_theme: string | null
+          show_rental_highlight: boolean
           site_name: string | null
           transition_type: string | null
           updated_at: string
@@ -161,6 +162,7 @@ export type Database = {
           selected_card_model?: string | null
           selected_gallery_model?: string | null
           selected_theme?: string | null
+          show_rental_highlight?: boolean
           site_name?: string | null
           transition_type?: string | null
           updated_at?: string
@@ -189,6 +191,7 @@ export type Database = {
           selected_card_model?: string | null
           selected_gallery_model?: string | null
           selected_theme?: string | null
+          show_rental_highlight?: boolean
           site_name?: string | null
           transition_type?: string | null
           updated_at?: string
