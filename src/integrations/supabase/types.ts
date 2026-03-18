@@ -14,7 +14,180 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      leads: {
+        Row: {
+          created_at: string
+          email: string | null
+          id: string
+          message: string | null
+          name: string
+          phone: string | null
+          property_title: string | null
+          read: boolean
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          email?: string | null
+          id?: string
+          message?: string | null
+          name: string
+          phone?: string | null
+          property_title?: string | null
+          read?: boolean
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          email?: string | null
+          id?: string
+          message?: string | null
+          name?: string
+          phone?: string | null
+          property_title?: string | null
+          read?: boolean
+          user_id?: string
+        }
+        Relationships: []
+      }
+      properties: {
+        Row: {
+          active: boolean
+          area: number | null
+          bathrooms: number | null
+          bedrooms: number | null
+          created_at: string
+          description: string | null
+          featured: boolean
+          id: string
+          images: string[] | null
+          location: string | null
+          parking: number | null
+          price: number
+          property_type: string
+          status: string
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          active?: boolean
+          area?: number | null
+          bathrooms?: number | null
+          bedrooms?: number | null
+          created_at?: string
+          description?: string | null
+          featured?: boolean
+          id?: string
+          images?: string[] | null
+          location?: string | null
+          parking?: number | null
+          price?: number
+          property_type?: string
+          status?: string
+          title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          active?: boolean
+          area?: number | null
+          bathrooms?: number | null
+          bedrooms?: number | null
+          created_at?: string
+          description?: string | null
+          featured?: boolean
+          id?: string
+          images?: string[] | null
+          location?: string | null
+          parking?: number | null
+          price?: number
+          property_type?: string
+          status?: string
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      site_settings: {
+        Row: {
+          about_description: string | null
+          about_title: string | null
+          broker_name: string | null
+          color_palette: string | null
+          contact_address: string | null
+          contact_text: string | null
+          contact_title: string | null
+          created_at: string
+          creci: string | null
+          domain: string | null
+          email: string | null
+          footer_rights: string | null
+          footer_text: string | null
+          id: string
+          phone: string | null
+          selected_card_model: string | null
+          selected_gallery_model: string | null
+          selected_theme: string | null
+          site_name: string | null
+          transition_type: string | null
+          updated_at: string
+          user_id: string
+          whatsapp: string | null
+        }
+        Insert: {
+          about_description?: string | null
+          about_title?: string | null
+          broker_name?: string | null
+          color_palette?: string | null
+          contact_address?: string | null
+          contact_text?: string | null
+          contact_title?: string | null
+          created_at?: string
+          creci?: string | null
+          domain?: string | null
+          email?: string | null
+          footer_rights?: string | null
+          footer_text?: string | null
+          id?: string
+          phone?: string | null
+          selected_card_model?: string | null
+          selected_gallery_model?: string | null
+          selected_theme?: string | null
+          site_name?: string | null
+          transition_type?: string | null
+          updated_at?: string
+          user_id: string
+          whatsapp?: string | null
+        }
+        Update: {
+          about_description?: string | null
+          about_title?: string | null
+          broker_name?: string | null
+          color_palette?: string | null
+          contact_address?: string | null
+          contact_text?: string | null
+          contact_title?: string | null
+          created_at?: string
+          creci?: string | null
+          domain?: string | null
+          email?: string | null
+          footer_rights?: string | null
+          footer_text?: string | null
+          id?: string
+          phone?: string | null
+          selected_card_model?: string | null
+          selected_gallery_model?: string | null
+          selected_theme?: string | null
+          site_name?: string | null
+          transition_type?: string | null
+          updated_at?: string
+          user_id?: string
+          whatsapp?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
