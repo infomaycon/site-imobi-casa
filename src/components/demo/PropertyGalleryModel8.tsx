@@ -76,39 +76,11 @@ const PropertyGalleryModel8 = ({
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: "#0a0a0a" }}>
-      {/* ── Full-screen hero with glass overlay ── */}
-      <div className="relative h-screen overflow-hidden" onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
-        {/* Background blur layer */}
-        <div className="absolute inset-0">
-          <img src={images[activeIndex]} alt="" className="w-full h-full object-cover scale-110 blur-xl opacity-40" />
-        </div>
-
-        {/* Main image slider */}
-        <div className="absolute inset-0 flex items-center justify-center px-4 md:px-16">
-          <AnimatePresence custom={direction} mode="wait">
-            <motion.img
-              key={activeIndex}
-              src={images[activeIndex]}
-              alt={property.title}
-              className="max-w-full max-h-[75vh] object-contain rounded-2xl shadow-2xl"
-              custom={direction}
-              variants={slideVariants}
-              initial="enter"
-              animate="center"
-              exit="exit"
-              transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
-              draggable={false}
-            />
-          </AnimatePresence>
-        </div>
-
-        {/* Dark gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-transparent to-black/80 pointer-events-none" />
-
-        {/* Back button */}
+      {/* Back button */}
+      <div className="absolute top-6 left-6 z-30">
         <button
           onClick={onBack}
-          className="absolute top-6 left-6 z-20 flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-display font-semibold text-white/80 transition-colors hover:text-white"
+          className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-display font-semibold text-white/80 transition-colors hover:text-white"
           style={{
             backgroundColor: "rgba(255,255,255,0.1)",
             border: "1px solid rgba(255,255,255,0.15)",
@@ -118,50 +90,20 @@ const PropertyGalleryModel8 = ({
         >
           <ArrowLeft className="w-4 h-4" /> Voltar
         </button>
+      </div>
 
-        {/* Price badge — top right (red) */}
-        <div
-          className="absolute top-6 right-6 z-20 rounded-full px-5 py-2 font-display font-black text-lg text-white"
-          style={{
-            backgroundColor: colors.primary + "dd",
-            border: "1px solid rgba(255,255,255,0.2)",
-            backdropFilter: "blur(12px)",
-            WebkitBackdropFilter: "blur(12px)",
-            boxShadow: `0 8px 32px ${colors.primary}44`,
-          }}
-        >
-          {property.price}
+      {/* ── Main layout: Info Left + Image Right ── */}
+      <div className="relative h-screen flex flex-col md:flex-row">
+        {/* Background blur */}
+        <div className="absolute inset-0 z-0">
+          <img src={images[activeIndex]} alt="" className="w-full h-full object-cover scale-110 blur-xl opacity-30" />
+          <div className="absolute inset-0 bg-black/60" />
         </div>
 
-        {/* Counter */}
-        <div className="absolute top-6 left-1/2 -translate-x-1/2 z-20 text-white/50 text-sm font-display">
-          {activeIndex + 1} / {images.length}
-        </div>
-
-        {/* Navigation arrows */}
-        {activeIndex > 0 && (
-          <button
-            onClick={() => goTo(activeIndex - 1)}
-            className="absolute left-3 md:left-8 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full flex items-center justify-center text-white/70 hover:text-white transition-colors"
-            style={{ backgroundColor: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.12)", backdropFilter: "blur(8px)" }}
-          >
-            <ChevronLeft className="w-6 h-6" />
-          </button>
-        )}
-        {activeIndex < images.length - 1 && (
-          <button
-            onClick={() => goTo(activeIndex + 1)}
-            className="absolute right-3 md:right-8 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full flex items-center justify-center text-white/70 hover:text-white transition-colors"
-            style={{ backgroundColor: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.12)", backdropFilter: "blur(8px)" }}
-          >
-            <ChevronRight className="w-6 h-6" />
-          </button>
-        )}
-
-        {/* ── Glass info panel (bottom) ── */}
-        <div className="absolute bottom-0 inset-x-0 z-20 p-4 md:p-8">
+        {/* ── LEFT: Fixed info panel ── */}
+        <div className="relative z-10 w-full md:w-[380px] lg:w-[420px] shrink-0 flex flex-col justify-center p-6 md:p-8 overflow-y-auto">
           <div
-            className="max-w-5xl mx-auto rounded-[24px] p-5 md:p-7"
+            className="rounded-[24px] p-6"
             style={{
               background: "linear-gradient(180deg, rgba(255,255,255,0.12), rgba(255,255,255,0.06))",
               border: "1px solid rgba(255,255,255,0.18)",
@@ -170,49 +112,59 @@ const PropertyGalleryModel8 = ({
               boxShadow: "0 24px 48px rgba(0,0,0,0.3)",
             }}
           >
-            <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
-              <div>
-                <span
-                  className="inline-block rounded-full px-3 py-1 text-[11px] font-display font-bold uppercase tracking-wider mb-2"
-                  style={{ backgroundColor: "rgba(255,255,255,0.15)", color: "#fff", border: "1px solid rgba(255,255,255,0.2)" }}
-                >
-                  {property.type}
-                </span>
-                <h1 className="font-display font-black text-2xl md:text-3xl text-white leading-tight">{property.title}</h1>
-                <p className="mt-2 flex items-center gap-1.5 text-sm text-white/70">
-                  <MapPin className="w-4 h-4" /> {property.location}
-                </p>
-              </div>
-              {property.type !== "terreno" && (
-                <div className="flex flex-wrap gap-2">
-                  {[
-                    { icon: Bed, label: `${property.bedrooms} quartos` },
-                    { icon: Bath, label: `${property.bathrooms} banheiros` },
-                    { icon: Car, label: `${property.parking} vagas` },
-                    { icon: Maximize, label: property.area },
-                  ].map(({ icon: Icon, label }, i) => (
-                    <span
-                      key={i}
-                      className="inline-flex items-center gap-2 rounded-2xl px-3 py-2 text-xs font-display font-semibold text-white"
-                      style={{ backgroundColor: "rgba(255,255,255,0.1)", border: "1px solid rgba(255,255,255,0.12)" }}
-                    >
-                      <Icon className="h-3.5 w-3.5" /> {label}
-                    </span>
-                  ))}
-                </div>
-              )}
+            {/* Price badge */}
+            <div
+              className="inline-block rounded-full px-4 py-1.5 font-display font-black text-lg text-white mb-4"
+              style={{
+                backgroundColor: colors.primary + "dd",
+                border: "1px solid rgba(255,255,255,0.2)",
+                boxShadow: `0 8px 32px ${colors.primary}44`,
+              }}
+            >
+              {property.price}
             </div>
 
-            {/* Thumbnails strip */}
-            <div ref={thumbsRef} className="flex gap-2 mt-5 overflow-x-auto pb-1 scrollbar-hide">
+            <span
+              className="inline-block rounded-full px-3 py-1 text-[11px] font-display font-bold uppercase tracking-wider mb-2 ml-2"
+              style={{ backgroundColor: "rgba(255,255,255,0.15)", color: "#fff", border: "1px solid rgba(255,255,255,0.2)" }}
+            >
+              {property.type}
+            </span>
+
+            <h1 className="font-display font-black text-xl md:text-2xl text-white leading-tight mt-3">{property.title}</h1>
+            <p className="mt-2 flex items-center gap-1.5 text-sm text-white/70">
+              <MapPin className="w-4 h-4" /> {property.location}
+            </p>
+
+            {property.type !== "terreno" && (
+              <div className="flex flex-wrap gap-2 mt-5">
+                {[
+                  { icon: Bed, label: `${property.bedrooms} quartos` },
+                  { icon: Bath, label: `${property.bathrooms} banheiros` },
+                  { icon: Car, label: `${property.parking} vagas` },
+                  { icon: Maximize, label: property.area },
+                ].map(({ icon: Icon, label }, i) => (
+                  <span
+                    key={i}
+                    className="inline-flex items-center gap-2 rounded-2xl px-3 py-2 text-xs font-display font-semibold text-white"
+                    style={{ backgroundColor: "rgba(255,255,255,0.1)", border: "1px solid rgba(255,255,255,0.12)" }}
+                  >
+                    <Icon className="h-3.5 w-3.5" /> {label}
+                  </span>
+                ))}
+              </div>
+            )}
+
+            {/* Thumbnails */}
+            <div ref={thumbsRef} className="flex flex-wrap gap-2 mt-5">
               {images.map((img, i) => (
                 <motion.button
                   key={i}
                   onClick={() => goTo(i)}
                   className="shrink-0 rounded-xl overflow-hidden"
                   style={{
-                    width: 72,
-                    height: 52,
+                    width: 56,
+                    height: 42,
                     opacity: i === activeIndex ? 1 : 0.4,
                     border: i === activeIndex ? `2px solid ${colors.primary}` : "2px solid transparent",
                   }}
@@ -223,7 +175,55 @@ const PropertyGalleryModel8 = ({
                 </motion.button>
               ))}
             </div>
+
+            {/* Counter */}
+            <div className="mt-3 text-white/40 text-xs font-display text-center">
+              {activeIndex + 1} / {images.length}
+            </div>
           </div>
+        </div>
+
+        {/* ── RIGHT: Image area ── */}
+        <div
+          className="relative z-10 flex-1 flex items-center justify-center p-4 md:p-8"
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
+        >
+          <AnimatePresence custom={direction} mode="wait">
+            <motion.img
+              key={activeIndex}
+              src={images[activeIndex]}
+              alt={property.title}
+              className="max-w-full max-h-[80vh] object-contain rounded-2xl shadow-2xl"
+              custom={direction}
+              variants={slideVariants}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
+              draggable={false}
+            />
+          </AnimatePresence>
+
+          {/* Nav arrows */}
+          {activeIndex > 0 && (
+            <button
+              onClick={() => goTo(activeIndex - 1)}
+              className="absolute left-2 md:left-6 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full flex items-center justify-center text-white/70 hover:text-white transition-colors"
+              style={{ backgroundColor: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.12)", backdropFilter: "blur(8px)" }}
+            >
+              <ChevronLeft className="w-5 h-5" />
+            </button>
+          )}
+          {activeIndex < images.length - 1 && (
+            <button
+              onClick={() => goTo(activeIndex + 1)}
+              className="absolute right-2 md:right-6 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full flex items-center justify-center text-white/70 hover:text-white transition-colors"
+              style={{ backgroundColor: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.12)", backdropFilter: "blur(8px)" }}
+            >
+              <ChevronRight className="w-5 h-5" />
+            </button>
+          )}
         </div>
       </div>
 
