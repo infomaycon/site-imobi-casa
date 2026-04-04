@@ -17,6 +17,10 @@ import SettingsPage from "./pages/admin/SettingsPage.tsx";
 import AccountPage from "./pages/admin/AccountPage.tsx";
 import HelpPage from "./pages/admin/HelpPage.tsx";
 import NotFound from "./pages/NotFound.tsx";
+import SuperAdminLayout from "./pages/super-admin/SuperAdminLayout.tsx";
+import DashboardPage from "./pages/super-admin/DashboardPage.tsx";
+import SubscribersPage from "./pages/super-admin/SubscribersPage.tsx";
+import UsersPage from "./pages/super-admin/UsersPage.tsx";
 
 const queryClient = new QueryClient();
 
@@ -40,6 +44,11 @@ const App = () => (
               <Route path="settings" element={<SettingsPage />} />
               <Route path="account" element={<AccountPage />} />
               <Route path="help" element={<HelpPage />} />
+            </Route>
+            <Route path="/super-admin" element={<SuperAdminLayout />}>
+              <Route index element={<DashboardPage />} />
+              <Route path="subscribers" element={<SubscribersPage />} />
+              <Route path="users" element={<UsersPage />} />
             </Route>
             <Route path="*" element={<NotFound />} />
           </Routes>
