@@ -37,6 +37,8 @@ const App = () => (
             <Route path="/" element={<Index />} />
             <Route path="/demo/:modelId" element={<DemoSite />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/admin" element={<AdminLayout />}>
               <Route index element={<AddProperty />} />
               <Route path="properties" element={<PropertyList />} />
