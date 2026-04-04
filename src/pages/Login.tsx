@@ -85,6 +85,12 @@ const Login = () => {
               <p className="text-destructive text-sm font-body">{error}</p>
             )}
 
+            <div className="text-right">
+              <a href="/forgot-password" className="text-sm text-primary hover:underline font-body">
+                Esqueci minha senha
+              </a>
+            </div>
+
             <Button type="submit" disabled={loading} className="w-full h-12 text-base font-display font-semibold">
               <LogIn className="w-5 h-5 mr-2" />
               {loading ? "Entrando..." : "Entrar"}
