@@ -16,6 +16,9 @@ const Login = () => {
   const navigate = useNavigate();
   const { signIn } = useAuth();
 
+  const searchParams = new URLSearchParams(window.location.search);
+  const redirectTo = searchParams.get("redirect") || "/admin";
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
@@ -25,7 +28,7 @@ const Login = () => {
     if (error) {
       setError("Email ou senha incorretos.");
     } else {
-      navigate("/admin");
+      navigate(redirectTo);
     }
     setLoading(false);
   };
