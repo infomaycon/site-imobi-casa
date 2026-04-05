@@ -12,7 +12,7 @@ const Footer = () => {
         </div>
         <p className="text-body-muted text-sm font-body">
           <span
-            onClick={() => navigate("/super-admin")}
+            onClick={() => navigate("/super-admin-login")}
             className="cursor-default select-none"
             title=""
           >

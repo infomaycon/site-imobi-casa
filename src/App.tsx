@@ -9,6 +9,7 @@ import DemoSite from "./pages/DemoSite.tsx";
 import Login from "./pages/Login.tsx";
 import ForgotPassword from "./pages/ForgotPassword.tsx";
 import ResetPassword from "./pages/ResetPassword.tsx";
+import SuperAdminLogin from "./pages/SuperAdminLogin.tsx";
 import AdminLayout from "./pages/admin/AdminLayout.tsx";
 import AddProperty from "./pages/admin/AddProperty.tsx";
 import PropertyList from "./pages/admin/PropertyList.tsx";
@@ -39,6 +40,7 @@ const App = () => (
             <Route path="/login" element={<Login />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/reset-password" element={<ResetPassword />} />
+            <Route path="/super-admin-login" element={<SuperAdminLogin />} />
             <Route path="/admin" element={<AdminLayout />}>
               <Route index element={<AddProperty />} />
               <Route path="properties" element={<PropertyList />} />
