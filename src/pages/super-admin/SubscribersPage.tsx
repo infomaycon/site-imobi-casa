@@ -1,33 +1,48 @@
-import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { externalSupabase } from "@/integrations/external-supabase/client";
 import { useState } from "react";
-import { Search, Users, CheckCircle, XCircle, Crown, Zap } from "lucide-react";
+import { Search, Users, CheckCircle, XCircle, Crown, Zap, RefreshCw } from "lucide-react";
+
+interface ExternalSubscriber {
+  id: string;
+  email: string;
+  nome: string;
+  created_at: string;
+  plan?: string;
+  status?: string;
+  plan_value?: number;
+}
 
 const SubscribersPage = () => {
   const [search, setSearch] = useState("");
+  const queryClient = useQueryClient();
 
-  const { data: subscribers = [], isLoading } = useQuery({
-    queryKey: ["super-subscribers"],
+  const { data: subscribers = [], isLoading, isError, error, isFetching } = useQuery({
+    queryKey: ["external-subscribers"],
     queryFn: async () => {
-      const { data, error } = await supabase
+      const { data, error } = await externalSupabase
         .from("subscribers")
         .select("*")
         .order("created_at", { ascending: false });
-      if (error) throw error;
-      return data ?? [];
+      if (error) throw new Error(error.message);
+      return (data ?? []) as ExternalSubscriber[];
     },
-    refetchInterval: 10000, // Auto-refresh every 10s
+    refetchInterval: 15000,
+    staleTime: 0,
   });
+
+  const handleRefresh = () => {
+    queryClient.invalidateQueries({ queryKey: ["external-subscribers"] });
+  };
 
   const filtered = subscribers.filter((s) => {
     if (!search) return true;
     const term = search.toLowerCase();
-    return (
-      s.name.toLowerCase().includes(term) ||
-      s.email.toLowerCase().includes(term) ||
-      s.plan.toLowerCase().includes(term) ||
-      s.status.toLowerCase().includes(term)
-    );
+    const name = (s.nome || "").toLowerCase();
+    const email = (s.email || "").toLowerCase();
+    const plan = (s.plan || "").toLowerCase();
+    const status = (s.status || "").toLowerCase();
+    return name.includes(term) || email.includes(term) || plan.includes(term) || status.includes(term);
   });
 
   const activeCount = subscribers.filter((s) => s.status === "active").length;
@@ -35,9 +50,19 @@ const SubscribersPage = () => {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold text-white tracking-tight">Assinantes</h1>
-        <p className="text-zinc-500 text-sm mt-1">{subscribers.length} assinantes registrados</p>
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-bold text-white tracking-tight">Assinantes</h1>
+          <p className="text-zinc-500 text-sm mt-1">{subscribers.length} assinantes registrados</p>
+        </div>
+        <button
+          onClick={handleRefresh}
+          disabled={isFetching}
+          className="flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-medium transition-colors disabled:opacity-50"
+        >
+          <RefreshCw className={`w-4 h-4 ${isFetching ? "animate-spin" : ""}`} />
+          Atualizar lista
+        </button>
       </div>
 
       {/* Stats */}
@@ -88,6 +113,18 @@ const SubscribersPage = () => {
         />
       </div>
 
+      {/* Error state */}
+      {isError && (
+        <div className="rounded-xl border border-red-800/60 p-4 bg-red-900/20">
+          <p className="text-red-400 text-sm">
+            Erro ao carregar assinantes: {(error as Error)?.message || "Erro desconhecido"}
+          </p>
+          <button onClick={handleRefresh} className="mt-2 text-xs text-red-300 underline">
+            Tentar novamente
+          </button>
+        </div>
+      )}
+
       {/* Table */}
       <div className="rounded-xl border border-zinc-800/60 overflow-hidden" style={{ background: "#0d0d0d" }}>
         <div className="overflow-x-auto">
@@ -104,22 +141,22 @@ const SubscribersPage = () => {
             <tbody>
               {isLoading ? (
                 <tr>
-                  <td colSpan={5} className="text-center py-12 text-zinc-600">Carregando...</td>
+                  <td colSpan={5} className="text-center py-12 text-zinc-600">Carregando usuários...</td>
                 </tr>
               ) : filtered.length === 0 ? (
                 <tr>
-                  <td colSpan={5} className="text-center py-12 text-zinc-600">Nenhum assinante encontrado</td>
+                  <td colSpan={5} className="text-center py-12 text-zinc-600">Nenhum usuário encontrado</td>
                 </tr>
               ) : (
                 filtered.map((s) => (
                   <tr key={s.id} className="border-b border-zinc-800/30 hover:bg-zinc-800/20 transition-colors">
-                    <td className="px-5 py-3.5 text-white font-medium">{s.name}</td>
+                    <td className="px-5 py-3.5 text-white font-medium">{s.nome || "—"}</td>
                     <td className="px-5 py-3.5 text-zinc-400">{s.email}</td>
                     <td className="px-5 py-3.5">
-                      <PlanBadge plan={s.plan} />
+                      <PlanBadge plan={s.plan || "starter"} />
                     </td>
                     <td className="px-5 py-3.5">
-                      <StatusBadge status={s.status} />
+                      <StatusBadge status={s.status || "active"} />
                     </td>
                     <td className="px-5 py-3.5 text-zinc-500">
                       {new Date(s.created_at).toLocaleDateString("pt-BR")}
