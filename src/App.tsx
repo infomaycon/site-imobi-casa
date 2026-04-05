@@ -9,6 +9,7 @@ import DemoSite from "./pages/DemoSite.tsx";
 import Login from "./pages/Login.tsx";
 import ForgotPassword from "./pages/ForgotPassword.tsx";
 import ResetPassword from "./pages/ResetPassword.tsx";
+import SuperAdminLogin from "./pages/SuperAdminLogin.tsx";
 import AdminLayout from "./pages/admin/AdminLayout.tsx";
 import AddProperty from "./pages/admin/AddProperty.tsx";
 import PropertyList from "./pages/admin/PropertyList.tsx";
