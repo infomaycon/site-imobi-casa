@@ -15,7 +15,7 @@ export interface SubscriberData {
 export const useSubscriberAccess = () => {
   const { user } = useAuth();
 
-  const { data: subscriber, isLoading, error } = useQuery({
+  const { data: subscriber, isLoading } = useQuery({
     queryKey: ["subscriber-access", user?.email],
     queryFn: async () => {
       if (!user?.email) return null;
