@@ -16,8 +16,7 @@ const Login = () => {
   const navigate = useNavigate();
   const { signIn } = useAuth();
 
-  const searchParams = new URLSearchParams(window.location.search);
-  const redirectTo = searchParams.get("redirect") || "/admin";
+  const redirectTo = "/admin";
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

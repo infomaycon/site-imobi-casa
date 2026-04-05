@@ -25,7 +25,7 @@ const SuperAdminLayout = () => {
     );
   }
 
-  if (!user) return <Navigate to="/login?redirect=/super-admin" replace />;
+  if (!user) return <Navigate to="/super-admin-login" replace />;
   if (!hasSuperAccess) return <Navigate to="/" replace />;
 
   const handleSignOut = async () => {

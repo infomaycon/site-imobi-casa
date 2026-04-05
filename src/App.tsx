@@ -40,6 +40,7 @@ const App = () => (
             <Route path="/login" element={<Login />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/reset-password" element={<ResetPassword />} />
+            <Route path="/super-admin-login" element={<SuperAdminLogin />} />
             <Route path="/admin" element={<AdminLayout />}>
               <Route index element={<AddProperty />} />
               <Route path="properties" element={<PropertyList />} />
