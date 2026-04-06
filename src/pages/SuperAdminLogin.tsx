@@ -82,7 +82,7 @@ const SuperAdminLogin = () => {
             )}
 
             <div className="text-right">
-              <a href="/forgot-password" className="text-sm text-emerald-400/70 hover:text-emerald-400 transition-colors">
+              <a href="/super-admin-forgot-password" className="text-sm text-emerald-400/70 hover:text-emerald-400 transition-colors">
                 Esqueci minha senha
               </a>
             </div>
