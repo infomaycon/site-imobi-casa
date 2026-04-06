@@ -153,7 +153,7 @@ const SubscribersPage = () => {
                     <td className="px-5 py-3.5 text-white font-medium">{s.nome || "—"}</td>
                     <td className="px-5 py-3.5 text-zinc-400">{s.email}</td>
                     <td className="px-5 py-3.5">
-                      <PlanBadge plan={s.plan || "starter"} />
+                      <PlanBadge plan={s.plan || "essencial"} />
                     </td>
                     <td className="px-5 py-3.5">
                       <StatusBadge status={s.status || "active"} />
