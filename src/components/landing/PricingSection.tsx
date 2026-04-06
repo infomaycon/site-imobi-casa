@@ -12,7 +12,7 @@ const periods: { key: Period; label: string; discount?: string }[] = [
 
 const plans = [
   {
-    name: "Starter",
+    name: "Essencial",
     tagline: "Ideal para corretores iniciantes.",
     prices: { mensal: "R$ 49,90", semestral: "R$ 254,90", anual: "R$ 449,90" },
     periodLabel: { mensal: "/mês", semestral: "/semestre", anual: "/ano" },
