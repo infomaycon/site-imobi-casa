@@ -30,7 +30,7 @@ const TestSignup = () => {
     const { data, error } = await testSupabase.auth.signUp({
       email: parsed.data.email,
       password: parsed.data.password,
-      options: { emailRedirectTo: `${window.location.origin}/test-dashboard` },
+      options: { emailRedirectTo: `${window.location.origin}/admin` },
     });
     if (error) {
       setLoading(false);
@@ -60,7 +60,7 @@ const TestSignup = () => {
 
     setLoading(false);
     if (data.session) {
-      navigate("/test-dashboard");
+      navigate("/admin");
     } else {
       setError("Cadastro criado. Verifique seu email para confirmar antes de entrar.");
     }

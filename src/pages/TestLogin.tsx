@@ -20,10 +20,10 @@ const TestLogin = () => {
 
   useEffect(() => {
     testSupabase.auth.getSession().then(({ data: { session } }) => {
-      if (session) navigate("/test-dashboard", { replace: true });
+      if (session) navigate("/admin", { replace: true });
     });
     const { data: { subscription } } = testSupabase.auth.onAuthStateChange((_e, session) => {
-      if (session) navigate("/test-dashboard", { replace: true });
+      if (session) navigate("/admin", { replace: true });
     });
     return () => subscription.unsubscribe();
   }, [navigate]);
@@ -46,7 +46,7 @@ const TestLogin = () => {
       setError("Email ou senha incorretos.");
       return;
     }
-    navigate("/test-dashboard");
+    navigate("/admin");
   };
 
   return (
