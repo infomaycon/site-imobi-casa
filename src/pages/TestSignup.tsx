@@ -32,11 +32,33 @@ const TestSignup = () => {
       password: parsed.data.password,
       options: { emailRedirectTo: `${window.location.origin}/test-dashboard` },
     });
-    setLoading(false);
     if (error) {
+      setLoading(false);
       setError(error.message);
       return;
     }
+
+    const user = data.user;
+    if (user) {
+      const now = new Date();
+      const trialEnd = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
+      const { error: profileError } = await testSupabase.from("profiles" as any).insert({
+        id: user.id,
+        email: user.email,
+        plano: "free",
+        status: "active",
+        trial: true,
+        trial_start: now.toISOString(),
+        trial_end: trialEnd.toISOString(),
+      });
+      if (profileError) {
+        setLoading(false);
+        setError(`Conta criada, mas erro ao criar profile: ${profileError.message}`);
+        return;
+      }
+    }
+
+    setLoading(false);
     if (data.session) {
       navigate("/test-dashboard");
     } else {
