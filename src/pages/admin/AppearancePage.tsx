@@ -134,7 +134,7 @@ const AppearancePage = () => {
               return (
                 <motion.div
                   key={model.id}
-                  className={`group relative rounded-2xl overflow-hidden border transition-all duration-500 bg-card shadow-soft hover:shadow-lg ${isLocked ? "cursor-not-allowed" : "cursor-pointer"} ${isSelected ? "ring-2 ring-primary border-primary/30" : "border-border hover:border-primary/30"}`}
+                  className={`group relative rounded-2xl overflow-hidden border transition-all duration-500 shadow-soft hover:shadow-lg ${isLocked ? "cursor-not-allowed bg-muted/40 border-muted opacity-70 saturate-50" : "cursor-pointer bg-card"} ${isSelected && !isLocked ? "ring-2 ring-primary border-primary/30" : !isLocked ? "border-border hover:border-primary/30" : ""}`}
                   initial={{ opacity: 0, y: 30 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
@@ -148,10 +148,10 @@ const AppearancePage = () => {
                       alt={`Preview do modelo ${model.name}`}
                       className={`w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 ${isLocked ? "grayscale" : ""}`}
                     />
-                    <div className={`absolute inset-0 ${isLocked ? "bg-black/60" : "bg-black/30"}`} />
+                    <div className={`absolute inset-0 ${isLocked ? "bg-muted/70" : "bg-black/30"}`} />
                     {/* Large number */}
                     <span
-                      className="absolute top-3 left-4 font-display font-black text-6xl leading-none select-none pointer-events-none text-white drop-shadow-lg"
+                      className={`absolute top-3 left-4 font-display font-black text-6xl leading-none select-none pointer-events-none drop-shadow-lg ${isLocked ? "text-muted-foreground/60" : "text-white"}`}
                       style={{ opacity: 0.9 }}
                     >
                       {String(i + 1).padStart(2, "0")}
@@ -166,8 +166,8 @@ const AppearancePage = () => {
                     )}
                     {/* Locked overlay */}
                     {isLocked && (
-                      <div className="absolute inset-0 flex flex-col items-center justify-center text-white text-center p-4">
-                        <div className="w-12 h-12 rounded-full bg-white/15 backdrop-blur-sm flex items-center justify-center mb-2 border border-white/30">
+                      <div className="absolute inset-0 flex flex-col items-center justify-center text-muted-foreground text-center p-4">
+                        <div className="w-12 h-12 rounded-full bg-background/80 backdrop-blur-sm flex items-center justify-center mb-2 border border-border">
                           <Lock className="w-6 h-6" />
                         </div>
                         <p className="font-display font-bold text-sm">Disponível em planos pagos</p>
@@ -177,10 +177,10 @@ const AppearancePage = () => {
                   </div>
 
                   {/* Color bar */}
-                  <div className="h-1 w-full" style={{ background: `linear-gradient(90deg, ${model.colors.primary}, ${model.colors.secondary})` }} />
+                  <div className={`h-1 w-full ${isLocked ? "grayscale opacity-50" : ""}`} style={{ background: `linear-gradient(90deg, ${model.colors.primary}, ${model.colors.secondary})` }} />
 
                   <div className="p-6">
-                    <h3 className="font-display font-bold text-lg mb-1.5 text-foreground flex items-center gap-2">
+                    <h3 className={`font-display font-bold text-lg mb-1.5 flex items-center gap-2 ${isLocked ? "text-muted-foreground" : "text-foreground"}`}>
                       {model.name}
                       {isLocked && <Lock className="w-4 h-4 text-muted-foreground" />}
                     </h3>
@@ -188,7 +188,7 @@ const AppearancePage = () => {
 
                     {/* Color palette */}
                     <div className="flex items-center gap-2 mb-5">
-                      <div className="w-5 h-5 rounded-full border border-border shadow-sm" style={{ backgroundColor: model.colors.primary }} />
+                      <div className={`w-5 h-5 rounded-full border border-border shadow-sm ${isLocked ? "grayscale opacity-60" : ""}`} style={{ backgroundColor: model.colors.primary }} />
                       <span className="text-xs font-body text-muted-foreground ml-1">{model.style}</span>
                     </div>
 
