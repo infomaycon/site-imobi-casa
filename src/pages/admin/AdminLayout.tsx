@@ -4,6 +4,7 @@ import { useSubscriberAccess } from "@/hooks/useSubscriberAccess";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import AdminSidebar from "@/components/admin/AdminSidebar";
 import WelcomeDialog from "@/components/admin/WelcomeDialog";
+import TrialEndingBanner from "@/components/admin/TrialEndingBanner";
 import { Menu, ShieldX, AlertTriangle } from "lucide-react";
 
 const AdminLayout = () => {
@@ -80,6 +81,7 @@ const AdminLayout = () => {
             <h2 className="text-lg font-display font-semibold text-foreground">Painel Administrativo</h2>
           </header>
           <main className="flex-1 p-6 overflow-auto">
+            <TrialEndingBanner />
             <Outlet />
           </main>
         </div>
