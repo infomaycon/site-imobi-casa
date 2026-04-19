@@ -27,7 +27,10 @@ const TestLogin = () => {
       return;
     }
     setLoading(true);
-    const { error } = await testSupabase.auth.signInWithPassword(parsed.data);
+    const { error } = await testSupabase.auth.signInWithPassword({
+      email: parsed.data.email,
+      password: parsed.data.password,
+    });
     setLoading(false);
     if (error) {
       setError("Email ou senha incorretos.");
