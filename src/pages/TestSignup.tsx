@@ -50,6 +50,7 @@ const TestSignup = () => {
         trial: true,
         trial_start: now.toISOString(),
         trial_end: trialEnd.toISOString(),
+        first_login: true,
       });
       if (profileError) {
         setLoading(false);

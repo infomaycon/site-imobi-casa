@@ -3,6 +3,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { useSubscriberAccess } from "@/hooks/useSubscriberAccess";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import AdminSidebar from "@/components/admin/AdminSidebar";
+import WelcomeDialog from "@/components/admin/WelcomeDialog";
 import { Menu, ShieldX, AlertTriangle } from "lucide-react";
 
 const AdminLayout = () => {
@@ -82,6 +83,7 @@ const AdminLayout = () => {
             <Outlet />
           </main>
         </div>
+        <WelcomeDialog />
       </div>
     </SidebarProvider>
   );
