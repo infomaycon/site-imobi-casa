@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
+import { useTestProfile } from "@/hooks/useTestProfile";
 import { supabase } from "@/integrations/supabase/client";
 import { demoModels } from "@/data/models";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
-import { Layout, Palette, Save, CheckCircle2, ExternalLink } from "lucide-react";
+import { Layout, Palette, Save, CheckCircle2, ExternalLink, Lock, Crown } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 import previewAuroraPrime from "@/assets/preview-aurora-prime.png";
@@ -69,8 +70,14 @@ const accentColors = [
   { hex: "#0EA5E9", name: "Azul Claro" },
 ];
 
+// Modelos liberados no plano free
+const FREE_MODEL_IDS = new Set(["empire-urban", "prime-district"]);
+// Cores liberadas no plano free
+const FREE_COLOR_HEXES = new Set(["#1E3A8A", "#C9A646", "#B91C1C"]);
+
 const AppearancePage = () => {
   const { user } = useAuth();
+  const { isFree } = useTestProfile();
   const [selectedTheme, setSelectedTheme] = useState("model1");
   const [selectedColor, setSelectedColor] = useState("#1E3A8A");
   const [saving, setSaving] = useState(false);
