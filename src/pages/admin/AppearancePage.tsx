@@ -129,25 +129,26 @@ const AppearancePage = () => {
             {demoModels.map((model, i) => {
               const themeId = modelIdToThemeId[model.id];
               const isSelected = selectedTheme === themeId;
+              const isLocked = isFree && !FREE_MODEL_IDS.has(model.id);
 
               return (
                 <motion.div
                   key={model.id}
-                  className={`group relative rounded-2xl overflow-hidden border transition-all duration-500 bg-card shadow-soft hover:shadow-lg cursor-pointer ${isSelected ? "ring-2 ring-primary border-primary/30" : "border-border hover:border-primary/30"}`}
+                  className={`group relative rounded-2xl overflow-hidden border transition-all duration-500 bg-card shadow-soft hover:shadow-lg ${isLocked ? "cursor-not-allowed" : "cursor-pointer"} ${isSelected ? "ring-2 ring-primary border-primary/30" : "border-border hover:border-primary/30"}`}
                   initial={{ opacity: 0, y: 30 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: i * 0.08 }}
-                  onClick={() => setSelectedTheme(themeId)}
+                  onClick={() => { if (!isLocked) setSelectedTheme(themeId); }}
                 >
                   {/* Preview Image */}
                   <div className="relative overflow-hidden aspect-video">
                     <img
                       src={previewMap[model.id]}
                       alt={`Preview do modelo ${model.name}`}
-                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                      className={`w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 ${isLocked ? "grayscale" : ""}`}
                     />
-                    <div className="absolute inset-0 bg-black/30" />
+                    <div className={`absolute inset-0 ${isLocked ? "bg-black/60" : "bg-black/30"}`} />
                     {/* Large number */}
                     <span
                       className="absolute top-3 left-4 font-display font-black text-6xl leading-none select-none pointer-events-none text-white drop-shadow-lg"
@@ -156,11 +157,21 @@ const AppearancePage = () => {
                       {String(i + 1).padStart(2, "0")}
                     </span>
                     {/* Selected badge */}
-                    {isSelected && (
+                    {isSelected && !isLocked && (
                       <div className="absolute top-3 right-3">
                         <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-display font-bold bg-primary text-primary-foreground shadow-lg">
                           <CheckCircle2 className="w-3.5 h-3.5" /> Ativo
                         </span>
+                      </div>
+                    )}
+                    {/* Locked overlay */}
+                    {isLocked && (
+                      <div className="absolute inset-0 flex flex-col items-center justify-center text-white text-center p-4">
+                        <div className="w-12 h-12 rounded-full bg-white/15 backdrop-blur-sm flex items-center justify-center mb-2 border border-white/30">
+                          <Lock className="w-6 h-6" />
+                        </div>
+                        <p className="font-display font-bold text-sm">Disponível em planos pagos</p>
+                        <p className="text-xs font-body opacity-80 mt-1">Faça upgrade para desbloquear</p>
                       </div>
                     )}
                   </div>
@@ -169,7 +180,10 @@ const AppearancePage = () => {
                   <div className="h-1 w-full" style={{ background: `linear-gradient(90deg, ${model.colors.primary}, ${model.colors.secondary})` }} />
 
                   <div className="p-6">
-                    <h3 className="font-display font-bold text-lg mb-1.5 text-foreground">{model.name}</h3>
+                    <h3 className="font-display font-bold text-lg mb-1.5 text-foreground flex items-center gap-2">
+                      {model.name}
+                      {isLocked && <Lock className="w-4 h-4 text-muted-foreground" />}
+                    </h3>
                     <p className="text-sm mb-3 font-body italic text-muted-foreground">"{model.tagline}"</p>
 
                     {/* Color palette */}
@@ -178,22 +192,43 @@ const AppearancePage = () => {
                       <span className="text-xs font-body text-muted-foreground ml-1">{model.style}</span>
                     </div>
 
-                    <a
-                      href={`/demo/${model.id}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      onClick={(e) => e.stopPropagation()}
-                      className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-display font-semibold transition-all hover:brightness-110 w-full justify-center text-white"
-                      style={{ backgroundColor: "#00bf63" }}
-                    >
-                      Ver Demonstração
-                      <ExternalLink className="w-4 h-4" />
-                    </a>
+                    {isLocked ? (
+                      <a
+                        href="/admin/account"
+                        onClick={(e) => e.stopPropagation()}
+                        className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-display font-semibold transition-all w-full justify-center bg-primary text-primary-foreground hover:opacity-90"
+                      >
+                        <Crown className="w-4 h-4" />
+                        Fazer upgrade
+                      </a>
+                    ) : (
+                      <a
+                        href={`/demo/${model.id}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={(e) => e.stopPropagation()}
+                        className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-display font-semibold transition-all hover:brightness-110 w-full justify-center text-white"
+                        style={{ backgroundColor: "#00bf63" }}
+                      >
+                        Ver Demonstração
+                        <ExternalLink className="w-4 h-4" />
+                      </a>
+                    )}
                   </div>
                 </motion.div>
               );
             })}
           </div>
+
+          {isFree && (
+            <div className="mt-6 p-4 rounded-xl bg-primary/5 border border-primary/20 flex items-start gap-3">
+              <Crown className="w-5 h-5 text-primary mt-0.5 shrink-0" />
+              <div className="text-sm font-body text-foreground">
+                <strong>Plano Free:</strong> apenas os modelos <em>Empire Urban</em> e <em>Prime District</em> estão liberados.{" "}
+                <a href="/admin/account" className="text-primary font-semibold hover:underline">Faça upgrade</a> para acessar todos os modelos.
+              </div>
+            </div>
+          )}
 
           <div className="flex items-center gap-4 mt-6">
             <Button onClick={handleSave} disabled={saving} className="h-12 px-8 font-display font-semibold">
@@ -212,22 +247,41 @@ const AppearancePage = () => {
             </div>
 
             <div className="grid grid-cols-5 sm:grid-cols-10 gap-3">
-              {accentColors.map((color) => (
-                <button
-                  key={color.hex}
-                  onClick={() => setSelectedColor(color.hex)}
-                  className={`group relative w-full aspect-square rounded-xl transition-all hover:scale-110 ${selectedColor === color.hex ? "ring-2 ring-offset-2 ring-foreground scale-110" : ""}`}
-                  style={{ backgroundColor: color.hex }}
-                  title={color.name}
-                >
-                  {selectedColor === color.hex && (
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <CheckCircle2 className="w-5 h-5 text-white drop-shadow" />
-                    </div>
-                  )}
-                </button>
-              ))}
+              {accentColors.map((color) => {
+                const colorLocked = isFree && !FREE_COLOR_HEXES.has(color.hex);
+                return (
+                  <button
+                    key={color.hex}
+                    onClick={() => { if (!colorLocked) setSelectedColor(color.hex); }}
+                    disabled={colorLocked}
+                    className={`group relative w-full aspect-square rounded-xl transition-all ${colorLocked ? "cursor-not-allowed opacity-40" : "hover:scale-110"} ${selectedColor === color.hex ? "ring-2 ring-offset-2 ring-foreground scale-110" : ""}`}
+                    style={{ backgroundColor: color.hex }}
+                    title={colorLocked ? `${color.name} (bloqueado no plano free)` : color.name}
+                  >
+                    {selectedColor === color.hex && !colorLocked && (
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <CheckCircle2 className="w-5 h-5 text-white drop-shadow" />
+                      </div>
+                    )}
+                    {colorLocked && (
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <Lock className="w-4 h-4 text-white drop-shadow" />
+                      </div>
+                    )}
+                  </button>
+                );
+              })}
             </div>
+
+            {isFree && (
+              <div className="p-4 rounded-xl bg-primary/5 border border-primary/20 flex items-start gap-3">
+                <Crown className="w-5 h-5 text-primary mt-0.5 shrink-0" />
+                <div className="text-sm font-body text-foreground">
+                  <strong>Plano Free:</strong> apenas 3 cores estão liberadas.{" "}
+                  <a href="/admin/account" className="text-primary font-semibold hover:underline">Faça upgrade</a> para desbloquear todas as 20 cores.
+                </div>
+              </div>
+            )}
 
             {/* Live Preview */}
             <div className="border border-border rounded-xl p-6 space-y-4">
