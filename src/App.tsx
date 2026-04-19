@@ -10,6 +10,9 @@ import Login from "./pages/Login.tsx";
 import ForgotPassword from "./pages/ForgotPassword.tsx";
 import ResetPassword from "./pages/ResetPassword.tsx";
 import SuperAdminLogin from "./pages/SuperAdminLogin.tsx";
+import TestLogin from "./pages/TestLogin.tsx";
+import TestSignup from "./pages/TestSignup.tsx";
+import TestDashboard from "./pages/TestDashboard.tsx";
 import SuperAdminForgotPassword from "./pages/SuperAdminForgotPassword.tsx";
 import AdminLayout from "./pages/admin/AdminLayout.tsx";
 import AddProperty from "./pages/admin/AddProperty.tsx";
@@ -43,6 +46,9 @@ const App = () => (
             <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/super-admin-login" element={<SuperAdminLogin />} />
             <Route path="/super-admin-forgot-password" element={<SuperAdminForgotPassword />} />
+            <Route path="/test-login" element={<TestLogin />} />
+            <Route path="/test-signup" element={<TestSignup />} />
+            <Route path="/test-dashboard" element={<TestDashboard />} />
             <Route path="/admin" element={<AdminLayout />}>
               <Route index element={<AddProperty />} />
               <Route path="properties" element={<PropertyList />} />
