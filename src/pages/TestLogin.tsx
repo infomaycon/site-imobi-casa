@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { z } from "zod";
 import { testSupabase } from "@/lib/supabase";
@@ -17,6 +17,16 @@ const TestLogin = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    testSupabase.auth.getSession().then(({ data: { session } }) => {
+      if (session) navigate("/test-dashboard", { replace: true });
+    });
+    const { data: { subscription } } = testSupabase.auth.onAuthStateChange((_e, session) => {
+      if (session) navigate("/test-dashboard", { replace: true });
+    });
+    return () => subscription.unsubscribe();
+  }, [navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
