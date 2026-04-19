@@ -20,6 +20,11 @@ const Footer = () => {
           </span>{" "}
           2026 ImobiCasa. Todos os direitos reservados.
         </p>
+        <p className="mt-3 text-body-muted text-sm font-body">
+          <a href="/test-signup" className="text-primary hover:underline">
+            teste
+          </a>
+        </p>
       </div>
     </footer>
   );
