@@ -5,6 +5,7 @@ import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import AdminSidebar from "@/components/admin/AdminSidebar";
 import WelcomeDialog from "@/components/admin/WelcomeDialog";
 import TrialEndingBanner from "@/components/admin/TrialEndingBanner";
+import TrialExpiredOverlay from "@/components/admin/TrialExpiredOverlay";
 import { Menu, ShieldX, AlertTriangle } from "lucide-react";
 
 const AdminLayout = () => {
@@ -86,6 +87,7 @@ const AdminLayout = () => {
           </main>
         </div>
         <WelcomeDialog />
+        <TrialExpiredOverlay />
       </div>
     </SidebarProvider>
   );
