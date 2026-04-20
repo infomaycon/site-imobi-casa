@@ -10,10 +10,11 @@ import { supabase } from "@/integrations/supabase/client";
 
 type Step = "signup" | "pay" | "waiting" | "approved";
 
+// Modo de teste: todos os planos custam R$ 1,00
 const PLAN_PRICES: Record<string, Record<string, number>> = {
-  essencial: { mensal: 1, semestral: 254.9, anual: 449.9 },
-  profissional: { mensal: 79.9, semestral: 379, anual: 699.9 },
-  elite: { mensal: 129.9, semestral: 649.9, anual: 1099.9 },
+  essencial: { mensal: 1, semestral: 1, anual: 1 },
+  profissional: { mensal: 1, semestral: 1, anual: 1 },
+  elite: { mensal: 1, semestral: 1, anual: 1 },
 };
 
 const PLAN_LABEL: Record<string, string> = {
@@ -27,11 +28,8 @@ const Checkout = () => {
   const navigate = useNavigate();
   const plano = (params.get("plano") || "profissional").toLowerCase();
   const ciclo = (params.get("ciclo") || "mensal").toLowerCase();
-  const valorParam = Number(params.get("valor"));
-  const valor =
-    Number.isFinite(valorParam) && valorParam > 0
-      ? valorParam
-      : (PLAN_PRICES[plano]?.[ciclo] ?? 79.9);
+  // Modo de teste: força R$ 1,00 independente do valor da URL
+  const valor = 1;
 
   const [step, setStep] = useState<Step>("signup");
   const [email, setEmail] = useState("");

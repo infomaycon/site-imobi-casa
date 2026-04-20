@@ -195,8 +195,8 @@ const PricingSection = () => {
                 {/* CTA button */}
                 <button
                   onClick={() => {
-                    const raw = plan.prices[period].replace(/[^\d,]/g, "").replace(",", ".");
-                    const valor = Number(raw);
+                    // Modo de teste: todos os planos custam R$ 1,00
+                    const valor = 1;
                     navigate(
                       `/checkout?plano=${PLAN_SLUGS[plan.name]}&ciclo=${period}&valor=${valor}`,
                     );
