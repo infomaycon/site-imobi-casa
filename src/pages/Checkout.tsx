@@ -170,6 +170,16 @@ const Checkout = () => {
 
   return (
     <div className="min-h-screen bg-surface-light-alt py-12 px-4">
+      <div className="max-w-xl mx-auto mb-4">
+        <button
+          type="button"
+          onClick={() => navigate("/")}
+          className="inline-flex items-center gap-1.5 text-xs text-body-muted hover:text-primary transition-colors"
+        >
+          <ArrowLeft className="w-3.5 h-3.5" />
+          Voltar ao site
+        </button>
+      </div>
       <div className="max-w-xl mx-auto bg-card border border-border rounded-2xl shadow-soft p-8">
         <div className="text-center mb-6">
           <h1 className="font-display font-bold text-2xl text-heading">Finalizar assinatura</h1>
