@@ -194,9 +194,13 @@ const PricingSection = () => {
 
                 {/* CTA button */}
                 <button
-                  onClick={() =>
-                    navigate(`/checkout?plano=${PLAN_SLUGS[plan.name]}&ciclo=${period}`)
-                  }
+                  onClick={() => {
+                    const raw = plan.prices[period].replace(/[^\d,]/g, "").replace(",", ".");
+                    const valor = Number(raw);
+                    navigate(
+                      `/checkout?plano=${PLAN_SLUGS[plan.name]}&ciclo=${period}&valor=${valor}`,
+                    );
+                  }}
                   className={`w-full py-3.5 rounded-xl font-display font-bold text-sm transition-all duration-300 mb-8 ${
                     plan.highlighted
                       ? "bg-primary text-primary-foreground hover:brightness-110 shadow-premium"
