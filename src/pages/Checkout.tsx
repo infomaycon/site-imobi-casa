@@ -92,27 +92,55 @@ const Checkout = () => {
   };
 
   const handleCreatePix = async () => {
-    if (!userId) return;
+    if (!userId || loading) return;
     setLoading(true);
+    toast({ title: "Aguarde, gerando pagamento..." });
     try {
+      const { data: sessionData } = await testSupabase.auth.getSession();
+      const accessToken = sessionData?.session?.access_token;
+
       const res = await fetch(
         "https://conuhvxiiwdsppowwrib.supabase.co/functions/v1/create-pix",
         {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Content-Type": "application/json",
+            apikey: "sb_publishable_cETlAbHQvHwOAu8WL2xdGw_yDWYlEK0",
+            ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}),
+          },
           body: JSON.stringify({ email, user_id: userId, valor: 5 }),
         },
       );
-      const data = await res.json();
-      if (!res.ok) throw new Error(data?.error || "Erro ao gerar PIX");
+
+      let data: any = null;
+      try {
+        data = await res.json();
+      } catch {
+        // resposta sem JSON
+      }
+
+      if (!res.ok) {
+        const msg = data?.error || data?.message || `Erro ao gerar PIX (HTTP ${res.status})`;
+        throw new Error(msg);
+      }
+
+      if (!data?.qr_code || !data?.qr_code_base64) {
+        throw new Error("Resposta inválida do servidor de pagamento");
+      }
+
       setPix({
         qrCode: data.qr_code,
         qrCodeBase64: data.qr_code_base64,
         paymentId: String(data.payment_id ?? data.id ?? ""),
       });
       setStep("waiting");
+      toast({ title: "PIX gerado com sucesso!", description: "Escaneie o QR Code ou copie o código." });
     } catch (err: any) {
-      toast({ title: "Erro ao gerar PIX", description: err.message, variant: "destructive" });
+      const description =
+        err?.message === "Failed to fetch"
+          ? "Não foi possível conectar ao servidor de pagamento. Tente novamente."
+          : err?.message || "Erro ao gerar PIX, tente novamente";
+      toast({ title: "Erro ao gerar PIX", description, variant: "destructive" });
     } finally {
       setLoading(false);
     }
