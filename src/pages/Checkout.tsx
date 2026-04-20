@@ -95,19 +95,35 @@ const Checkout = () => {
     }
   };
 
+  const planoValido = !!plano && plano.trim() !== "";
+  const cicloValido = !!ciclo && ciclo.trim() !== "";
+  const valorValido = Number.isFinite(valor) && valor > 0;
+  const dadosCompletos = planoValido && cicloValido && valorValido && !!userId && !!email;
+
   const handleCreatePix = async () => {
-    if (!userId || loading) return;
+    if (loading) return;
+    if (!dadosCompletos) {
+      toast({
+        title: "Dados incompletos",
+        description: "Erro ao identificar plano selecionado. Tente novamente.",
+        variant: "destructive",
+      });
+      return;
+    }
     setLoading(true);
     toast({ title: "Aguarde, gerando pagamento..." });
     try {
+      const payload = {
+        email,
+        user_id: userId,
+        userId,
+        valor: Number(valor),
+        plano,
+        ciclo,
+      };
+      console.log("[checkout] create-pix payload:", payload);
       const { data, error } = await supabase.functions.invoke("create-pix-payment", {
-        body: {
-          userId,
-          email,
-          plano,
-          ciclo,
-          valor,
-        },
+        body: payload,
       });
 
       if (error) {
