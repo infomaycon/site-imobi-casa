@@ -144,12 +144,33 @@ const Checkout = () => {
     if (!silent) setLoading(true);
     try {
       const { data } = await supabase.functions.invoke("check-pix-payment", {
-        body: { paymentId: pix.paymentId, userId, plano },
+        body: { paymentId: pix.paymentId, userId, plano, email, password },
       });
       if (data?.status === "approved") {
         setStep("approved");
         toast({ title: "Pagamento concluído com sucesso!", description: "Liberando seu acesso..." });
-        setTimeout(() => navigate("/admin"), 2000);
+
+        // Sign in on internal Lovable Cloud (where /admin authenticates)
+        try {
+          await supabase.auth.signOut().catch(() => {});
+          const { error: signInErr } = await supabase.auth.signInWithPassword({
+            email,
+            password,
+          });
+          if (signInErr) {
+            console.error("Internal sign-in failed:", signInErr);
+            toast({
+              title: "Acesso criado",
+              description: "Faça login para acessar o painel.",
+            });
+            setTimeout(() => navigate("/login"), 1500);
+            return;
+          }
+          setTimeout(() => navigate("/admin"), 1200);
+        } catch (e) {
+          console.error(e);
+          setTimeout(() => navigate("/login"), 1500);
+        }
       } else if (!silent) {
         toast({ title: "Aguardando pagamento", description: `Status: ${data?.status}` });
       }
