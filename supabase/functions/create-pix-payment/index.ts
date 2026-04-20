@@ -19,27 +19,27 @@ Deno.serve(async (req) => {
     const accessToken = Deno.env.get("MERCADO_PAGO_ACCESS_TOKEN");
     if (!accessToken) throw new Error("MERCADO_PAGO_ACCESS_TOKEN not configured");
 
-    const body = (await req.json()) as PixRequest;
-    if (!body.userId || !body.email || !body.plano || !body.valor) {
-      return new Response(JSON.stringify({ error: "Missing fields" }), {
+    const body = (await req.json()) as PixRequest & { user_id?: string };
+    const userId = body.userId || body.user_id;
+    if (!userId || !body.email || !body.plano || !body.ciclo || !body.valor) {
+      console.error("[create-pix] missing fields:", body);
+      return new Response(JSON.stringify({ error: "Missing fields", received: body }), {
         status: 400,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
 
-    const idempotencyKey = `${body.userId}-${Date.now()}`;
+    console.log("[create-pix] payload:", { userId, email: body.email, plano: body.plano, ciclo: body.ciclo, valor: body.valor });
+
+    const idempotencyKey = `${userId}-${Date.now()}`;
     const payload = {
       transaction_amount: Number(body.valor),
       description: `ImobiCasa - Plano ${body.plano} (${body.ciclo})`,
       payment_method_id: "pix",
       payer: { email: body.email },
-      external_reference: JSON.stringify({
-        userId: body.userId,
-        plano: body.plano,
-        ciclo: body.ciclo,
-      }),
+      external_reference: `${userId}|${body.plano}|${body.ciclo}`,
       metadata: {
-        user_id: body.userId,
+        user_id: userId,
         plano: body.plano,
         ciclo: body.ciclo,
       },
