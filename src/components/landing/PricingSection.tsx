@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Check, Crown, Star } from "lucide-react";
 
@@ -75,8 +76,15 @@ const plans = [
   },
 ];
 
+const PLAN_SLUGS: Record<string, string> = {
+  Essencial: "essencial",
+  Profissional: "profissional",
+  Elite: "elite",
+};
+
 const PricingSection = () => {
   const [period, setPeriod] = useState<Period>("mensal");
+  const navigate = useNavigate();
 
   return (
     <section id="planos" className="py-24 bg-surface-light-alt relative overflow-hidden">
@@ -186,6 +194,9 @@ const PricingSection = () => {
 
                 {/* CTA button */}
                 <button
+                  onClick={() =>
+                    navigate(`/checkout?plano=${PLAN_SLUGS[plan.name]}&ciclo=${period}`)
+                  }
                   className={`w-full py-3.5 rounded-xl font-display font-bold text-sm transition-all duration-300 mb-8 ${
                     plan.highlighted
                       ? "bg-primary text-primary-foreground hover:brightness-110 shadow-premium"
