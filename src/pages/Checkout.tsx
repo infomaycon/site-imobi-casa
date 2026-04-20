@@ -27,7 +27,11 @@ const Checkout = () => {
   const navigate = useNavigate();
   const plano = (params.get("plano") || "profissional").toLowerCase();
   const ciclo = (params.get("ciclo") || "mensal").toLowerCase();
-  const valor = PLAN_PRICES[plano]?.[ciclo] ?? 79.9;
+  const valorParam = Number(params.get("valor"));
+  const valor =
+    Number.isFinite(valorParam) && valorParam > 0
+      ? valorParam
+      : (PLAN_PRICES[plano]?.[ciclo] ?? 79.9);
 
   const [step, setStep] = useState<Step>("signup");
   const [email, setEmail] = useState("");
