@@ -304,7 +304,7 @@ const Checkout = () => {
               Cadastro concluído ✅<br />
               Agora gere seu PIX para liberar o acesso.
             </p>
-            <Button onClick={handleCreatePix} disabled={loading} className="w-full" size="lg">
+            <Button onClick={handleCreatePix} disabled={loading || !dadosCompletos} className="w-full" size="lg">
               {loading ? (
                 <Loader2 className="w-4 h-4 animate-spin" />
               ) : (
@@ -314,6 +314,11 @@ const Checkout = () => {
                 </>
               )}
             </Button>
+            {!dadosCompletos && (
+              <p className="text-xs text-destructive">
+                Erro ao identificar plano selecionado. Tente novamente.
+              </p>
+            )}
           </div>
         )}
 
