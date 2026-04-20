@@ -106,6 +106,7 @@ const Checkout = () => {
           headers: {
             "Content-Type": "application/json",
             apikey: "sb_publishable_cETlAbHQvHwOAu8WL2xdGw_yDWYlEK0",
+            "X-Idempotency-Key": crypto.randomUUID(),
             ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}),
           },
           body: JSON.stringify({ email, user_id: userId, valor: 5 }),
