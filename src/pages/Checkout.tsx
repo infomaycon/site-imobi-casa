@@ -84,15 +84,20 @@ const Checkout = () => {
     if (!userId) return;
     setLoading(true);
     try {
-      const { data, error } = await supabase.functions.invoke("create-pix-payment", {
-        body: { userId, email, plano, ciclo, valor },
-      });
-      if (error) throw error;
-      if (data?.error) throw new Error(data.error);
+      const res = await fetch(
+        "https://conuhvxiiwdsppowwrib.supabase.co/functions/v1/create-pix",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, user_id: userId, valor: 5 }),
+        },
+      );
+      const data = await res.json();
+      if (!res.ok) throw new Error(data?.error || "Erro ao gerar PIX");
       setPix({
-        qrCode: data.qrCode,
-        qrCodeBase64: data.qrCodeBase64,
-        paymentId: String(data.paymentId),
+        qrCode: data.qr_code,
+        qrCodeBase64: data.qr_code_base64,
+        paymentId: String(data.payment_id ?? data.id ?? ""),
       });
       setStep("waiting");
     } catch (err: any) {
