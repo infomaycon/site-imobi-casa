@@ -96,36 +96,24 @@ const Checkout = () => {
     setLoading(true);
     toast({ title: "Aguarde, gerando pagamento..." });
     try {
-      const { data: sessionData } = await testSupabase.auth.getSession();
-      const accessToken = sessionData?.session?.access_token;
-
-      const res = await fetch(
-        "https://conuhvxiiwdsppowwrib.supabase.co/functions/v1/create-pix",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            apikey: "sb_publishable_cETlAbHQvHwOAu8WL2xdGw_yDWYlEK0",
-            "X-Idempotency-Key": crypto.randomUUID(),
-            ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}),
-          },
-          body: JSON.stringify({ email, user_id: userId, valor: 5 }),
+      const { data, error } = await supabase.functions.invoke("create-pix-payment", {
+        body: {
+          userId,
+          email,
+          plano,
+          ciclo,
+          valor,
         },
-      );
+      });
 
-      let data: any = null;
-      try {
-        data = await res.json();
-      } catch {
-        // resposta sem JSON
-      }
-
-      if (!res.ok) {
-        const msg = data?.error || data?.message || `Erro ao gerar PIX (HTTP ${res.status})`;
+      if (error) {
+        const msg =
+          (typeof error.message === "string" && error.message) ||
+          "Erro ao gerar PIX, tente novamente";
         throw new Error(msg);
       }
 
-      if (!data?.qr_code || !data?.qr_code_base64) {
+      if (!data?.qrCode || !data?.qrCodeBase64) {
         throw new Error("Resposta inválida do servidor de pagamento");
       }
 
