@@ -118,9 +118,9 @@ const Checkout = () => {
       }
 
       setPix({
-        qrCode: data.qr_code,
-        qrCodeBase64: data.qr_code_base64,
-        paymentId: String(data.payment_id ?? data.id ?? ""),
+        qrCode: data.qrCode,
+        qrCodeBase64: data.qrCodeBase64,
+        paymentId: String(data.paymentId ?? ""),
       });
       setStep("waiting");
       toast({ title: "PIX gerado com sucesso!", description: "Escaneie o QR Code ou copie o código." });
