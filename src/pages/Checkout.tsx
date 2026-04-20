@@ -31,28 +31,38 @@ const Checkout = () => {
 
   const [step, setStep] = useState<Step>("signup");
   const [email, setEmail] = useState("");
+  const [emailConfirm, setEmailConfirm] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [userId, setUserId] = useState<string | null>(null);
   const [pix, setPix] = useState<{ qrCode: string; qrCodeBase64: string; paymentId: string } | null>(null);
 
-  // já logado? pula para pagamento
-  useEffect(() => {
-    testSupabase.auth.getSession().then(({ data }) => {
-      if (data.session?.user) {
-        setUserId(data.session.user.id);
-        setEmail(data.session.user.email || "");
-        setStep("pay");
-      }
-    });
-  }, []);
-
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    const normalizedEmail = email.trim().toLowerCase();
+    const normalizedConfirm = emailConfirm.trim().toLowerCase();
+
+    if (!normalizedEmail.endsWith("@gmail.com")) {
+      toast({ title: "Email inválido", description: "Use um email com final @gmail.com", variant: "destructive" });
+      return;
+    }
+    if (normalizedEmail !== normalizedConfirm) {
+      toast({ title: "Emails não conferem", description: "Os dois campos de email devem ser iguais.", variant: "destructive" });
+      return;
+    }
+    if (password.length < 6) {
+      toast({ title: "Senha curta", description: "A senha deve ter pelo menos 6 caracteres.", variant: "destructive" });
+      return;
+    }
+
     setLoading(true);
     try {
+      // Garante que não existe sessão antiga
+      await testSupabase.auth.signOut().catch(() => {});
+
       const { data, error } = await testSupabase.auth.signUp({
-        email,
+        email: normalizedEmail,
         password,
         options: { emailRedirectTo: `${window.location.origin}/checkout` },
       });
@@ -62,7 +72,7 @@ const Checkout = () => {
 
       await testSupabase.from("profiles" as any).upsert({
         id: uid,
-        email,
+        email: normalizedEmail,
         plano: "pending",
         status: "pending",
         trial: false,
@@ -70,11 +80,12 @@ const Checkout = () => {
         trial_end: null,
       });
 
+      setEmail(normalizedEmail);
       setUserId(uid);
       setStep("pay");
       toast({ title: "Cadastro criado", description: "Agora finalize o pagamento." });
     } catch (err: any) {
-      toast({ title: "Erro", description: err.message, variant: "destructive" });
+      toast({ title: "Erro no cadastro", description: err.message, variant: "destructive" });
     } finally {
       setLoading(false);
     }
@@ -116,8 +127,8 @@ const Checkout = () => {
       });
       if (data?.status === "approved") {
         setStep("approved");
-        toast({ title: "Pagamento aprovado!" });
-        setTimeout(() => navigate("/admin"), 1500);
+        toast({ title: "Pagamento concluído com sucesso!", description: "Liberando seu acesso..." });
+        setTimeout(() => navigate("/admin"), 2000);
       } else if (!silent) {
         toast({ title: "Aguardando pagamento", description: `Status: ${data?.status}` });
       }
@@ -181,13 +192,25 @@ const Checkout = () => {
         {step === "signup" && (
           <form onSubmit={handleSignup} className="space-y-4">
             <div>
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email">Email (somente @gmail.com)</Label>
               <Input
                 id="email"
                 type="email"
                 required
+                placeholder="seuemail@gmail.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+              />
+            </div>
+            <div>
+              <Label htmlFor="emailConfirm">Confirme seu email</Label>
+              <Input
+                id="emailConfirm"
+                type="email"
+                required
+                placeholder="seuemail@gmail.com"
+                value={emailConfirm}
+                onChange={(e) => setEmailConfirm(e.target.value)}
               />
             </div>
             <div>
@@ -202,7 +225,7 @@ const Checkout = () => {
               />
             </div>
             <Button type="submit" disabled={loading} className="w-full">
-              {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : "Confirmar cadastro"}
+              {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : "Criar conta e continuar"}
             </Button>
           </form>
         )}
@@ -257,8 +280,8 @@ const Checkout = () => {
             <div className="w-16 h-16 mx-auto rounded-full bg-primary/10 flex items-center justify-center">
               <Check className="w-8 h-8 text-primary" />
             </div>
-            <h2 className="font-display font-bold text-xl text-heading">Pagamento aprovado!</h2>
-            <p className="text-body-muted text-sm">Redirecionando para o painel...</p>
+            <h2 className="font-display font-bold text-xl text-heading">Pagamento concluído com sucesso!</h2>
+            <p className="text-body-muted text-sm">Liberando seu plano e redirecionando para o painel...</p>
           </div>
         )}
       </div>
