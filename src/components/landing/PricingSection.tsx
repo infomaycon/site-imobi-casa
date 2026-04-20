@@ -39,7 +39,7 @@ const plans = [
     prices: { mensal: "R$ 79,90", semestral: "R$ 379", anual: "R$ 699,90" },
     periodLabel: { mensal: "/mês", semestral: "/semestre", anual: "/ano" },
     highlighted: true,
-    cta: "Escolher plano",
+    cta: "Começar agora",
     features: [
       "Acesso a todos os modelos de site",
       "Até 50 imóveis cadastrados",
@@ -60,7 +60,7 @@ const plans = [
     prices: { mensal: "R$ 129,90", semestral: "R$ 649,90", anual: "R$ 1.099,90" },
     periodLabel: { mensal: "/mês", semestral: "/semestre", anual: "/ano" },
     highlighted: false,
-    cta: "Assinar agora",
+    cta: "Começar agora",
     features: [
       "Acesso a todos os modelos",
       "Controle total de edição do site",
