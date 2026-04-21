@@ -11,6 +11,13 @@ const PLAN_VALUES: Record<string, number> = {
   elite: 129.9,
 };
 
+function computeExpiresAt(ciclo: string): string {
+  const now = new Date();
+  const days = ciclo === "anual" ? 365 : ciclo === "semestral" ? 180 : 30;
+  now.setDate(now.getDate() + days);
+  return now.toISOString();
+}
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
 
@@ -26,7 +33,8 @@ Deno.serve(async (req) => {
       throw new Error("Secrets not configured");
     }
 
-    const { paymentId, userId, plano, email, password } = await req.json();
+    const { paymentId, userId, plano, ciclo, email, password } = await req.json();
+    const cicloFinal = (ciclo as string | undefined)?.toLowerCase() || "mensal";
     if (!paymentId) {
       return new Response(JSON.stringify({ error: "paymentId required" }), {
         status: 400,
@@ -49,10 +57,21 @@ Deno.serve(async (req) => {
       // 1) Update external test profile (legacy)
       if (userId && plano) {
         const admin = createClient(testUrl, testKey);
-        await admin
+        const updatePayload: Record<string, unknown> = {
+          plano,
+          status: "active",
+          trial: false,
+        };
+        // Try with ciclo + expires_at; if columns don't exist, retry without
+        const expires_at = computeExpiresAt(cicloFinal);
+        const { error: updErr } = await admin
           .from("profiles")
-          .update({ plano, status: "active", trial: false })
+          .update({ ...updatePayload, ciclo: cicloFinal, expires_at })
           .eq("id", userId);
+        if (updErr) {
+          console.warn("[check-pix] retrying without ciclo/expires_at:", updErr.message);
+          await admin.from("profiles").update(updatePayload).eq("id", userId);
+        }
       }
 
       // 2) Provision user in INTERNAL Lovable Cloud + subscribers row
