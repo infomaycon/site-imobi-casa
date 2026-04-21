@@ -1,35 +1,36 @@
+import { lazy, Suspense } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider } from "@/hooks/useAuth";
-import Index from "./pages/Index.tsx";
-import DemoSite from "./pages/DemoSite.tsx";
-import Login from "./pages/Login.tsx";
-import ForgotPassword from "./pages/ForgotPassword.tsx";
-import ResetPassword from "./pages/ResetPassword.tsx";
-import SuperAdminLogin from "./pages/SuperAdminLogin.tsx";
-import TestLogin from "./pages/TestLogin.tsx";
-import TestSignup from "./pages/TestSignup.tsx";
-import Signup from "./pages/Signup.tsx";
-import Checkout from "./pages/Checkout.tsx";
 
-import SuperAdminForgotPassword from "./pages/SuperAdminForgotPassword.tsx";
-import AdminLayout from "./pages/admin/AdminLayout.tsx";
-import AddProperty from "./pages/admin/AddProperty.tsx";
-import PropertyList from "./pages/admin/PropertyList.tsx";
-import AppearancePage from "./pages/admin/AppearancePage.tsx";
-import SiteContentPage from "./pages/admin/SiteContentPage.tsx";
-import LeadsPage from "./pages/admin/LeadsPage.tsx";
-import SettingsPage from "./pages/admin/SettingsPage.tsx";
-import AccountPage from "./pages/admin/AccountPage.tsx";
-import HelpPage from "./pages/admin/HelpPage.tsx";
-import NotFound from "./pages/NotFound.tsx";
-import SuperAdminLayout from "./pages/super-admin/SuperAdminLayout.tsx";
-import DashboardPage from "./pages/super-admin/DashboardPage.tsx";
-import SubscribersPage from "./pages/super-admin/SubscribersPage.tsx";
-import UsersPage from "./pages/super-admin/UsersPage.tsx";
+const Index = lazy(() => import("./pages/Index.tsx"));
+const DemoSite = lazy(() => import("./pages/DemoSite.tsx"));
+const Login = lazy(() => import("./pages/Login.tsx"));
+const ForgotPassword = lazy(() => import("./pages/ForgotPassword.tsx"));
+const ResetPassword = lazy(() => import("./pages/ResetPassword.tsx"));
+const SuperAdminLogin = lazy(() => import("./pages/SuperAdminLogin.tsx"));
+const TestLogin = lazy(() => import("./pages/TestLogin.tsx"));
+const TestSignup = lazy(() => import("./pages/TestSignup.tsx"));
+const Signup = lazy(() => import("./pages/Signup.tsx"));
+const Checkout = lazy(() => import("./pages/Checkout.tsx"));
+const SuperAdminForgotPassword = lazy(() => import("./pages/SuperAdminForgotPassword.tsx"));
+const AdminLayout = lazy(() => import("./pages/admin/AdminLayout.tsx"));
+const AddProperty = lazy(() => import("./pages/admin/AddProperty.tsx"));
+const PropertyList = lazy(() => import("./pages/admin/PropertyList.tsx"));
+const AppearancePage = lazy(() => import("./pages/admin/AppearancePage.tsx"));
+const SiteContentPage = lazy(() => import("./pages/admin/SiteContentPage.tsx"));
+const LeadsPage = lazy(() => import("./pages/admin/LeadsPage.tsx"));
+const SettingsPage = lazy(() => import("./pages/admin/SettingsPage.tsx"));
+const AccountPage = lazy(() => import("./pages/admin/AccountPage.tsx"));
+const HelpPage = lazy(() => import("./pages/admin/HelpPage.tsx"));
+const NotFound = lazy(() => import("./pages/NotFound.tsx"));
+const SuperAdminLayout = lazy(() => import("./pages/super-admin/SuperAdminLayout.tsx"));
+const DashboardPage = lazy(() => import("./pages/super-admin/DashboardPage.tsx"));
+const SubscribersPage = lazy(() => import("./pages/super-admin/SubscribersPage.tsx"));
+const UsersPage = lazy(() => import("./pages/super-admin/UsersPage.tsx"));
 
 const queryClient = new QueryClient();
 
@@ -40,6 +41,7 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
+          <Suspense fallback={<div className="min-h-screen" />}>
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/demo/:modelId" element={<DemoSite />} />
@@ -70,6 +72,7 @@ const App = () => (
             </Route>
             <Route path="*" element={<NotFound />} />
           </Routes>
+          </Suspense>
         </BrowserRouter>
       </TooltipProvider>
     </AuthProvider>
