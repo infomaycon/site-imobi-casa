@@ -6,9 +6,9 @@ const corsHeaders = {
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const PLAN_VALUES: Record<string, number> = {
-  essencial: 1,
-  profissional: 79.9,
-  elite: 129.9,
+  essencial: 2,
+  profissional: 2,
+  elite: 2,
 };
 
 function computeExpiresAt(ciclo: string): string {
