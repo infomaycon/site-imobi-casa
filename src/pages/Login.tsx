@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { LogIn, Eye, EyeOff } from "lucide-react";
-import logo from "@/assets/imobicasa-logo.png";
+import logo from "@/assets/imobicasa-logo.webp";
 
 const Login = () => {
   const [email, setEmail] = useState("");

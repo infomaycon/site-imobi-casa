@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Menu, X, LogIn } from "lucide-react";
-import logo from "@/assets/imobicasa-logo.png";
+import logo from "@/assets/imobicasa-logo.webp";
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);

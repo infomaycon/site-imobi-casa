@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { KeyRound, Check } from "lucide-react";
-import logo from "@/assets/imobicasa-logo.png";
+import logo from "@/assets/imobicasa-logo.webp";
 
 const ResetPassword = () => {
   const [password, setPassword] = useState("");

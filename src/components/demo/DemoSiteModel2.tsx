@@ -8,14 +8,14 @@ import { ArrowLeft, Phone, Mail, MapPin, Bed, Bath, Car, Maximize, ChefHat, Wave
 import { getSearchFilter } from "@/components/demo/SearchFilters";
 import RentalHighlightSection from "@/components/demo/RentalHighlightSection";
 
-import property1 from "@/assets/property-1.jpg";
-import property2 from "@/assets/property-2.jpg";
-import property3 from "@/assets/property-3.jpg";
-import property4 from "@/assets/property-4.jpg";
-import property5 from "@/assets/property-5.jpg";
-import property6 from "@/assets/property-6.jpg";
-import bannerImg from "@/assets/banner-model2.jpg";
-import brokerPhoto from "@/assets/broker-photo.jpg";
+import property1 from "@/assets/property-1.webp";
+import property2 from "@/assets/property-2.webp";
+import property3 from "@/assets/property-3.webp";
+import property4 from "@/assets/property-4.webp";
+import property5 from "@/assets/property-5.webp";
+import property6 from "@/assets/property-6.webp";
+import bannerImg from "@/assets/banner-model2.webp";
+import brokerPhoto from "@/assets/broker-photo.webp";
 
 const propertyImages = [property1, property2, property3, property4, property5, property6];
 

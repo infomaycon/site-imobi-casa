@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import logo from "@/assets/imobicasa-logo.png";
+import logo from "@/assets/imobicasa-logo.webp";
 
 const Footer = () => {
   const navigate = useNavigate();
