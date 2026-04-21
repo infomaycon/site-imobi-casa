@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { demoModels, properties, type Property, type DemoModel } from "@/data/models";
 import { ArrowLeft, Phone, Mail, MapPin, Bed, Bath, Car, Maximize, ChefHat, Waves, Mountain, Fence, Gem, Menu, X, MessageCircle, Award, TrendingUp, Users } from "lucide-react";
-import brokerPhoto from "@/assets/broker-photo.jpg";
+import brokerPhoto from "@/assets/broker-photo.webp";
 import { getSearchFilter } from "@/components/demo/SearchFilters";
 import RentalHighlightSection from "@/components/demo/RentalHighlightSection";
 import DemoSiteModel1 from "@/components/demo/DemoSiteModel1";
@@ -25,15 +25,15 @@ import ImageLightbox from "@/components/demo/ImageLightbox";
 import ModelLogo from "@/components/demo/ModelLogo";
 import ModelFooter from "@/components/demo/ModelFooter";
 
-import property1 from "@/assets/property-1.jpg";
-import property2 from "@/assets/property-2.jpg";
-import property3 from "@/assets/property-3.jpg";
-import property4 from "@/assets/property-4.jpg";
-import property5 from "@/assets/property-5.jpg";
-import property6 from "@/assets/property-6.jpg";
-import bannerModel4 from "@/assets/banner-model4.jpg";
-import bannerModel5 from "@/assets/banner-model5.jpg";
-import bannerModel6 from "@/assets/banner-model6.jpg";
+import property1 from "@/assets/property-1.webp";
+import property2 from "@/assets/property-2.webp";
+import property3 from "@/assets/property-3.webp";
+import property4 from "@/assets/property-4.webp";
+import property5 from "@/assets/property-5.webp";
+import property6 from "@/assets/property-6.webp";
+import bannerModel4 from "@/assets/banner-model4.webp";
+import bannerModel5 from "@/assets/banner-model5.webp";
+import bannerModel6 from "@/assets/banner-model6.webp";
 
 const propertyImages = [property1, property2, property3, property4, property5, property6];
 

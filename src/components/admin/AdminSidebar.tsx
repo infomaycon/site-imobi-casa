@@ -13,7 +13,7 @@ import {
   SidebarFooter,
   SidebarHeader,
 } from "@/components/ui/sidebar";
-import logo from "@/assets/imobicasa-logo.png";
+import logo from "@/assets/imobicasa-logo.webp";
 
 const menuItems = [
   { title: "Adicionar Imóvel", url: "/admin", icon: PlusCircle },

@@ -2,12 +2,12 @@ import { motion } from "framer-motion";
 import { MapPin, Bed, Bath, Car, Maximize, Hash } from "lucide-react";
 import type { Property, DemoModel } from "@/data/models";
 
-import property1 from "@/assets/property-1.jpg";
-import property2 from "@/assets/property-2.jpg";
-import property3 from "@/assets/property-3.jpg";
-import property4 from "@/assets/property-4.jpg";
-import property5 from "@/assets/property-5.jpg";
-import property6 from "@/assets/property-6.jpg";
+import property1 from "@/assets/property-1.webp";
+import property2 from "@/assets/property-2.webp";
+import property3 from "@/assets/property-3.webp";
+import property4 from "@/assets/property-4.webp";
+import property5 from "@/assets/property-5.webp";
+import property6 from "@/assets/property-6.webp";
 
 const propertyImages = [property1, property2, property3, property4, property5, property6];
 

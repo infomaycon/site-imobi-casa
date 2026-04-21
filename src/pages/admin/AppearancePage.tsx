@@ -8,15 +8,15 @@ import { Button } from "@/components/ui/button";
 import { Layout, Palette, Save, CheckCircle2, ExternalLink, Lock, Crown } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
-import previewAuroraPrime from "@/assets/preview-aurora-prime.png";
-import previewSkylineUrban from "@/assets/preview-skyline-urban.png";
-import previewMetropolitanElite from "@/assets/preview-metropolitan-elite.png";
-import previewVillaCapital from "@/assets/preview-villa-capital.png";
-import previewUrbanSignature from "@/assets/preview-urban-signature.png";
-import previewInfinityCity from "@/assets/preview-infinity-city.png";
-import previewEmpireUrban from "@/assets/preview-empire-urban.png";
-import previewPrimeDistrict from "@/assets/preview-prime-district.png";
-import previewCrownCity from "@/assets/preview-crown-city.png";
+import previewAuroraPrime from "@/assets/preview-aurora-prime.webp";
+import previewSkylineUrban from "@/assets/preview-skyline-urban.webp";
+import previewMetropolitanElite from "@/assets/preview-metropolitan-elite.webp";
+import previewVillaCapital from "@/assets/preview-villa-capital.webp";
+import previewUrbanSignature from "@/assets/preview-urban-signature.webp";
+import previewInfinityCity from "@/assets/preview-infinity-city.webp";
+import previewEmpireUrban from "@/assets/preview-empire-urban.webp";
+import previewPrimeDistrict from "@/assets/preview-prime-district.webp";
+import previewCrownCity from "@/assets/preview-crown-city.webp";
 
 const previewMap: Record<string, string> = {
   "aurora-prime": previewAuroraPrime,
