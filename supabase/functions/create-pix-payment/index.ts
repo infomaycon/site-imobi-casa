@@ -17,7 +17,9 @@ Deno.serve(async (req) => {
 
   try {
     const accessToken = Deno.env.get("MERCADO_PAGO_ACCESS_TOKEN");
+    const supabaseUrl = Deno.env.get("SUPABASE_URL");
     if (!accessToken) throw new Error("MERCADO_PAGO_ACCESS_TOKEN not configured");
+    if (!supabaseUrl) throw new Error("SUPABASE_URL not configured");
 
     const body = (await req.json()) as PixRequest & { user_id?: string };
     const userId = body.userId || body.user_id;
@@ -36,6 +38,7 @@ Deno.serve(async (req) => {
       transaction_amount: Number(body.valor),
       description: `ImobiCasa - Plano ${body.plano} (${body.ciclo})`,
       payment_method_id: "pix",
+      notification_url: `${supabaseUrl}/functions/v1/mercadopago-webhook`,
       payer: { email: body.email },
       external_reference: `${userId}|${body.plano}|${body.ciclo}`,
       metadata: {
