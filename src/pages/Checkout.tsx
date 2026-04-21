@@ -100,6 +100,15 @@ const Checkout = () => {
 
   const handleCreatePix = async () => {
     if (loading) return;
+    // Validação obrigatória ANTES de qualquer requisição
+    if (!plano || !ciclo) {
+      toast({
+        title: "Erro ao identificar plano",
+        description: "Volte e selecione novamente.",
+        variant: "destructive",
+      });
+      return;
+    }
     if (!dadosCompletos) {
       toast({
         title: "Dados incompletos",
@@ -119,6 +128,7 @@ const Checkout = () => {
         plano,
         ciclo,
       };
+      console.log("PIX DATA:", { plano, ciclo, valor: Number(valor) });
       console.log("[checkout] create-pix payload:", payload);
       const { data, error } = await supabase.functions.invoke("create-pix-payment", {
         body: payload,
