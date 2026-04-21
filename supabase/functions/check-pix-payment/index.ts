@@ -18,6 +18,42 @@ function computeExpiresAt(ciclo: string): string {
   return now.toISOString();
 }
 
+async function persistExternalProfile(params: {
+  testUrl: string;
+  testKey: string;
+  userId: string;
+  email?: string;
+  plano: string;
+  ciclo: string;
+}) {
+  const { testUrl, testKey, userId, email, plano, ciclo } = params;
+  const admin = createClient(testUrl, testKey);
+  const basePayload: Record<string, unknown> = {
+    id: userId,
+    email: email ?? null,
+    plano,
+    status: "active",
+    trial: false,
+  };
+  const expires_at = computeExpiresAt(ciclo);
+
+  const { error } = await admin
+    .from("profiles")
+    .upsert({ ...basePayload, ciclo, expires_at }, { onConflict: "id" });
+
+  if (!error) return;
+
+  console.warn("[check-pix] retrying without ciclo/expires_at:", error.message);
+
+  const { error: fallbackError } = await admin
+    .from("profiles")
+    .upsert(basePayload, { onConflict: "id" });
+
+  if (fallbackError) {
+    throw new Error(`External profile sync failed: ${fallbackError.message}`);
+  }
+}
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
 
@@ -56,22 +92,14 @@ Deno.serve(async (req) => {
     if (data.status === "approved") {
       // 1) Update external test profile (legacy)
       if (userId && plano) {
-        const admin = createClient(testUrl, testKey);
-        const updatePayload: Record<string, unknown> = {
+        await persistExternalProfile({
+          testUrl,
+          testKey,
+          userId,
+          email,
           plano,
-          status: "active",
-          trial: false,
-        };
-        // Try with ciclo + expires_at; if columns don't exist, retry without
-        const expires_at = computeExpiresAt(cicloFinal);
-        const { error: updErr } = await admin
-          .from("profiles")
-          .update({ ...updatePayload, ciclo: cicloFinal, expires_at })
-          .eq("id", userId);
-        if (updErr) {
-          console.warn("[check-pix] retrying without ciclo/expires_at:", updErr.message);
-          await admin.from("profiles").update(updatePayload).eq("id", userId);
-        }
+          ciclo: cicloFinal,
+        });
       }
 
       // 2) Provision user in INTERNAL Lovable Cloud + subscribers row
