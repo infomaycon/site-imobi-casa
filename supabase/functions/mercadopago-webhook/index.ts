@@ -5,6 +5,48 @@ const corsHeaders = {
 };
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
+function computeExpiresAt(ciclo: string): string {
+  const now = new Date();
+  const days = ciclo === "anual" ? 365 : ciclo === "semestral" ? 180 : 30;
+  now.setDate(now.getDate() + days);
+  return now.toISOString();
+}
+
+async function persistExternalProfile(params: {
+  testUrl: string;
+  testKey: string;
+  userId: string;
+  email?: string;
+  plano: string;
+  ciclo: string;
+}) {
+  const { testUrl, testKey, userId, email, plano, ciclo } = params;
+  const admin = createClient(testUrl, testKey);
+  const basePayload: Record<string, unknown> = {
+    id: userId,
+    email: email ?? null,
+    plano,
+    status: "active",
+    trial: false,
+  };
+
+  const { error } = await admin
+    .from("profiles")
+    .upsert({ ...basePayload, ciclo, expires_at: computeExpiresAt(ciclo) }, { onConflict: "id" });
+
+  if (!error) return;
+
+  console.warn("[mp-webhook] retrying without ciclo/expires_at:", error.message);
+
+  const { error: fallbackError } = await admin
+    .from("profiles")
+    .upsert(basePayload, { onConflict: "id" });
+
+  if (fallbackError) {
+    throw new Error(`External profile sync failed: ${fallbackError.message}`);
+  }
+}
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
 
@@ -38,22 +80,27 @@ Deno.serve(async (req) => {
     if (payment.status === "approved") {
       let userId: string | undefined;
       let plano: string | undefined;
+      let ciclo = "mensal";
       try {
         const ref = JSON.parse(payment.external_reference || "{}");
         userId = ref.userId;
         plano = ref.plano;
       } catch {
-        userId = payment?.metadata?.user_id;
-        plano = payment?.metadata?.plano;
+        const [refUserId, refPlano, refCiclo] = String(payment.external_reference || "").split("|");
+        userId = payment?.metadata?.user_id || refUserId;
+        plano = payment?.metadata?.plano || refPlano;
+        ciclo = payment?.metadata?.ciclo || refCiclo || "mensal";
       }
 
       if (userId && plano) {
-        const admin = createClient(testUrl, testKey);
-        const { error } = await admin
-          .from("profiles")
-          .update({ plano, status: "active", trial: false })
-          .eq("id", userId);
-        if (error) console.error("Profile update error:", error);
+        await persistExternalProfile({
+          testUrl,
+          testKey,
+          userId,
+          email: payment?.payer?.email,
+          plano,
+          ciclo,
+        });
       }
     }
 
