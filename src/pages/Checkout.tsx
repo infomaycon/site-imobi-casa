@@ -7,13 +7,14 @@ import { Label } from "@/components/ui/label";
 import { toast } from "@/hooks/use-toast";
 import { testSupabase } from "@/lib/supabase";
 import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/hooks/useAuth";
 
 type Step = "signup" | "pay" | "waiting" | "approved";
 
 const PLAN_PRICES: Record<string, Record<string, number>> = {
-  essencial: { mensal: 0.2, semestral: 0.2, anual: 0.2 },
-  profissional: { mensal: 0.2, semestral: 0.2, anual: 0.2 },
-  elite: { mensal: 0.2, semestral: 0.2, anual: 0.2 },
+  essencial: { mensal: 49.9, semestral: 254.9, anual: 449.9 },
+  profissional: { mensal: 79.9, semestral: 379, anual: 699.9 },
+  elite: { mensal: 129.9, semestral: 649.9, anual: 1099.9 },
 };
 
 const PLAN_LABEL: Record<string, string> = {
@@ -25,18 +26,28 @@ const PLAN_LABEL: Record<string, string> = {
 const Checkout = () => {
   const [params] = useSearchParams();
   const navigate = useNavigate();
+  const { user } = useAuth();
   const plano = (params.get("plano") || "profissional").toLowerCase();
   const ciclo = (params.get("ciclo") || "mensal").toLowerCase();
-  // Modo de teste: força R$ 0,20 independente do valor da URL
-  const valor = 0.2;
+  const valor = PLAN_PRICES[plano]?.[ciclo] ?? 0.2;
 
-  const [step, setStep] = useState<Step>("signup");
+  // Se já estiver logado (upgrade pelo painel), pula etapa de cadastro
+  const [step, setStep] = useState<Step>(user ? "pay" : "signup");
   const [email, setEmail] = useState("");
   const [emailConfirm, setEmailConfirm] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [userId, setUserId] = useState<string | null>(null);
   const [pix, setPix] = useState<{ qrCode: string; qrCodeBase64: string; paymentId: string } | null>(null);
+
+  // Sincroniza dados quando o usuário logado entra na página
+  useEffect(() => {
+    if (user?.email) {
+      setEmail(user.email);
+      setUserId(user.id);
+      setStep((s) => (s === "signup" ? "pay" : s));
+    }
+  }, [user]);
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
