@@ -168,7 +168,7 @@ const Checkout = () => {
     if (!silent) setLoading(true);
     try {
       const { data } = await supabase.functions.invoke("check-pix-payment", {
-        body: { paymentId: pix.paymentId, userId, plano, email, password },
+        body: { paymentId: pix.paymentId, userId, plano, ciclo, email, password },
       });
       if (data?.status === "approved") {
         setStep("approved");
