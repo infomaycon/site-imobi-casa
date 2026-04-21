@@ -108,6 +108,14 @@ const Checkout = () => {
       });
       return;
     }
+    if (!email) {
+      toast({
+        title: "Erro ao identificar usuário",
+        description: "Faça login novamente.",
+        variant: "destructive",
+      });
+      return;
+    }
     if (!dadosCompletos) {
       toast({
         title: "Dados incompletos",
