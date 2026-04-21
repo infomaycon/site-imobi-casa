@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
+import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -33,11 +34,31 @@ const Signup = () => {
       return;
     }
     const { error: signInError } = await signIn(email, password);
-    setLoading(false);
     if (signInError) {
+      setLoading(false);
       setInfo("Conta criada! Verifique seu email para confirmar antes de entrar.");
       return;
     }
+
+    // Cria registro de assinante em modo trial (7 dias) se ainda não existir
+    const trialEnd = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString();
+    const { data: existing } = await supabase
+      .from("subscribers")
+      .select("id")
+      .eq("email", email)
+      .maybeSingle();
+    if (!existing) {
+      await supabase.from("subscribers").insert({
+        email,
+        name: email.split("@")[0],
+        plan: "trial",
+        plan_value: 0,
+        status: "active",
+        trial: true,
+        trial_end: trialEnd,
+      });
+    }
+    setLoading(false);
     navigate("/admin");
   };
 
