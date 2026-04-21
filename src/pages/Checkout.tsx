@@ -192,6 +192,12 @@ const Checkout = () => {
         setStep("approved");
         toast({ title: "Pagamento concluído com sucesso!", description: "Liberando seu acesso..." });
 
+        // Já está logado (upgrade pelo painel) → vai direto pro admin
+        if (user) {
+          setTimeout(() => navigate("/admin"), 1200);
+          return;
+        }
+
         // Sign in on internal Lovable Cloud (where /admin authenticates)
         try {
           await supabase.auth.signOut().catch(() => {});
