@@ -8,6 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { Save, ImagePlus, X, CheckCircle2, Home, Building2, MapPin, Key, ArrowLeft, Star } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { convertToWebp } from "@/lib/imageToWebp";
 
 type Category = "venda_casa" | "apartamento" | "terreno" | "aluguel" | null;
 
@@ -42,9 +43,11 @@ const AddProperty = () => {
 
   const uploadImage = async (file: File): Promise<string | null> => {
     if (!user) return null;
-    const ext = file.name.split(".").pop();
-    const path = `${user.id}/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
-    const { error } = await supabase.storage.from("property-images").upload(path, file);
+    const webpFile = await convertToWebp(file);
+    const path = `${user.id}/${Date.now()}-${Math.random().toString(36).slice(2)}.webp`;
+    const { error } = await supabase.storage
+      .from("property-images")
+      .upload(path, webpFile, { contentType: "image/webp" });
     if (error) return null;
     const { data } = supabase.storage.from("property-images").getPublicUrl(path);
     return data.publicUrl;
