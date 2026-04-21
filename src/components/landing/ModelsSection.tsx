@@ -54,6 +54,8 @@ const ModelsSection = () => {
                 <img
                   src={previewMap[model.id]}
                   alt={`Preview do modelo ${model.name}`}
+                  loading="lazy"
+                  decoding="async"
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-black/30" />
