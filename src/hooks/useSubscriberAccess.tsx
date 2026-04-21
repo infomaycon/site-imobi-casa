@@ -10,6 +10,8 @@ export interface SubscriberData {
   status: string;
   plan_value: number;
   created_at: string;
+  trial?: boolean;
+  trial_end?: string | null;
 }
 
 export const useSubscriberAccess = () => {
