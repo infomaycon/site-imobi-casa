@@ -209,6 +209,8 @@ export type Database = {
           plan: string
           plan_value: number
           status: string
+          trial: boolean
+          trial_end: string | null
           updated_at: string
         }
         Insert: {
@@ -219,6 +221,8 @@ export type Database = {
           plan?: string
           plan_value?: number
           status?: string
+          trial?: boolean
+          trial_end?: string | null
           updated_at?: string
         }
         Update: {
@@ -229,6 +233,8 @@ export type Database = {
           plan?: string
           plan_value?: number
           status?: string
+          trial?: boolean
+          trial_end?: string | null
           updated_at?: string
         }
         Relationships: []
