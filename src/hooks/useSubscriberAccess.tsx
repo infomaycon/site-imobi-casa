@@ -25,7 +25,25 @@ export const useSubscriberAccess = () => {
         .eq("email", user.email)
         .maybeSingle();
       if (error) throw error;
-      return data as SubscriberData | null;
+      if (data) return data as SubscriberData;
+
+      // Fallback: usuário autenticado sem registro de assinante.
+      // Cria automaticamente um trial de 7 dias.
+      const trialEnd = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString();
+      const { data: created } = await supabase
+        .from("subscribers")
+        .insert({
+          email: user.email,
+          name: user.email.split("@")[0],
+          plan: "trial",
+          plan_value: 0,
+          status: "active",
+          trial: true,
+          trial_end: trialEnd,
+        })
+        .select("*")
+        .maybeSingle();
+      return (created as SubscriberData | null) ?? null;
     },
     enabled: !!user?.email,
   });
