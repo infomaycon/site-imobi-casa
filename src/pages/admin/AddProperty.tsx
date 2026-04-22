@@ -9,14 +9,36 @@ import { Switch } from "@/components/ui/switch";
 import { Save, ImagePlus, X, CheckCircle2, Home, Building2, MapPin, Key, ArrowLeft, Star } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { convertToWebp } from "@/lib/imageToWebp";
+import DashboardHeader from "@/components/admin/DashboardHeader";
 
 type Category = "venda_casa" | "apartamento" | "terreno" | "aluguel" | null;
 
 const categories = [
-  { id: "venda_casa" as Category, label: "Vender Casa", icon: Home, status: "venda", type: "casa" },
-  { id: "apartamento" as Category, label: "Apartamento", icon: Building2, status: "venda", type: "apartamento" },
-  { id: "terreno" as Category, label: "Terreno", icon: MapPin, status: "venda", type: "terreno" },
-  { id: "aluguel" as Category, label: "Aluguel", icon: Key, status: "aluguel", type: "casa" },
+  {
+    id: "venda_casa" as Category, label: "Vender Casa", icon: Home, status: "venda", type: "casa",
+    subtitle: "Cadastre casas à venda com destaque profissional",
+    accent: "from-primary/20 to-primary/5",
+    iconBg: "bg-primary/15 text-primary",
+  },
+  {
+    id: "apartamento" as Category, label: "Apartamento", icon: Building2, status: "venda", type: "apartamento",
+    subtitle: "Anuncie apartamentos com fotos e detalhes premium",
+    accent: "from-blue-500/20 to-blue-500/5",
+    iconBg: "bg-blue-500/15 text-blue-600",
+  },
+  {
+    id: "terreno" as Category, label: "Terreno", icon: MapPin, status: "venda", type: "terreno",
+    subtitle: "Publique lotes e terrenos com localização precisa",
+    accent: "from-amber-500/20 to-amber-500/5",
+    iconBg: "bg-amber-500/15 text-amber-600",
+  },
+  {
+    id: "aluguel" as Category, label: "Aluguel", icon: Key, status: "aluguel", type: "casa",
+    subtitle: "Alta demanda — anuncie e converta locatários rapidamente",
+    accent: "from-orange-500/30 to-orange-500/10",
+    iconBg: "bg-orange-500/20 text-orange-600",
+    highlight: true,
+  },
 ];
 
 const MAX_GALLERY_IMAGES = 15; // plano mais alto
