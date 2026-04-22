@@ -1,12 +1,12 @@
 import { Outlet, Navigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { useSubscriberAccess } from "@/hooks/useSubscriberAccess";
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import AdminSidebar from "@/components/admin/AdminSidebar";
+import AdminTopNav from "@/components/admin/AdminTopNav";
 import WelcomeDialog from "@/components/admin/WelcomeDialog";
 import TrialEndingBanner from "@/components/admin/TrialEndingBanner";
 import TrialExpiredOverlay from "@/components/admin/TrialExpiredOverlay";
-import { Menu, ShieldX, AlertTriangle } from "lucide-react";
+import { AdminThemeProvider } from "@/hooks/useAdminTheme";
+import { ShieldX, AlertTriangle } from "lucide-react";
 
 const AdminLayout = () => {
   const { user, loading, signOut } = useAuth();
@@ -14,7 +14,7 @@ const AdminLayout = () => {
 
   if (loading || subLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: "#f5f5f5" }}>
+      <div className="min-h-screen flex items-center justify-center bg-background">
         <div className="animate-pulse text-muted-foreground font-body">Carregando...</div>
       </div>
     );
@@ -27,7 +27,7 @@ const AdminLayout = () => {
   // Email not in subscribers table
   if (!isAuthorized) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: "#f5f5f5" }}>
+      <div className="min-h-screen flex items-center justify-center bg-background">
         <div className="bg-card rounded-2xl shadow-soft p-8 max-w-md text-center space-y-4">
           <div className="w-16 h-16 rounded-full bg-destructive/10 flex items-center justify-center mx-auto">
             <ShieldX className="w-8 h-8 text-destructive" />
@@ -50,7 +50,7 @@ const AdminLayout = () => {
   // Subscriber exists but status is not active
   if (!isActive) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: "#f5f5f5" }}>
+      <div className="min-h-screen flex items-center justify-center bg-background">
         <div className="bg-card rounded-2xl shadow-soft p-8 max-w-md text-center space-y-4">
           <div className="w-16 h-16 rounded-full bg-amber-100 flex items-center justify-center mx-auto">
             <AlertTriangle className="w-8 h-8 text-amber-600" />
@@ -71,25 +71,22 @@ const AdminLayout = () => {
   }
 
   return (
-    <SidebarProvider>
-      <div className="min-h-screen flex w-full" style={{ backgroundColor: "#f5f5f5" }}>
-        <AdminSidebar />
-        <div className="flex-1 flex flex-col min-h-screen">
-          <header className="h-16 flex items-center border-b border-border bg-card px-4 sticky top-0 z-10">
-            <SidebarTrigger className="mr-4">
-              <Menu className="h-5 w-5" />
-            </SidebarTrigger>
-            <h2 className="text-lg font-display font-semibold text-foreground">Painel Administrativo</h2>
-          </header>
-          <main className="flex-1 p-6 overflow-auto">
-            <TrialEndingBanner />
-            <Outlet />
-          </main>
+    <AdminThemeProvider>
+      <div className="min-h-screen flex flex-col w-full bg-background text-foreground transition-colors">
+        {/* Ambient background flourish */}
+        <div className="pointer-events-none fixed inset-0 -z-10">
+          <div className="absolute top-[-10%] left-[-5%] w-[40rem] h-[40rem] rounded-full bg-primary/10 blur-[120px]" />
+          <div className="absolute bottom-[-15%] right-[-10%] w-[40rem] h-[40rem] rounded-full bg-accent/10 blur-[140px]" />
         </div>
+        <AdminTopNav />
+        <main className="flex-1 px-4 lg:px-6 py-6 overflow-auto max-w-[1500px] w-full mx-auto">
+          <TrialEndingBanner />
+          <Outlet />
+        </main>
         <WelcomeDialog />
         <TrialExpiredOverlay />
       </div>
-    </SidebarProvider>
+    </AdminThemeProvider>
   );
 };
 
