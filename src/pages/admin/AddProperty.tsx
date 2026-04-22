@@ -139,7 +139,7 @@ const AddProperty = () => {
   // Category selection menu
   if (!category) {
     return (
-      <div className="max-w-5xl mx-auto">
+      <div className="max-w-6xl mx-auto">
         <DashboardHeader onAddClick={() => {
           const el = document.getElementById("category-grid");
           el?.scrollIntoView({ behavior: "smooth", block: "start" });
