@@ -134,26 +134,77 @@ const AddProperty = () => {
   // Category selection menu
   if (!category) {
     return (
-      <div className="max-w-2xl mx-auto">
-        <div className="mb-8">
-          <h1 className="text-2xl font-display font-bold text-foreground">Adicionar Imóvel</h1>
-          <p className="text-muted-foreground text-sm font-body mt-1">Selecione o tipo de anúncio</p>
+      <div className="max-w-5xl mx-auto">
+        <DashboardHeader onAddClick={() => {
+          const el = document.getElementById("category-grid");
+          el?.scrollIntoView({ behavior: "smooth", block: "start" });
+        }} />
+
+        <div id="category-grid" className="mb-5 flex items-end justify-between">
+          <div>
+            <h2 className="text-xl font-display font-bold text-foreground">Adicionar Imóvel</h2>
+            <p className="text-muted-foreground text-sm font-body mt-0.5">Selecione o tipo de anúncio</p>
+          </div>
         </div>
-        <div className="grid grid-cols-2 gap-4">
-          {categories.map((cat) => (
-            <button
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {categories.map((cat, i) => (
+            <motion.button
               key={cat.id}
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.35, delay: i * 0.06 }}
+              whileHover={{ y: -4, scale: 1.01 }}
+              whileTap={{ scale: 0.99 }}
               onClick={() => setCategory(cat.id)}
-              className="bg-card rounded-xl p-6 shadow-soft text-left transition-all hover:shadow-md hover:ring-2 hover:ring-primary/40 group"
+              className={`relative overflow-hidden rounded-2xl p-6 shadow-soft text-left transition-all hover:shadow-xl group bg-card border ${
+                cat.highlight
+                  ? "border-orange-500/40 ring-1 ring-orange-500/20 hover:ring-orange-500/40 shadow-[0_0_25px_-8px_rgba(249,115,22,0.35)]"
+                  : "border-border/60 hover:border-primary/30"
+              }`}
             >
-              <cat.icon className="w-8 h-8 text-primary mb-3 transition-transform group-hover:scale-110" />
-              <h3 className="font-display font-semibold text-foreground text-lg">{cat.label}</h3>
-              <p className="text-muted-foreground text-sm font-body mt-1">
-                {cat.id === "aluguel" ? "Imóvel para locação" : `${cat.label} à venda`}
+              {/* Decorative gradient blob */}
+              <div className={`pointer-events-none absolute -top-16 -right-16 w-44 h-44 rounded-full bg-gradient-to-br ${cat.accent} blur-2xl opacity-70 group-hover:opacity-100 transition-opacity`} />
+              {/* Shine on hover */}
+              <div className="pointer-events-none absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+
+              {cat.highlight && (
+                <span className="absolute top-4 right-4 inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-orange-500 text-white text-[10px] font-display font-bold uppercase tracking-wider shadow-md">
+                  Alta demanda 🔥
+                </span>
+              )}
+
+              <div className={`relative w-14 h-14 rounded-2xl flex items-center justify-center mb-4 transition-transform group-hover:scale-110 group-hover:rotate-3 ${cat.iconBg}`}>
+                <cat.icon className="w-7 h-7" strokeWidth={2} />
+              </div>
+              <h3 className="relative font-display font-bold text-foreground text-lg">{cat.label}</h3>
+              <p className="relative text-muted-foreground text-sm font-body mt-1.5 leading-relaxed">
+                {cat.subtitle}
               </p>
-            </button>
+            </motion.button>
           ))}
         </div>
+
+        {/* Engagement strip */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.4 }}
+          className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-3"
+        >
+          {[
+            { icon: "💬", text: "Você recebeu novos leads esta semana — responda rápido para converter mais." },
+            { icon: "📈", text: "Imóveis em destaque recebem até 3x mais visitas do que anúncios padrão." },
+            { icon: "💡", text: "Dica: anúncios com mais de 5 fotos geram 70% mais contatos." },
+          ].map((tip, i) => (
+            <div key={i} className="rounded-xl bg-card border border-border/60 p-4 shadow-soft hover:shadow-md transition-shadow">
+              <div className="flex items-start gap-3">
+                <span className="text-xl leading-none mt-0.5">{tip.icon}</span>
+                <p className="text-xs font-body text-muted-foreground leading-relaxed">{tip.text}</p>
+              </div>
+            </div>
+          ))}
+        </motion.div>
       </div>
     );
   }
