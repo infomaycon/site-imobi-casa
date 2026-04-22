@@ -17,26 +17,30 @@ const categories = [
   {
     id: "venda_casa" as Category, label: "Vender Casa", icon: Home, status: "venda", type: "casa",
     subtitle: "Cadastre casas à venda com destaque profissional",
-    accent: "from-primary/20 to-primary/5",
+    accent: "from-primary/25 to-primary/0",
     iconBg: "bg-primary/15 text-primary",
+    glow: "shadow-[0_0_40px_-12px_hsl(var(--primary)/0.45)]",
   },
   {
     id: "apartamento" as Category, label: "Apartamento", icon: Building2, status: "venda", type: "apartamento",
     subtitle: "Anuncie apartamentos com fotos e detalhes premium",
-    accent: "from-blue-500/20 to-blue-500/5",
-    iconBg: "bg-blue-500/15 text-blue-600",
+    accent: "from-blue-500/25 to-blue-500/0",
+    iconBg: "bg-blue-500/15 text-blue-500",
+    glow: "shadow-[0_0_40px_-12px_rgba(59,130,246,0.45)]",
   },
   {
     id: "terreno" as Category, label: "Terreno", icon: MapPin, status: "venda", type: "terreno",
     subtitle: "Publique lotes e terrenos com localização precisa",
-    accent: "from-amber-500/20 to-amber-500/5",
-    iconBg: "bg-amber-500/15 text-amber-600",
+    accent: "from-amber-500/25 to-amber-500/0",
+    iconBg: "bg-amber-500/15 text-amber-500",
+    glow: "shadow-[0_0_40px_-12px_rgba(245,158,11,0.45)]",
   },
   {
     id: "aluguel" as Category, label: "Aluguel", icon: Key, status: "aluguel", type: "casa",
     subtitle: "Alta demanda — anuncie e converta locatários rapidamente",
-    accent: "from-orange-500/30 to-orange-500/10",
-    iconBg: "bg-orange-500/20 text-orange-600",
+    accent: "from-accent/35 to-accent/5",
+    iconBg: "bg-accent/20 text-accent",
+    glow: "shadow-[0_0_50px_-10px_hsl(var(--accent)/0.55)]",
     highlight: true,
   },
 ];
@@ -142,34 +146,34 @@ const AddProperty = () => {
 
         <div id="category-grid" className="mb-5 flex items-end justify-between">
           <div>
-            <h2 className="text-xl font-display font-bold text-foreground">Adicionar Imóvel</h2>
+            <h2 className="text-xl md:text-2xl font-display font-bold text-foreground">Adicionar Imóvel</h2>
             <p className="text-muted-foreground text-sm font-body mt-0.5">Selecione o tipo de anúncio</p>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {categories.map((cat, i) => (
             <motion.button
               key={cat.id}
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.35, delay: i * 0.06 }}
-              whileHover={{ y: -4, scale: 1.01 }}
+              whileHover={{ y: -6, scale: 1.02 }}
               whileTap={{ scale: 0.99 }}
               onClick={() => setCategory(cat.id)}
-              className={`relative overflow-hidden rounded-2xl p-6 shadow-soft text-left transition-all hover:shadow-xl group bg-card border ${
+              className={`relative overflow-hidden rounded-2xl p-6 text-left transition-all hover:shadow-xl group glass-panel ${
                 cat.highlight
-                  ? "border-orange-500/40 ring-1 ring-orange-500/20 hover:ring-orange-500/40 shadow-[0_0_25px_-8px_rgba(249,115,22,0.35)]"
-                  : "border-border/60 hover:border-primary/30"
+                  ? `ring-1 ring-accent/40 hover:ring-accent/60 ${cat.glow}`
+                  : `hover:ring-1 hover:ring-primary/30 ${cat.glow}`
               }`}
             >
               {/* Decorative gradient blob */}
-              <div className={`pointer-events-none absolute -top-16 -right-16 w-44 h-44 rounded-full bg-gradient-to-br ${cat.accent} blur-2xl opacity-70 group-hover:opacity-100 transition-opacity`} />
+              <div className={`pointer-events-none absolute -top-16 -right-16 w-48 h-48 rounded-full bg-gradient-to-br ${cat.accent} blur-3xl opacity-80 group-hover:opacity-100 transition-opacity`} />
               {/* Shine on hover */}
               <div className="pointer-events-none absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/10 to-transparent" />
 
               {cat.highlight && (
-                <span className="absolute top-4 right-4 inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-orange-500 text-white text-[10px] font-display font-bold uppercase tracking-wider shadow-md">
+                <span className="absolute top-4 right-4 inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-accent text-accent-foreground text-[10px] font-display font-bold uppercase tracking-wider shadow-[0_0_20px_hsl(var(--accent)/0.6)]">
                   Alta demanda 🔥
                 </span>
               )}
@@ -197,7 +201,7 @@ const AddProperty = () => {
             { icon: "📈", text: "Imóveis em destaque recebem até 3x mais visitas do que anúncios padrão." },
             { icon: "💡", text: "Dica: anúncios com mais de 5 fotos geram 70% mais contatos." },
           ].map((tip, i) => (
-            <div key={i} className="rounded-xl bg-card border border-border/60 p-4 shadow-soft hover:shadow-md transition-shadow">
+            <div key={i} className="rounded-2xl glass-panel p-4 hover:shadow-md transition-shadow">
               <div className="flex items-start gap-3">
                 <span className="text-xl leading-none mt-0.5">{tip.icon}</span>
                 <p className="text-xs font-body text-muted-foreground leading-relaxed">{tip.text}</p>
@@ -212,7 +216,7 @@ const AddProperty = () => {
   return (
     <div className="max-w-3xl mx-auto">
       <div className="mb-6 flex items-center gap-3">
-        <button onClick={() => setCategory(null)} className="p-2 rounded-lg hover:bg-muted transition-colors">
+        <button onClick={() => setCategory(null)} className="p-2 rounded-lg hover:bg-foreground/5 transition-colors">
           <ArrowLeft className="w-5 h-5 text-muted-foreground" />
         </button>
         <div>
@@ -223,7 +227,7 @@ const AddProperty = () => {
 
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Basic Info */}
-        <div className="bg-card rounded-xl p-6 shadow-soft space-y-4">
+        <div className="glass-panel rounded-2xl p-6 space-y-4">
           <h2 className="font-display font-semibold text-foreground text-lg">Informações Básicas</h2>
           <div className="space-y-2">
             <Label className="font-body text-foreground">Título do Imóvel</Label>
@@ -242,7 +246,7 @@ const AddProperty = () => {
         </div>
 
         {/* Details */}
-        <div className="bg-card rounded-xl p-6 shadow-soft space-y-4">
+        <div className="glass-panel rounded-2xl p-6 space-y-4">
           <h2 className="font-display font-semibold text-foreground text-lg">Detalhes</h2>
           <div className={`grid gap-4 ${isTerrain ? "grid-cols-1" : "grid-cols-2 md:grid-cols-4"}`}>
             {!isTerrain && (
@@ -281,7 +285,7 @@ const AddProperty = () => {
         </div>
 
         {/* Featured Image */}
-        <div className="bg-card rounded-xl p-6 shadow-soft space-y-4">
+        <div className="glass-panel rounded-2xl p-6 space-y-4">
           <h2 className="font-display font-semibold text-foreground text-lg">Imagem de Destaque</h2>
           {featuredImage ? (
             <div className="relative aspect-video rounded-lg overflow-hidden max-w-sm group">
@@ -291,7 +295,7 @@ const AddProperty = () => {
               </button>
             </div>
           ) : (
-            <label className="w-full max-w-sm aspect-video rounded-lg border-2 border-dashed border-border hover:border-primary/50 flex flex-col items-center justify-center cursor-pointer transition-colors bg-muted/30">
+            <label className="w-full max-w-sm aspect-video rounded-lg border-2 border-dashed border-border hover:border-primary/50 flex flex-col items-center justify-center cursor-pointer transition-colors bg-foreground/[0.02]">
               <ImagePlus className="w-8 h-8 text-muted-foreground mb-2" />
               <span className="text-sm text-muted-foreground font-body">{uploading ? "Enviando..." : "Selecionar imagem principal"}</span>
               <input type="file" accept="image/*" onChange={handleFeaturedUpload} className="hidden" disabled={uploading} />
@@ -300,7 +304,7 @@ const AddProperty = () => {
         </div>
 
         {/* Gallery */}
-        <div className="bg-card rounded-xl p-6 shadow-soft space-y-4">
+        <div className="glass-panel rounded-2xl p-6 space-y-4">
           <div className="flex items-center justify-between">
             <h2 className="font-display font-semibold text-foreground text-lg">Galeria</h2>
             <span className="text-xs text-muted-foreground font-body">{galleryImages.length}/{MAX_GALLERY_IMAGES} imagens</span>
@@ -315,7 +319,7 @@ const AddProperty = () => {
               </div>
             ))}
             {galleryImages.length < MAX_GALLERY_IMAGES && (
-              <label className="aspect-video rounded-lg border-2 border-dashed border-border hover:border-primary/50 flex flex-col items-center justify-center cursor-pointer transition-colors bg-muted/30">
+              <label className="aspect-video rounded-lg border-2 border-dashed border-border hover:border-primary/50 flex flex-col items-center justify-center cursor-pointer transition-colors bg-foreground/[0.02]">
                 <ImagePlus className="w-6 h-6 text-muted-foreground mb-1" />
                 <span className="text-xs text-muted-foreground font-body">{uploading ? "Enviando..." : "Adicionar"}</span>
                 <input type="file" accept="image/*" multiple onChange={handleGalleryUpload} className="hidden" disabled={uploading} />
