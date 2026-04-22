@@ -10,6 +10,7 @@ import { Save, ImagePlus, X, CheckCircle2, Home, Building2, MapPin, Key, ArrowLe
 import { motion, AnimatePresence } from "framer-motion";
 import { convertToWebp } from "@/lib/imageToWebp";
 import DashboardHeader from "@/components/admin/DashboardHeader";
+import PerformanceSection from "@/components/admin/PerformanceSection";
 
 type Category = "venda_casa" | "apartamento" | "terreno" | "aluguel" | null;
 
@@ -138,7 +139,7 @@ const AddProperty = () => {
   // Category selection menu
   if (!category) {
     return (
-      <div className="max-w-5xl mx-auto">
+      <div className="max-w-6xl mx-auto">
         <DashboardHeader onAddClick={() => {
           const el = document.getElementById("category-grid");
           el?.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -209,6 +210,8 @@ const AddProperty = () => {
             </div>
           ))}
         </motion.div>
+
+        <PerformanceSection />
       </div>
     );
   }
