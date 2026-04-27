@@ -5,16 +5,15 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "@/hooks/use-toast";
-import { testSupabase } from "@/lib/supabase";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 
 type Step = "signup" | "pay" | "waiting" | "approved";
 
 const PLAN_PRICES: Record<string, Record<string, number>> = {
-  essencial: { mensal: 49.9, semestral: 254.9, anual: 449.9 },
-  profissional: { mensal: 79.9, semestral: 379, anual: 699.9 },
-  elite: { mensal: 129.9, semestral: 649.9, anual: 1099.9 },
+  essencial: { mensal: 1, semestral: 1, anual: 1 },
+  profissional: { mensal: 1, semestral: 1, anual: 1 },
+  elite: { mensal: 1, semestral: 1, anual: 1 },
 };
 
 const PLAN_LABEL: Record<string, string> = {
@@ -29,7 +28,8 @@ const Checkout = () => {
   const { user } = useAuth();
   const plano = (params.get("plano") || "profissional").toLowerCase();
   const ciclo = (params.get("ciclo") || "mensal").toLowerCase();
-  const valor = PLAN_PRICES[plano]?.[ciclo] ?? 0.2;
+  const valorParam = Number((params.get("valor") || "").replace(",", "."));
+  const valor = Number.isFinite(valorParam) && valorParam > 0 ? valorParam : PLAN_PRICES[plano]?.[ciclo] ?? 1;
   const isUpgrade = params.get("upgrade") === "1";
 
   // Só pula o cadastro se vier explicitamente do painel (upgrade=1)
@@ -63,12 +63,12 @@ const Checkout = () => {
     const normalizedEmail = email.trim().toLowerCase();
     const normalizedConfirm = emailConfirm.trim().toLowerCase();
 
-    // Regex estrita: bloqueia ponto antes do @, caracteres inválidos, etc.
-    const strictEmail = /^[a-zA-Z0-9](?:[a-zA-Z0-9._-]*[a-zA-Z0-9])?@gmail\.com$/;
+    // Regex estrita: bloqueia ponto antes do @, domínio inválido e caracteres incompatíveis com pagamento.
+    const strictEmail = /^[a-zA-Z0-9](?:[a-zA-Z0-9._-]*[a-zA-Z0-9])?@[a-zA-Z0-9](?:[a-zA-Z0-9.-]*[a-zA-Z0-9])?\.[a-zA-Z]{2,}$/;
     if (!strictEmail.test(normalizedEmail)) {
       toast({
         title: "Email inválido",
-        description: "Use um email @gmail.com válido (sem ponto antes do @).",
+        description: "Use um email válido, sem ponto antes do @ e com domínio completo.",
         variant: "destructive",
       });
       return;
@@ -107,20 +107,29 @@ const Checkout = () => {
       }
       const uid = data.user?.id;
       if (!uid) throw new Error("Usuário não criado");
+      if (data.user?.identities && data.user.identities.length === 0) {
+        toast({
+          title: "Email já cadastrado",
+          description: "Faça login para continuar a assinatura.",
+          variant: "destructive",
+        });
+        setTimeout(() => navigate(`/login?redirect=/checkout?plano=${plano}&ciclo=${ciclo}&valor=${valor}`), 1500);
+        return;
+      }
 
-      // Registra como assinante pendente — só será ativado após confirmação do PIX
-      await supabase.from("subscribers").upsert(
-        {
+      // Registra no banco como assinante pendente e sincroniza a base de validação antes do PIX.
+      const { data: syncData, error: syncError } = await supabase.functions.invoke("sync-checkout-registration", {
+        body: {
+          userId: uid,
           email: normalizedEmail,
-          name: normalizedEmail.split("@")[0],
-          plan: plano,
-          plan_value: Number(valor),
-          status: "pending",
-          trial: false,
-          trial_end: null,
+          plano,
+          ciclo,
+          valor: Number(valor),
         },
-        { onConflict: "email" },
-      );
+      });
+      if (syncError || syncData?.error) {
+        throw new Error(syncData?.details || syncData?.error || syncError?.message || "Erro ao validar cadastro no banco");
+      }
 
       setEmail(normalizedEmail);
       setUserId(uid);
@@ -325,7 +334,7 @@ const Checkout = () => {
         {step === "signup" && (
           <form onSubmit={handleSignup} className="space-y-4">
             <div>
-              <Label htmlFor="email">Email (somente @gmail.com)</Label>
+              <Label htmlFor="email">Email</Label>
               <Input
                 id="email"
                 type="email"
