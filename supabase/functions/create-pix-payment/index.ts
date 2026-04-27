@@ -31,6 +31,20 @@ Deno.serve(async (req) => {
       });
     }
 
+    const cleanEmail = String(body.email).trim().toLowerCase();
+    const strictEmail = /^[a-zA-Z0-9](?:[a-zA-Z0-9._-]*[a-zA-Z0-9])?@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!strictEmail.test(cleanEmail)) {
+      console.error("[create-pix] invalid email:", body.email);
+      return new Response(
+        JSON.stringify({
+          error: "Email inválido",
+          details:
+            "Use um email válido (sem ponto antes do @ e sem caracteres especiais).",
+        }),
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } },
+      );
+    }
+
     console.log("[create-pix] payload:", { userId, email: body.email, plano: body.plano, ciclo: body.ciclo, valor: body.valor });
 
     const idempotencyKey = `${userId}-${Date.now()}`;
@@ -39,7 +53,7 @@ Deno.serve(async (req) => {
       description: `ImobiCasa - Plano ${body.plano} (${body.ciclo})`,
       payment_method_id: "pix",
       notification_url: `${supabaseUrl}/functions/v1/mercadopago-webhook`,
-      payer: { email: body.email },
+      payer: { email: cleanEmail },
       external_reference: `${userId}|${body.plano}|${body.ciclo}`,
       metadata: {
         user_id: userId,
