@@ -6,9 +6,9 @@ const corsHeaders = {
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const PLAN_VALUES: Record<string, number> = {
-  essencial: 0.2,
-  profissional: 0.2,
-  elite: 0.2,
+  essencial: 1,
+  profissional: 1,
+  elite: 1,
 };
 
 function computeExpiresAt(ciclo: string): string {
@@ -103,29 +103,30 @@ Deno.serve(async (req) => {
       }
 
       // 2) Provision user in INTERNAL Lovable Cloud + subscribers row
-      if (email && password) {
+      if (email) {
         const internalAdmin = createClient(internalUrl, internalServiceKey);
-        const planValue = PLAN_VALUES[plano] ?? 0;
+        const planValue = PLAN_VALUES[plano] ?? 1;
 
-        // Create or fetch user in internal auth (auto-confirmed)
-        const { data: created, error: createErr } =
-          await internalAdmin.auth.admin.createUser({
+        // Create or update login only when password is available (new checkout flow)
+        if (password) {
+          const { error: createErr } = await internalAdmin.auth.admin.createUser({
             email,
             password,
             email_confirm: true,
           });
 
-        // If user already exists, update their password so login works
-        if (createErr && /already/i.test(createErr.message)) {
-          const { data: list } = await internalAdmin.auth.admin.listUsers();
-          const existing = list.users.find(
-            (u) => u.email?.toLowerCase() === email.toLowerCase(),
-          );
-          if (existing) {
-            await internalAdmin.auth.admin.updateUserById(existing.id, {
-              password,
-              email_confirm: true,
-            });
+          // If user already exists, update their password so login works
+          if (createErr && /already/i.test(createErr.message)) {
+            const { data: list } = await internalAdmin.auth.admin.listUsers();
+            const existing = list.users.find(
+              (u) => u.email?.toLowerCase() === email.toLowerCase(),
+            );
+            if (existing) {
+              await internalAdmin.auth.admin.updateUserById(existing.id, {
+                password,
+                email_confirm: true,
+              });
+            }
           }
         }
 

@@ -4,6 +4,8 @@ const corsHeaders = {
     "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+
 interface PixRequest {
   userId: string;
   email: string;
@@ -18,8 +20,10 @@ Deno.serve(async (req) => {
   try {
     const accessToken = Deno.env.get("MERCADO_PAGO_ACCESS_TOKEN");
     const supabaseUrl = Deno.env.get("SUPABASE_URL");
+    const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
     if (!accessToken) throw new Error("MERCADO_PAGO_ACCESS_TOKEN not configured");
     if (!supabaseUrl) throw new Error("SUPABASE_URL not configured");
+    if (!serviceKey) throw new Error("SUPABASE_SERVICE_ROLE_KEY not configured");
 
     const body = (await req.json()) as PixRequest & { user_id?: string };
     const userId = body.userId || body.user_id;
@@ -45,6 +49,23 @@ Deno.serve(async (req) => {
       );
     }
 
+    const token = (req.headers.get("Authorization") || "").replace("Bearer ", "");
+    if (!token) {
+      return new Response(JSON.stringify({ error: "Login obrigatório para gerar PIX" }), {
+        status: 401,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    const admin = createClient(supabaseUrl, serviceKey);
+    const { data: authData, error: authError } = await admin.auth.getUser(token);
+    if (authError || authData.user?.id !== userId || authData.user?.email?.toLowerCase() !== cleanEmail) {
+      return new Response(JSON.stringify({ error: "Cadastro não confere com o usuário logado" }), {
+        status: 403,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
     console.log("[create-pix] payload:", { userId, email: body.email, plano: body.plano, ciclo: body.ciclo, valor: body.valor });
 
     const idempotencyKey = `${userId}-${Date.now()}`;
@@ -57,6 +78,7 @@ Deno.serve(async (req) => {
       external_reference: `${userId}|${body.plano}|${body.ciclo}`,
       metadata: {
         user_id: userId,
+        email: cleanEmail,
         plano: body.plano,
         ciclo: body.ciclo,
       },
