@@ -57,6 +57,7 @@ Deno.serve(async (req) => {
       external_reference: `${userId}|${body.plano}|${body.ciclo}`,
       metadata: {
         user_id: userId,
+        email: cleanEmail,
         plano: body.plano,
         ciclo: body.ciclo,
       },
