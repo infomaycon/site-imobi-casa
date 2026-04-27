@@ -111,7 +111,7 @@ Deno.serve(async (req) => {
         });
       }
 
-      const email = payment?.payer?.email?.trim()?.toLowerCase();
+      const email = (payment?.metadata?.email || payment?.payer?.email)?.trim()?.toLowerCase();
       if (email && plano) {
         const internalAdmin = createClient(internalUrl, internalServiceKey);
         await internalAdmin.from("subscribers").upsert(
