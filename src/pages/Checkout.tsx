@@ -100,6 +100,10 @@ const Checkout = () => {
       }
       const uid = data.user?.id;
       if (!uid) throw new Error("Usuário não criado");
+      const accessToken = data.session?.access_token;
+      if (!accessToken) {
+        throw new Error("Cadastro criado, mas o login ainda não foi validado. Faça login para continuar o pagamento.");
+      }
       if (data.user?.identities && data.user.identities.length === 0) {
         toast({
           title: "Email já cadastrado",
@@ -112,6 +116,7 @@ const Checkout = () => {
 
       // Registra no banco como assinante pendente e sincroniza a base de validação antes do PIX.
       const { data: syncData, error: syncError } = await supabase.functions.invoke("sync-checkout-registration", {
+        headers: { Authorization: `Bearer ${accessToken}` },
         body: {
           userId: uid,
           email: normalizedEmail,
