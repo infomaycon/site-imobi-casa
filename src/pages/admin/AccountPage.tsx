@@ -104,7 +104,7 @@ const AccountPage = () => {
     : `Plano ${currentPlanObj?.name} · ${currentPlanObj?.prices.mensal}/mês`;
 
   const goToCheckout = (slug: string) => {
-    navigate(`/checkout?plano=${slug}&ciclo=${period}`);
+    navigate(`/checkout?plano=${slug}&ciclo=${period}&upgrade=1`);
   };
 
   const addCollaborator = () => {

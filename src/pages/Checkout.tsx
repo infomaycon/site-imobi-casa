@@ -30,9 +30,10 @@ const Checkout = () => {
   const plano = (params.get("plano") || "profissional").toLowerCase();
   const ciclo = (params.get("ciclo") || "mensal").toLowerCase();
   const valor = PLAN_PRICES[plano]?.[ciclo] ?? 0.2;
+  const isUpgrade = params.get("upgrade") === "1";
 
-  // Se já estiver logado (upgrade pelo painel), pula etapa de cadastro
-  const [step, setStep] = useState<Step>(user ? "pay" : "signup");
+  // Só pula o cadastro se vier explicitamente do painel (upgrade=1)
+  const [step, setStep] = useState<Step>(user && isUpgrade ? "pay" : "signup");
   const [email, setEmail] = useState("");
   const [emailConfirm, setEmailConfirm] = useState("");
   const [password, setPassword] = useState("");
@@ -40,14 +41,21 @@ const Checkout = () => {
   const [userId, setUserId] = useState<string | null>(null);
   const [pix, setPix] = useState<{ qrCode: string; qrCodeBase64: string; paymentId: string } | null>(null);
 
-  // Sincroniza dados quando o usuário logado entra na página
+  // Se vier da landing page (sem upgrade=1), desloga para forçar novo cadastro
   useEffect(() => {
-    if (user?.email) {
+    if (user?.email && !isUpgrade) {
+      supabase.auth.signOut().catch(() => {});
+      setEmail("");
+      setUserId(null);
+      setStep("signup");
+      return;
+    }
+    if (user?.email && isUpgrade) {
       setEmail(user.email);
       setUserId(user.id);
       setStep((s) => (s === "signup" ? "pay" : s));
     }
-  }, [user]);
+  }, [user, isUpgrade]);
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
