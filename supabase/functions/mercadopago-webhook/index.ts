@@ -5,6 +5,12 @@ const corsHeaders = {
 };
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
+const PLAN_VALUES: Record<string, number> = {
+  essencial: 1,
+  profissional: 1,
+  elite: 1,
+};
+
 function computeExpiresAt(ciclo: string): string {
   const now = new Date();
   const days = ciclo === "anual" ? 365 : ciclo === "semestral" ? 180 : 30;
@@ -54,7 +60,9 @@ Deno.serve(async (req) => {
     const accessToken = Deno.env.get("MERCADO_PAGO_ACCESS_TOKEN");
     const testUrl = Deno.env.get("TEST_SUPABASE_URL");
     const testKey = Deno.env.get("TEST_SUPABASE_SERVICE_ROLE_KEY");
-    if (!accessToken || !testUrl || !testKey) throw new Error("Secrets missing");
+    const internalUrl = Deno.env.get("SUPABASE_URL");
+    const internalServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+    if (!accessToken || !testUrl || !testKey || !internalUrl || !internalServiceKey) throw new Error("Secrets missing");
 
     const body = await req.json().catch(() => ({}));
     console.log("MP webhook:", JSON.stringify(body));
@@ -101,6 +109,23 @@ Deno.serve(async (req) => {
           plano,
           ciclo,
         });
+      }
+
+      const email = payment?.payer?.email?.trim()?.toLowerCase();
+      if (email && plano) {
+        const internalAdmin = createClient(internalUrl, internalServiceKey);
+        await internalAdmin.from("subscribers").upsert(
+          {
+            email,
+            name: email.split("@")[0],
+            plan: plano,
+            plan_value: PLAN_VALUES[plano] ?? 1,
+            status: "active",
+            trial: false,
+            trial_end: null,
+          },
+          { onConflict: "email" },
+        );
       }
     }
 
