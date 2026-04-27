@@ -100,10 +100,6 @@ const Checkout = () => {
       }
       const uid = data.user?.id;
       if (!uid) throw new Error("Usuário não criado");
-      const accessToken = data.session?.access_token;
-      if (!accessToken) {
-        throw new Error("Cadastro criado, mas o login ainda não foi validado. Faça login para continuar o pagamento.");
-      }
       if (data.user?.identities && data.user.identities.length === 0) {
         toast({
           title: "Email já cadastrado",
@@ -112,6 +108,10 @@ const Checkout = () => {
         });
         setTimeout(() => navigate(`/login?redirect=/checkout?plano=${plano}&ciclo=${ciclo}&valor=${valor}`), 1500);
         return;
+      }
+      const accessToken = data.session?.access_token;
+      if (!accessToken) {
+        throw new Error("Cadastro criado, mas o login ainda não foi validado. Faça login para continuar o pagamento.");
       }
 
       // Registra no banco como assinante pendente e sincroniza a base de validação antes do PIX.
