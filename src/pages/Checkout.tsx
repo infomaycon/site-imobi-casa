@@ -182,11 +182,14 @@ const Checkout = () => {
         body: payload,
       });
 
-      if (error) {
-        const msg =
-          (typeof error.message === "string" && error.message) ||
+      // Lê mensagem de erro real do backend, mesmo quando vem como non-2xx
+      if (error || data?.error) {
+        const apiMsg =
+          data?.details ||
+          data?.error ||
+          (typeof error?.message === "string" && error.message) ||
           "Erro ao gerar PIX, tente novamente";
-        throw new Error(msg);
+        throw new Error(apiMsg);
       }
 
       if (!data?.qrCode || !data?.qrCodeBase64) {
