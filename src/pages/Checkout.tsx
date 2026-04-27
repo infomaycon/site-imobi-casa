@@ -71,31 +71,47 @@ const Checkout = () => {
     setLoading(true);
     try {
       // Garante que não existe sessão antiga
-      await testSupabase.auth.signOut().catch(() => {});
+      await supabase.auth.signOut().catch(() => {});
 
-      const { data, error } = await testSupabase.auth.signUp({
+      // Cadastro no Lovable Cloud (Supabase principal — onde /admin autentica)
+      const { data, error } = await supabase.auth.signUp({
         email: normalizedEmail,
         password,
         options: { emailRedirectTo: `${window.location.origin}/checkout` },
       });
-      if (error) throw error;
+      if (error) {
+        if (error.message?.toLowerCase().includes("already")) {
+          toast({
+            title: "Email já cadastrado",
+            description: "Faça login para continuar a assinatura.",
+            variant: "destructive",
+          });
+          setTimeout(() => navigate(`/login?redirect=/checkout?plano=${plano}&ciclo=${ciclo}`), 1500);
+          return;
+        }
+        throw error;
+      }
       const uid = data.user?.id;
       if (!uid) throw new Error("Usuário não criado");
 
-      await testSupabase.from("profiles" as any).upsert({
-        id: uid,
-        email: normalizedEmail,
-        plano: "pending",
-        status: "pending",
-        trial: false,
-        trial_start: null,
-        trial_end: null,
-      });
+      // Registra como assinante pendente — só será ativado após confirmação do PIX
+      await supabase.from("subscribers").upsert(
+        {
+          email: normalizedEmail,
+          name: normalizedEmail.split("@")[0],
+          plan: plano,
+          plan_value: Number(valor),
+          status: "pending",
+          trial: false,
+          trial_end: null,
+        },
+        { onConflict: "email" },
+      );
 
       setEmail(normalizedEmail);
       setUserId(uid);
       setStep("pay");
-      toast({ title: "Cadastro criado", description: "Agora finalize o pagamento." });
+      toast({ title: "Cadastro criado", description: "Agora finalize o pagamento para liberar o acesso." });
     } catch (err: any) {
       toast({ title: "Erro no cadastro", description: err.message, variant: "destructive" });
     } finally {
