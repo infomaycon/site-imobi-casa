@@ -63,8 +63,14 @@ const Checkout = () => {
     const normalizedEmail = email.trim().toLowerCase();
     const normalizedConfirm = emailConfirm.trim().toLowerCase();
 
-    if (!normalizedEmail.endsWith("@gmail.com")) {
-      toast({ title: "Email inválido", description: "Use um email com final @gmail.com", variant: "destructive" });
+    // Regex estrita: bloqueia ponto antes do @, caracteres inválidos, etc.
+    const strictEmail = /^[a-zA-Z0-9](?:[a-zA-Z0-9._-]*[a-zA-Z0-9])?@gmail\.com$/;
+    if (!strictEmail.test(normalizedEmail)) {
+      toast({
+        title: "Email inválido",
+        description: "Use um email @gmail.com válido (sem ponto antes do @).",
+        variant: "destructive",
+      });
       return;
     }
     if (normalizedEmail !== normalizedConfirm) {
