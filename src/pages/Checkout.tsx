@@ -41,15 +41,8 @@ const Checkout = () => {
   const [userId, setUserId] = useState<string | null>(null);
   const [pix, setPix] = useState<{ qrCode: string; qrCodeBase64: string; paymentId: string } | null>(null);
 
-  // Se vier da landing page (sem upgrade=1), desloga para forçar novo cadastro
+  // Só reaproveita sessão quando vier explicitamente do painel como upgrade.
   useEffect(() => {
-    if (user?.email && !isUpgrade) {
-      supabase.auth.signOut().catch(() => {});
-      setEmail("");
-      setUserId(null);
-      setStep("signup");
-      return;
-    }
     if (user?.email && isUpgrade) {
       setEmail(user.email);
       setUserId(user.id);
