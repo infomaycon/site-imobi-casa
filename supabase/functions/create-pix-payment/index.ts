@@ -4,8 +4,6 @@ const corsHeaders = {
     "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
-
 interface PixRequest {
   email: string;
   plano: string;
@@ -19,10 +17,8 @@ Deno.serve(async (req) => {
   try {
     const accessToken = Deno.env.get("MERCADO_PAGO_ACCESS_TOKEN");
     const supabaseUrl = Deno.env.get("SUPABASE_URL");
-    const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
     if (!accessToken) throw new Error("MERCADO_PAGO_ACCESS_TOKEN not configured");
     if (!supabaseUrl) throw new Error("SUPABASE_URL not configured");
-    if (!serviceKey) throw new Error("SUPABASE_SERVICE_ROLE_KEY not configured");
 
     const body = (await req.json()) as PixRequest;
     if (!body.email || !body.plano || !body.ciclo || !body.valor) {
@@ -47,7 +43,6 @@ Deno.serve(async (req) => {
       );
     }
 
-    createClient(supabaseUrl, serviceKey);
     console.log("[create-pix] payload:", { email: cleanEmail, plano: body.plano, ciclo: body.ciclo, valor: body.valor });
 
     const idempotencyKey = `${cleanEmail}-${body.plano}-${body.ciclo}-${Date.now()}`;
