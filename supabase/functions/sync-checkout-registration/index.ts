@@ -12,13 +12,6 @@ const PLAN_VALUES: Record<string, number> = {
   elite: 1,
 };
 
-function computeExpiresAt(ciclo: string): string {
-  const now = new Date();
-  const days = ciclo === "anual" ? 365 : ciclo === "semestral" ? 180 : 30;
-  now.setDate(now.getDate() + days);
-  return now.toISOString();
-}
-
 async function syncInternalRegistration(admin: ReturnType<typeof createClient>, params: {
   userId: string;
   email: string;
