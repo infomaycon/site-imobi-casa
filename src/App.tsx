@@ -7,6 +7,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider } from "@/hooks/useAuth";
 
 const Index = lazy(() => import("./pages/Index.tsx"));
+const MainGate = lazy(() => import("./components/MainGate.tsx"));
 const UnderConstruction = lazy(() => import("./pages/UnderConstruction.tsx"));
 const DemoSite = lazy(() => import("./pages/DemoSite.tsx"));
 const Login = lazy(() => import("./pages/Login.tsx"));
@@ -44,8 +45,8 @@ const App = () => (
         <BrowserRouter>
           <Suspense fallback={<div className="min-h-screen" />}>
           <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/landing" element={<Index />} />
+            <Route path="/" element={<MainGate />} />
+            <Route path="/em-construcao" element={<UnderConstruction />} />
             <Route path="/super-admin-login" element={<SuperAdminLogin />} />
             <Route path="/super-admin-forgot-password" element={<SuperAdminForgotPassword />} />
             <Route path="/login" element={<Login />} />
