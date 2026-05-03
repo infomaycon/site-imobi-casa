@@ -14,33 +14,52 @@ export interface SubscriberData {
   trial_end?: string | null;
 }
 
+interface AccessData {
+  subscriber: SubscriberData | null;
+  hasPerfil: boolean;
+}
+
 export const useSubscriberAccess = () => {
   const { user } = useAuth();
 
-  const { data: subscriber, isLoading } = useQuery({
-    queryKey: ["subscriber-access", user?.email],
+  const { data: access, isLoading } = useQuery({
+    queryKey: ["subscriber-access", user?.id, user?.email],
     queryFn: async () => {
-      if (!user?.email) return null;
-      const { data, error } = await supabase
+      if (!user?.id || !user?.email) return { subscriber: null, hasPerfil: false } as AccessData;
+      const [subscriberResult, perfilResult] = await Promise.all([
+        supabase
         .from("subscribers")
         .select("*")
         .eq("email", user.email)
-        .maybeSingle();
-      if (error) throw error;
-      if (data) return data as SubscriberData;
+          .maybeSingle(),
+        supabase
+          .from("perfis")
+          .select("id")
+          .eq("user_id", user.id)
+          .maybeSingle(),
+      ]);
 
-      return null;
+      if (subscriberResult.error) throw subscriberResult.error;
+      if (perfilResult.error) throw perfilResult.error;
+
+      return {
+        subscriber: (subscriberResult.data as SubscriberData | null) ?? null,
+        hasPerfil: !!perfilResult.data,
+      } as AccessData;
     },
-    enabled: !!user?.email,
+    enabled: !!user?.id && !!user?.email,
   });
 
-  const isAuthorized = !!subscriber;
+  const subscriber = access?.subscriber ?? null;
+  const hasPerfil = access?.hasPerfil ?? false;
+  const isAuthorized = !!subscriber && hasPerfil;
   const isActive = subscriber?.status === "active";
   const plan = subscriber?.plan || null;
   const isPremium = plan === "premium";
 
   return {
     subscriber,
+    hasPerfil,
     isLoading,
     isAuthorized,
     isActive,
