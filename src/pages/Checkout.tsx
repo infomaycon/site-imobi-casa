@@ -173,10 +173,9 @@ const Checkout = () => {
 
         {/* steps indicator */}
         <div className="flex items-center justify-center gap-2 mb-8">
-          {["signup", "pay", "waiting"].map((s, i) => {
+          {["signup", "waiting"].map((s, i) => {
             const done =
               (s === "signup" && step !== "signup") ||
-              (s === "pay" && (step === "waiting" || step === "approved")) ||
               (s === "waiting" && step === "approved");
             const active = s === step;
             return (
@@ -192,7 +191,7 @@ const Checkout = () => {
                 >
                   {done ? <Check className="w-4 h-4" /> : i + 1}
                 </div>
-                {i < 2 && <div className="w-8 h-px bg-border" />}
+                {i < 1 && <div className="w-8 h-px bg-border" />}
               </div>
             );
           })}
@@ -211,56 +210,10 @@ const Checkout = () => {
                 onChange={(e) => setEmail(e.target.value)}
               />
             </div>
-            <div>
-              <Label htmlFor="emailConfirm">Confirme seu email</Label>
-              <Input
-                id="emailConfirm"
-                type="email"
-                required
-                placeholder="seuemail@gmail.com"
-                value={emailConfirm}
-                onChange={(e) => setEmailConfirm(e.target.value)}
-              />
-            </div>
-            <div>
-              <Label htmlFor="password">Crie uma senha (para acessar o painel após o pagamento)</Label>
-              <Input
-                id="password"
-                type="password"
-                required
-                minLength={6}
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-            </div>
             <Button type="submit" disabled={loading} className="w-full">
-              {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : "Continuar para pagamento"}
+              {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : "Gerar PIX"}
             </Button>
           </form>
-        )}
-
-        {step === "pay" && (
-          <div className="text-center space-y-4">
-            <p className="text-body">
-              Cadastro concluído ✅<br />
-              Agora gere seu PIX para liberar o acesso.
-            </p>
-            <Button onClick={handleCreatePix} disabled={loading || !dadosCompletos} className="w-full" size="lg">
-              {loading ? (
-                <Loader2 className="w-4 h-4 animate-spin" />
-              ) : (
-                <>
-                  <CreditCard className="w-4 h-4 mr-2" />
-                  Pagar com PIX
-                </>
-              )}
-            </Button>
-            {!dadosCompletos && (
-              <p className="text-xs text-destructive">
-                Erro ao identificar plano selecionado. Tente novamente.
-              </p>
-            )}
-          </div>
         )}
 
         {step === "waiting" && pix && (
