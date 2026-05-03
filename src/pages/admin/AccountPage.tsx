@@ -120,12 +120,7 @@ const AccountPage = () => {
     : `Plano ${currentPlanObj?.name} · ${currentPlanObj?.prices.mensal}/mês`;
 
   const goToCheckout = (slug: string) => {
-    const priceMap: Record<string, Record<Period, number>> = {
-      essencial: { mensal: 69.90, semestral: 356.49, anual: 628.65 },
-      profissional: { mensal: 99.90, semestral: 509.49, anual: 898.65 },
-      elite: { mensal: 149.90, semestral: 764.49, anual: 1348.65 },
-    };
-    const valor = priceMap[slug][period];
+    const valor = 1;
     navigate(`/checkout?plano=${slug}&ciclo=${period}&valor=${valor}&upgrade=1`);
   };
 
