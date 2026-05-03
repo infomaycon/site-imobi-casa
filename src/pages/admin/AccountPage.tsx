@@ -46,7 +46,7 @@ const PLANS = [
     name: "Essencial",
     level: 1,
     tagline: "Ideal para corretores iniciantes.",
-    prices: { mensal: "R$ 69,90", semestral: "R$ 356,49", anual: "R$ 628,65" },
+    prices: { mensal: "R$ 1,00", semestral: "R$ 1,00", anual: "R$ 1,00" },
     periodLabel: { mensal: "/mês", semestral: "/semestre", anual: "/ano" },
     highlighted: false,
     features: [
@@ -62,7 +62,7 @@ const PLANS = [
     name: "Profissional",
     level: 2,
     tagline: "Perfeito para corretores que querem crescer.",
-    prices: { mensal: "R$ 99,90", semestral: "R$ 509,49", anual: "R$ 898,65" },
+    prices: { mensal: "R$ 1,00", semestral: "R$ 1,00", anual: "R$ 1,00" },
     periodLabel: { mensal: "/mês", semestral: "/semestre", anual: "/ano" },
     highlighted: true,
     features: [
@@ -79,7 +79,7 @@ const PLANS = [
     name: "Elite",
     level: 3,
     tagline: "Para corretores profissionais e imobiliárias.",
-    prices: { mensal: "R$ 149,90", semestral: "R$ 764,49", anual: "R$ 1.348,65" },
+    prices: { mensal: "R$ 1,00", semestral: "R$ 1,00", anual: "R$ 1,00" },
     periodLabel: { mensal: "/mês", semestral: "/semestre", anual: "/ano" },
     highlighted: false,
     features: [
