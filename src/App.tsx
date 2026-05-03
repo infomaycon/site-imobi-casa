@@ -1,5 +1,4 @@
 import { lazy, Suspense } from "react";
-import { useTenant } from "@/hooks/useTenant";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -36,68 +35,6 @@ const UsersPage = lazy(() => import("./pages/super-admin/UsersPage.tsx"));
 
 const queryClient = new QueryClient();
 
-const TenantNotFound = () => (
-  <div className="min-h-screen flex items-center justify-center bg-background">
-    <div className="text-center space-y-4 p-8">
-      <h1 className="text-3xl font-bold text-foreground">Cliente não encontrado</h1>
-      <p className="text-muted-foreground">O subdomínio acessado não está vinculado a nenhum cliente.</p>
-    </div>
-  </div>
-);
-
-const AppRoutes = () => {
-  const { tenant, loading, notFound, isSubdomainAccess } = useTenant();
-
-  if (isSubdomainAccess && loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-background">
-        <div className="animate-pulse text-muted-foreground">Carregando...</div>
-      </div>
-    );
-  }
-
-  if (isSubdomainAccess && notFound) {
-    return <TenantNotFound />;
-  }
-
-  // Se é acesso por subdomínio e encontrou o tenant, os dados estão disponíveis
-  // via console.log por enquanto. Futuramente pode-se usar Context para compartilhar.
-
-  return (
-    <Routes>
-      <Route path="/" element={<Index />} />
-      <Route path="/landing" element={<Index />} />
-      <Route path="/super-admin-login" element={<SuperAdminLogin />} />
-      <Route path="/super-admin-forgot-password" element={<SuperAdminForgotPassword />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/forgot-password" element={<ForgotPassword />} />
-      <Route path="/reset-password" element={<ResetPassword />} />
-      <Route path="/signup" element={<Signup />} />
-      <Route path="/checkout" element={<Checkout />} />
-      <Route path="/demo/:modelId" element={<DemoSite />} />
-      <Route path="/test-login" element={<TestLogin />} />
-      <Route path="/test-signup" element={<TestSignup />} />
-      
-      <Route path="/admin" element={<AdminLayout />}>
-        <Route index element={<AddProperty />} />
-        <Route path="properties" element={<PropertyList />} />
-        <Route path="appearance" element={<AppearancePage />} />
-        <Route path="content" element={<SiteContentPage />} />
-        <Route path="leads" element={<LeadsPage />} />
-        <Route path="settings" element={<SettingsPage />} />
-        <Route path="account" element={<AccountPage />} />
-        <Route path="help" element={<HelpPage />} />
-      </Route>
-      <Route path="/super-admin" element={<SuperAdminLayout />}>
-        <Route index element={<DashboardPage />} />
-        <Route path="subscribers" element={<SubscribersPage />} />
-        <Route path="users" element={<UsersPage />} />
-      </Route>
-      <Route path="*" element={<NotFound />} />
-    </Routes>
-  );
-};
-
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <AuthProvider>
@@ -106,7 +43,37 @@ const App = () => (
         <Sonner />
         <BrowserRouter>
           <Suspense fallback={<div className="min-h-screen" />}>
-            <AppRoutes />
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/landing" element={<Index />} />
+            <Route path="/super-admin-login" element={<SuperAdminLogin />} />
+            <Route path="/super-admin-forgot-password" element={<SuperAdminForgotPassword />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/checkout" element={<Checkout />} />
+            <Route path="/demo/:modelId" element={<DemoSite />} />
+            <Route path="/test-login" element={<TestLogin />} />
+            <Route path="/test-signup" element={<TestSignup />} />
+            
+            <Route path="/admin" element={<AdminLayout />}>
+              <Route index element={<AddProperty />} />
+              <Route path="properties" element={<PropertyList />} />
+              <Route path="appearance" element={<AppearancePage />} />
+              <Route path="content" element={<SiteContentPage />} />
+              <Route path="leads" element={<LeadsPage />} />
+              <Route path="settings" element={<SettingsPage />} />
+              <Route path="account" element={<AccountPage />} />
+              <Route path="help" element={<HelpPage />} />
+            </Route>
+            <Route path="/super-admin" element={<SuperAdminLayout />}>
+              <Route index element={<DashboardPage />} />
+              <Route path="subscribers" element={<SubscribersPage />} />
+              <Route path="users" element={<UsersPage />} />
+            </Route>
+            <Route path="*" element={<NotFound />} />
+          </Routes>
           </Suspense>
         </BrowserRouter>
       </TooltipProvider>
