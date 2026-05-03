@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { Loader2, Check, Copy, CreditCard, ArrowLeft } from "lucide-react";
+import { Loader2, Check, Copy, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 
-type Step = "signup" | "pay" | "waiting" | "approved";
+type Step = "signup" | "waiting" | "approved";
 
 const PLAN_PRICES: Record<string, Record<string, number>> = {
   essencial: { mensal: 1, semestral: 1, anual: 1 },
@@ -31,8 +31,6 @@ const Checkout = () => {
 
   const [step, setStep] = useState<Step>("signup");
   const [email, setEmail] = useState("");
-  const [emailConfirm, setEmailConfirm] = useState("");
-  const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [pix, setPix] = useState<{ qrCode: string; qrCodeBase64: string; paymentId: string } | null>(null);
 
@@ -40,9 +38,7 @@ const Checkout = () => {
     e.preventDefault();
 
     const normalizedEmail = email.trim().toLowerCase();
-    const normalizedConfirm = emailConfirm.trim().toLowerCase();
 
-    // Regex estrita: bloqueia ponto antes do @, domínio inválido e caracteres incompatíveis com pagamento.
     const strictEmail = /^[a-zA-Z0-9](?:[a-zA-Z0-9._-]*[a-zA-Z0-9])?@[a-zA-Z0-9](?:[a-zA-Z0-9.-]*[a-zA-Z0-9])?\.[a-zA-Z]{2,}$/;
     if (!strictEmail.test(normalizedEmail)) {
       toast({
@@ -52,19 +48,19 @@ const Checkout = () => {
       });
       return;
     }
-    if (normalizedEmail !== normalizedConfirm) {
-      toast({ title: "Emails não conferem", description: "Os dois campos de email devem ser iguais.", variant: "destructive" });
-      return;
-    }
-    if (password.length < 6) {
-      toast({ title: "Senha curta", description: "A senha deve ter pelo menos 6 caracteres.", variant: "destructive" });
+
+    if (!plano || !ciclo || !Number.isFinite(valor) || valor <= 0) {
+      toast({
+        title: "Dados incompletos",
+        description: "Erro ao identificar plano selecionado. Tente novamente.",
+        variant: "destructive",
+      });
       return;
     }
 
     setLoading(true);
     try {
-      // Registra perfil no projeto externo (sem auth)
-      console.log("[checkout] Criando perfil para:", normalizedEmail);
+      console.log("[checkout] Salvando perfil pending para:", normalizedEmail);
       const externalRes = await fetch("https://conuhvxiiwdsppowwrib.supabase.co/functions/v1/create-or-update-profile", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -75,45 +71,11 @@ const Checkout = () => {
         console.error("[checkout] Erro ao criar perfil:", errBody);
         throw new Error(errBody?.error || "Erro ao registrar perfil");
       }
-      console.log("[checkout] Perfil criado/atualizado com sucesso");
-
       setEmail(normalizedEmail);
-      setStep("pay");
-      toast({ title: "Email registrado", description: "Agora finalize o pagamento para liberar o acesso." });
-    } catch (err: any) {
-      toast({ title: "Erro no cadastro", description: err.message, variant: "destructive" });
-    } finally {
-      setLoading(false);
-    }
-  };
 
-  const dadosCompletos = !!plano && !!ciclo && Number.isFinite(valor) && valor > 0 && !!email;
-
-  const handleCreatePix = async () => {
-    if (loading) return;
-    // Cria/atualiza perfil no projeto externo ANTES de gerar o PIX
-    if (!email || !email.trim()) {
-      toast({ title: "Email obrigatório", description: "Não foi possível identificar o email.", variant: "destructive" });
-      return;
-    }
-    const strictEmailCheck = /^[a-zA-Z0-9](?:[a-zA-Z0-9._-]*[a-zA-Z0-9])?@[a-zA-Z0-9](?:[a-zA-Z0-9.-]*[a-zA-Z0-9])?\.[a-zA-Z]{2,}$/;
-    if (!strictEmailCheck.test(email.trim().toLowerCase())) {
-      toast({ title: "Email inválido", description: "Use um email válido para continuar.", variant: "destructive" });
-      return;
-    }
-    if (!dadosCompletos) {
-      toast({
-        title: "Dados incompletos",
-        description: "Erro ao identificar plano selecionado. Tente novamente.",
-        variant: "destructive",
-      });
-      return;
-    }
-    setLoading(true);
-    toast({ title: "Aguarde, gerando pagamento..." });
-    try {
+      console.log("[checkout] Perfil salvo. Gerando PIX sem autenticação.");
       const payload = {
-        email,
+        email: normalizedEmail,
         valor: Number(valor),
         plano,
         ciclo,
@@ -150,7 +112,7 @@ const Checkout = () => {
         err?.message === "Failed to fetch"
           ? "Não foi possível conectar ao servidor de pagamento. Tente novamente."
           : err?.message || "Erro ao gerar PIX, tente novamente";
-      toast({ title: "Erro ao gerar PIX", description, variant: "destructive" });
+      toast({ title: "Erro ao continuar", description, variant: "destructive" });
     } finally {
       setLoading(false);
     }
@@ -161,46 +123,12 @@ const Checkout = () => {
     if (!silent) setLoading(true);
     try {
       const { data } = await supabase.functions.invoke("check-pix-payment", {
-        body: { paymentId: pix.paymentId, plano, ciclo, email, password },
+        body: { paymentId: pix.paymentId, plano, ciclo, email },
       });
       if (data?.status === "approved") {
         setStep("approved");
-        toast({ title: "Pagamento concluído com sucesso!", description: "Liberando seu acesso..." });
-
-        // Após pagamento aprovado, criar conta Auth e fazer login
-        try {
-          // Cria usuário no Auth agora que o pagamento foi confirmado
-          const { data: signUpData, error: signUpErr } = await supabase.auth.signUp({
-            email,
-            password,
-          });
-          if (signUpErr) {
-            console.error("Erro ao criar conta após pagamento:", signUpErr);
-            // Tenta login caso já exista
-            const { error: signInErr } = await supabase.auth.signInWithPassword({ email, password });
-            if (signInErr) {
-              toast({ title: "Acesso criado", description: "Faça login para acessar o painel." });
-              setTimeout(() => navigate("/login"), 1500);
-              return;
-            }
-          } else if (signUpData?.session) {
-            // Login automático se sessão retornada
-            setTimeout(() => navigate("/admin"), 1200);
-            return;
-          } else {
-            // Email confirmation required - try direct login
-            const { error: signInErr } = await supabase.auth.signInWithPassword({ email, password });
-            if (signInErr) {
-              toast({ title: "Acesso criado", description: "Faça login para acessar o painel." });
-              setTimeout(() => navigate("/login"), 1500);
-              return;
-            }
-          }
-          setTimeout(() => navigate("/admin"), 1200);
-        } catch (e) {
-          console.error(e);
-          setTimeout(() => navigate("/login"), 1500);
-        }
+        toast({ title: "Pagamento concluído com sucesso!", description: "Seu acesso será liberado em seguida." });
+        setTimeout(() => navigate("/login"), 1500);
       } else if (!silent) {
         toast({ title: "Aguardando pagamento", description: `Status: ${data?.status}` });
       }
