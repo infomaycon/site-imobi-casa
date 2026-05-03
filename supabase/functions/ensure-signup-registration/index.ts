@@ -6,6 +6,8 @@ const corsHeaders = {
     "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
+const strictEmail = /^[a-zA-Z0-9](?:[a-zA-Z0-9._-]*[a-zA-Z0-9])?@[a-zA-Z0-9](?:[a-zA-Z0-9.-]*[a-zA-Z0-9])?\.[a-zA-Z]{2,}$/;
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
 
@@ -14,24 +16,53 @@ Deno.serve(async (req) => {
     const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
     if (!supabaseUrl || !serviceKey) throw new Error("Backend não configurado");
 
+    const admin = createClient(supabaseUrl, serviceKey);
+    const body = await req.json().catch(() => ({}));
     const token = (req.headers.get("Authorization") || "").replace("Bearer ", "");
-    if (!token) {
-      return new Response(JSON.stringify({ error: "Login obrigatório" }), {
-        status: 401,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
+    let user = null;
+
+    if (token) {
+      const { data: authData, error: authError } = await admin.auth.getUser(token);
+      if (authError || !authData.user?.id || !authData.user.email) {
+        return new Response(JSON.stringify({ error: "Usuário inválido" }), {
+          status: 401,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+      user = authData.user;
+    } else {
+      const requestedUserId = String(body.userId || body.user_id || "");
+      const requestedEmail = String(body.email || "").trim().toLowerCase();
+      if (!requestedUserId || !strictEmail.test(requestedEmail)) {
+        return new Response(JSON.stringify({ error: "Dados de cadastro inválidos" }), {
+          status: 400,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+      const { data: userData, error: userError } = await admin.auth.admin.getUserById(requestedUserId);
+      if (userError || !userData.user?.email || userData.user.email.toLowerCase() !== requestedEmail) {
+        return new Response(JSON.stringify({ error: "Usuário não encontrado no Auth" }), {
+          status: 401,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+      const createdAt = new Date(userData.user.created_at || 0).getTime();
+      if (!createdAt || Date.now() - createdAt > 30 * 60 * 1000) {
+        return new Response(JSON.stringify({ error: "Faça login para sincronizar este cadastro" }), {
+          status: 403,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+      user = userData.user;
     }
 
-    const admin = createClient(supabaseUrl, serviceKey);
-    const { data: authData, error: authError } = await admin.auth.getUser(token);
-    if (authError || !authData.user?.id || !authData.user.email) {
+    if (!user?.id || !user.email) {
       return new Response(JSON.stringify({ error: "Usuário inválido" }), {
         status: 401,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
 
-    const user = authData.user;
     const email = user.email.toLowerCase();
     const trialEnd = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString();
 
