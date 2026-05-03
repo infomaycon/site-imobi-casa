@@ -95,6 +95,57 @@ export type Database = {
         }
         Relationships: []
       }
+      profiles: {
+        Row: {
+          ciclo: string
+          created_at: string
+          dominio_custom: string | null
+          email: string
+          first_login: boolean
+          id: string
+          nome: string | null
+          plano: string
+          status: string
+          subdominio: string | null
+          trial: boolean
+          trial_end: string | null
+          trial_start: string
+          updated_at: string
+        }
+        Insert: {
+          ciclo?: string
+          created_at?: string
+          dominio_custom?: string | null
+          email: string
+          first_login?: boolean
+          id: string
+          nome?: string | null
+          plano?: string
+          status?: string
+          subdominio?: string | null
+          trial?: boolean
+          trial_end?: string | null
+          trial_start?: string
+          updated_at?: string
+        }
+        Update: {
+          ciclo?: string
+          created_at?: string
+          dominio_custom?: string | null
+          email?: string
+          first_login?: boolean
+          id?: string
+          nome?: string | null
+          plano?: string
+          status?: string
+          subdominio?: string | null
+          trial?: boolean
+          trial_end?: string | null
+          trial_start?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       properties: {
         Row: {
           active: boolean
