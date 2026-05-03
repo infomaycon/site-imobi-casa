@@ -26,6 +26,22 @@ const PERIODS: { key: Period; label: string; discount?: string }[] = [
 
 const PLANS = [
   {
+    slug: "gratuito",
+    name: "Free",
+    level: 0,
+    tagline: "Para conhecer a plataforma.",
+    prices: { mensal: "R$ 0", semestral: "R$ 0", anual: "R$ 0" },
+    periodLabel: { mensal: "", semestral: "", anual: "" },
+    highlighted: false,
+    features: [
+      "1 modelo de site",
+      "Até 5 imóveis cadastrados",
+      "Até 3 imagens por imóvel",
+      "Marca d'água ImobiCasa",
+      "Subdomínio gratuito",
+    ],
+  },
+  {
     slug: "essencial",
     name: "Essencial",
     level: 1,
@@ -84,7 +100,7 @@ const AccountPage = () => {
   const { subscriber, plan } = useSubscriberAccess();
   const navigate = useNavigate();
   const [period, setPeriod] = useState<Period>("mensal");
-  const [showUpgrade, setShowUpgrade] = useState(false);
+  const [showUpgrade, setShowUpgrade] = useState(true);
   const [collaboratorEmail, setCollaboratorEmail] = useState("");
   const [collaborators, setCollaborators] = useState<string[]>([]);
   const [showCancelConfirm, setShowCancelConfirm] = useState(false);
@@ -213,10 +229,11 @@ const AccountPage = () => {
                 </div>
 
                 {/* Plans grid */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 pt-4">
                   {PLANS.map((p) => {
                     const isCurrent = p.slug === currentSlug;
                     const isDowngrade = !isTrial && p.level < currentLevel;
+                    const isFree = p.slug === "gratuito";
                     return (
                       <div
                         key={p.slug}
@@ -259,15 +276,17 @@ const AccountPage = () => {
                         <Button
                           size="sm"
                           variant={p.highlighted ? "default" : "outline"}
-                          disabled={isCurrent || isDowngrade}
-                          onClick={() => goToCheckout(p.slug)}
+                          disabled={isCurrent || isDowngrade || isFree}
+                          onClick={() => !isFree && goToCheckout(p.slug)}
                           className="w-full font-display font-semibold"
                         >
                           {isCurrent
                             ? "Plano atual"
                             : isDowngrade
                               ? "Indisponível"
-                              : "Assinar"}
+                              : isFree
+                                ? "Gratuito"
+                                : "Assinar"}
                         </Button>
                       </div>
                     );
