@@ -7,6 +7,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider } from "@/hooks/useAuth";
 
 const Index = lazy(() => import("./pages/Index.tsx"));
+const UnderConstruction = lazy(() => import("./pages/UnderConstruction.tsx"));
 const DemoSite = lazy(() => import("./pages/DemoSite.tsx"));
 const Login = lazy(() => import("./pages/Login.tsx"));
 const ForgotPassword = lazy(() => import("./pages/ForgotPassword.tsx"));
@@ -43,17 +44,17 @@ const App = () => (
         <BrowserRouter>
           <Suspense fallback={<div className="min-h-screen" />}>
           <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/demo/:modelId" element={<DemoSite />} />
+            <Route path="/" element={<UnderConstruction />} />
+            <Route path="/super-admin-login" element={<SuperAdminLogin />} />
+            <Route path="/super-admin-forgot-password" element={<SuperAdminForgotPassword />} />
             <Route path="/login" element={<Login />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/reset-password" element={<ResetPassword />} />
-            <Route path="/super-admin-login" element={<SuperAdminLogin />} />
-            <Route path="/super-admin-forgot-password" element={<SuperAdminForgotPassword />} />
-            <Route path="/test-login" element={<TestLogin />} />
-            <Route path="/test-signup" element={<TestSignup />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/checkout" element={<Checkout />} />
+            <Route path="/demo/:modelId" element={<DemoSite />} />
+            <Route path="/test-login" element={<TestLogin />} />
+            <Route path="/test-signup" element={<TestSignup />} />
             
             <Route path="/admin" element={<AdminLayout />}>
               <Route index element={<AddProperty />} />
