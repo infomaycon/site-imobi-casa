@@ -40,9 +40,9 @@ const Signup = () => {
     }
   };
 
-  const ensureSignupRegistration = async () => {
+  const ensureSignupRegistration = async (userId: string, normalizedEmail: string) => {
     const { error: syncError } = await supabase.functions.invoke("ensure-signup-registration", {
-      body: {},
+      body: { userId, email: normalizedEmail },
     });
     if (syncError) throw syncError;
   };
@@ -74,28 +74,21 @@ const Signup = () => {
       return;
     }
 
-    const { error: signInError } = data?.session ? { error: null } : await signIn(normalizedEmail, password);
-    if (signInError) {
-      console.error("Erro ao criar usuário:", signInError);
-      setLoading(false);
-      setInfo("Conta criada! Verifique seu email para confirmar antes de entrar.");
-      return;
-    }
-
     try {
-      await createProfile(userId, normalizedEmail);
-    } catch (profileError) {
-      setLoading(false);
-      setError("Usuário criado no Auth, mas o profile não foi salvo. Verifique o console e tente novamente.");
-      return;
-    }
-
-    try {
-      await ensureSignupRegistration();
+      if (data?.session) await createProfile(userId, normalizedEmail);
+      await ensureSignupRegistration(userId, normalizedEmail);
     } catch (syncError) {
       setLoading(false);
       setError("Conta criada, mas o acesso ainda não foi liberado porque o cadastro não foi salvo no banco. Tente entrar novamente em alguns segundos.");
       console.error("Erro ao sincronizar cadastro:", syncError);
+      return;
+    }
+
+    const { error: signInError } = data?.session ? { error: null } : await signIn(normalizedEmail, password);
+    if (signInError) {
+      console.error("Erro ao criar usuário:", signInError);
+      setLoading(false);
+      setInfo("Conta criada e profile salvo. Verifique seu email para confirmar antes de entrar.");
       return;
     }
 
