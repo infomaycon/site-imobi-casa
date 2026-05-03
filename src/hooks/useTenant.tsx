@@ -12,31 +12,18 @@ export interface TenantData {
 
 /**
  * Extrai o subdomínio do hostname atual.
- * Ex: "cliente.imobicasa.com" → "cliente"
- * Retorna null para localhost, IPs, ou domínio raiz.
+ * Só funciona para *.imobicasa.com
+ * Retorna null para qualquer outro domínio.
  */
 function extractSubdomain(hostname: string): string | null {
-  // Ignorar localhost e IPs
-  if (
-    hostname === "localhost" ||
-    hostname.startsWith("127.") ||
-    hostname.startsWith("192.168.") ||
-    hostname.includes("lovable.app") ||
-    hostname.includes("lovable.dev")
-  ) {
-    return null;
-  }
+  // Só ativar para *.imobicasa.com
+  const match = hostname.match(/^([^.]+)\.imobicasa\.com$/i);
+  if (!match) return null;
 
-  const parts = hostname.split(".");
-  // Precisa de pelo menos 3 partes: sub.domain.tld
-  if (parts.length >= 3) {
-    const sub = parts[0];
-    // Ignorar "www" como subdomínio
-    if (sub === "www") return null;
-    return sub;
-  }
+  const sub = match[1];
+  if (sub === "www") return null;
 
-  return null;
+  return sub;
 }
 
 export const useTenant = () => {
