@@ -169,6 +169,16 @@ const Checkout = () => {
 
   const handleCreatePix = async () => {
     if (loading) return;
+    // Cria/atualiza perfil no projeto externo ANTES de gerar o PIX
+    if (!email || !email.trim()) {
+      toast({ title: "Email obrigatório", description: "Não foi possível identificar o email.", variant: "destructive" });
+      return;
+    }
+    const strictEmailCheck = /^[a-zA-Z0-9](?:[a-zA-Z0-9._-]*[a-zA-Z0-9])?@[a-zA-Z0-9](?:[a-zA-Z0-9.-]*[a-zA-Z0-9])?\.[a-zA-Z]{2,}$/;
+    if (!strictEmailCheck.test(email.trim().toLowerCase())) {
+      toast({ title: "Email inválido", description: "Use um email válido para continuar.", variant: "destructive" });
+      return;
+    }
     // Validação obrigatória ANTES de qualquer requisição
     if (!plano || !ciclo) {
       toast({
@@ -197,6 +207,20 @@ const Checkout = () => {
     setLoading(true);
     toast({ title: "Aguarde, gerando pagamento..." });
     try {
+      // Criar/atualizar perfil no projeto externo antes do PIX
+      console.log("[checkout] Criando perfil externo para:", email);
+      const externalRes = await fetch("https://conuhvxiiwdsppowwrib.supabase.co/functions/v1/create-or-update-profile", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: email.trim().toLowerCase() }),
+      });
+      if (!externalRes.ok) {
+        const errBody = await externalRes.json().catch(() => ({}));
+        console.error("[checkout] Erro ao criar perfil externo:", errBody);
+        throw new Error(errBody?.error || "Erro ao registrar perfil antes do pagamento");
+      }
+      console.log("[checkout] Perfil externo criado/atualizado com sucesso");
+
       const payload = {
         email,
         user_id: userId,
