@@ -27,12 +27,15 @@ const TestSignup = () => {
       return;
     }
     setLoading(true);
+    console.log("Tentando criar usuário...");
     const { data, error } = await testSupabase.auth.signUp({
       email: parsed.data.email,
       password: parsed.data.password,
       options: { emailRedirectTo: `${window.location.origin}/admin` },
     });
+    console.log("Resposta do Auth:", data);
     if (error) {
+      console.error("Erro ao criar usuário:", error);
       setLoading(false);
       setError(error.message);
       return;
@@ -45,6 +48,7 @@ const TestSignup = () => {
       const { error: profileError } = await testSupabase.from("profiles" as any).insert({
         id: user.id,
         email: user.email,
+        nome: user.email?.split("@")[0] ?? null,
         plano: "free",
         status: "active",
         trial: true,
@@ -53,6 +57,7 @@ const TestSignup = () => {
         first_login: true,
       });
       if (profileError) {
+        console.error("Erro ao criar profile:", profileError);
         setLoading(false);
         setError(`Conta criada, mas erro ao criar profile: ${profileError.message}`);
         return;
