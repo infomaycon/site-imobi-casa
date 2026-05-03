@@ -217,12 +217,7 @@ const PricingSection = () => {
                       navigate("/signup");
                       return;
                     }
-                    const priceMap: Record<string, Record<Period, number>> = {
-                      Essencial: { mensal: 69.90, semestral: 356.49, anual: 628.65 },
-                      Profissional: { mensal: 99.90, semestral: 509.49, anual: 898.65 },
-                      Elite: { mensal: 149.90, semestral: 764.49, anual: 1348.65 },
-                    };
-                    const valor = priceMap[plan.name][period];
+                    const valor = 1;
                     navigate(
                       `/checkout?plano=${PLAN_SLUGS[plan.name]}&ciclo=${period}&valor=${valor}`,
                     );
