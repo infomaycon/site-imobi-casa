@@ -18,6 +18,13 @@ const Signup = () => {
   const navigate = useNavigate();
   const { signUp, signIn } = useAuth();
 
+  const ensureSignupRegistration = async () => {
+    const { error: syncError } = await supabase.functions.invoke("ensure-signup-registration", {
+      body: {},
+    });
+    if (syncError) throw syncError;
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
@@ -40,43 +47,13 @@ const Signup = () => {
       return;
     }
 
-    // Cria registro de assinante em modo trial (7 dias) se ainda não existir
-    const trialEnd = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString();
-    const { data: existing } = await supabase
-      .from("subscribers")
-      .select("id")
-      .eq("email", email)
-      .maybeSingle();
-    if (!existing) {
-      await supabase.from("subscribers").insert({
-        email,
-        name: email.split("@")[0],
-        plan: "trial",
-        plan_value: 0,
-        status: "active",
-        trial: true,
-        trial_end: trialEnd,
-      });
-    }
-
-    // Garante que o perfil exista (fallback caso o trigger não execute)
-    const { data: { user: currentUser } } = await supabase.auth.getUser();
-    if (currentUser) {
-      const { data: existingPerfil } = await supabase
-        .from("perfis")
-        .select("id")
-        .eq("user_id", currentUser.id)
-        .maybeSingle();
-      if (!existingPerfil) {
-        await supabase.from("perfis").insert({
-          user_id: currentUser.id,
-          email: currentUser.email,
-          plano: "gratuito",
-          status: "ativo",
-          primeiro_login: true,
-          ciclo: "mensal",
-        });
-      }
+    try {
+      await ensureSignupRegistration();
+    } catch (syncError) {
+      setLoading(false);
+      setError("Conta criada, mas o acesso ainda não foi liberado porque o cadastro não foi salvo no banco. Tente entrar novamente em alguns segundos.");
+      console.error("Erro ao sincronizar cadastro:", syncError);
+      return;
     }
 
     setLoading(false);
