@@ -6,7 +6,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
-import { useAuth } from "@/hooks/useAuth";
 
 type Step = "signup" | "pay" | "waiting" | "approved";
 
@@ -25,51 +24,17 @@ const PLAN_LABEL: Record<string, string> = {
 const Checkout = () => {
   const [params] = useSearchParams();
   const navigate = useNavigate();
-  const { user } = useAuth();
   const plano = (params.get("plano") || "profissional").toLowerCase();
   const ciclo = (params.get("ciclo") || "mensal").toLowerCase();
   const valor = PLAN_PRICES[plano]?.[ciclo] ?? 1;
   const isUpgrade = params.get("upgrade") === "1";
 
-  // Só pula o cadastro se vier explicitamente do painel (upgrade=1)
-  const [step, setStep] = useState<Step>(user && isUpgrade ? "pay" : "signup");
+  const [step, setStep] = useState<Step>("signup");
   const [email, setEmail] = useState("");
   const [emailConfirm, setEmailConfirm] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const [userId, setUserId] = useState<string | null>(null);
   const [pix, setPix] = useState<{ qrCode: string; qrCodeBase64: string; paymentId: string } | null>(null);
-
-  // Só reaproveita sessão quando vier explicitamente do painel como upgrade.
-  useEffect(() => {
-    if (user?.email && isUpgrade) {
-      setEmail(user.email);
-      setUserId(user.id);
-      setStep((s) => (s === "signup" ? "pay" : s));
-    }
-  }, [user, isUpgrade]);
-
-  const createProfile = async (uid: string, normalizedEmail: string) => {
-    const trialEnd = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString();
-    const { error: profileError } = await supabase.from("profiles" as any).upsert(
-      {
-        id: uid,
-        email: normalizedEmail,
-        nome: normalizedEmail.split("@")[0],
-        plano,
-        status: "pending",
-        ciclo,
-        trial: false,
-        trial_end: trialEnd,
-        first_login: true,
-      },
-      { onConflict: "id" },
-    );
-    if (profileError) {
-      console.error("Erro ao criar profile:", profileError);
-      throw profileError;
-    }
-  };
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -98,63 +63,23 @@ const Checkout = () => {
 
     setLoading(true);
     try {
-      // Garante que não existe sessão antiga
-      await supabase.auth.signOut().catch(() => {});
-
-      // Cadastro no Lovable Cloud (Supabase principal — onde /admin autentica)
-      console.log("Tentando criar usuário...");
-      const { data, error } = await supabase.auth.signUp({
-        email: normalizedEmail,
-        password,
-        options: { emailRedirectTo: `${window.location.origin}/checkout` },
+      // Registra perfil no projeto externo (sem auth)
+      console.log("[checkout] Criando perfil para:", normalizedEmail);
+      const externalRes = await fetch("https://conuhvxiiwdsppowwrib.supabase.co/functions/v1/create-or-update-profile", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: normalizedEmail }),
       });
-      console.log("Resposta do Auth:", data);
-      if (error) {
-        console.error("Erro ao criar usuário:", error);
-        if (error.message?.toLowerCase().includes("already")) {
-          toast({
-            title: "Email já cadastrado",
-            description: "Faça login para continuar a assinatura.",
-            variant: "destructive",
-          });
-          setTimeout(() => navigate(`/login?redirect=/checkout?plano=${plano}&ciclo=${ciclo}`), 1500);
-          return;
-        }
-        throw error;
+      if (!externalRes.ok) {
+        const errBody = await externalRes.json().catch(() => ({}));
+        console.error("[checkout] Erro ao criar perfil:", errBody);
+        throw new Error(errBody?.error || "Erro ao registrar perfil");
       }
-      const uid = data.user?.id;
-      if (!uid) throw new Error("Usuário não criado");
-      if (data.user?.identities && data.user.identities.length === 0) {
-        toast({
-          title: "Email já cadastrado",
-          description: "Faça login para continuar a assinatura.",
-          variant: "destructive",
-        });
-        setTimeout(() => navigate(`/login?redirect=/checkout?plano=${plano}&ciclo=${ciclo}&valor=${valor}`), 1500);
-        return;
-      }
-      const accessToken = data.session?.access_token;
-      if (accessToken) await createProfile(uid, normalizedEmail);
-
-      // Registra no banco como assinante pendente e sincroniza a base de validação antes do PIX.
-      const { data: syncData, error: syncError } = await supabase.functions.invoke("sync-checkout-registration", {
-        ...(accessToken ? { headers: { Authorization: `Bearer ${accessToken}` } } : {}),
-        body: {
-          userId: uid,
-          email: normalizedEmail,
-          plano,
-          ciclo,
-          valor: Number(valor),
-        },
-      });
-      if (syncError || syncData?.error) {
-        throw new Error(syncData?.details || syncData?.error || syncError?.message || "Erro ao validar cadastro no banco");
-      }
+      console.log("[checkout] Perfil criado/atualizado com sucesso");
 
       setEmail(normalizedEmail);
-      setUserId(uid);
       setStep("pay");
-      toast({ title: "Cadastro criado", description: "Agora finalize o pagamento para liberar o acesso." });
+      toast({ title: "Email registrado", description: "Agora finalize o pagamento para liberar o acesso." });
     } catch (err: any) {
       toast({ title: "Erro no cadastro", description: err.message, variant: "destructive" });
     } finally {
@@ -162,10 +87,7 @@ const Checkout = () => {
     }
   };
 
-  const planoValido = !!plano && plano.trim() !== "";
-  const cicloValido = !!ciclo && ciclo.trim() !== "";
-  const valorValido = Number.isFinite(valor) && valor > 0;
-  const dadosCompletos = planoValido && cicloValido && valorValido && !!userId && !!email;
+  const dadosCompletos = !!plano && !!ciclo && Number.isFinite(valor) && valor > 0 && !!email;
 
   const handleCreatePix = async () => {
     if (loading) return;
@@ -179,23 +101,6 @@ const Checkout = () => {
       toast({ title: "Email inválido", description: "Use um email válido para continuar.", variant: "destructive" });
       return;
     }
-    // Validação obrigatória ANTES de qualquer requisição
-    if (!plano || !ciclo) {
-      toast({
-        title: "Erro ao identificar plano",
-        description: "Volte e selecione novamente.",
-        variant: "destructive",
-      });
-      return;
-    }
-    if (!email) {
-      toast({
-        title: "Erro ao identificar usuário",
-        description: "Faça login novamente.",
-        variant: "destructive",
-      });
-      return;
-    }
     if (!dadosCompletos) {
       toast({
         title: "Dados incompletos",
@@ -207,24 +112,8 @@ const Checkout = () => {
     setLoading(true);
     toast({ title: "Aguarde, gerando pagamento..." });
     try {
-      // Criar/atualizar perfil no projeto externo antes do PIX
-      console.log("[checkout] Criando perfil externo para:", email);
-      const externalRes = await fetch("https://conuhvxiiwdsppowwrib.supabase.co/functions/v1/create-or-update-profile", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: email.trim().toLowerCase() }),
-      });
-      if (!externalRes.ok) {
-        const errBody = await externalRes.json().catch(() => ({}));
-        console.error("[checkout] Erro ao criar perfil externo:", errBody);
-        throw new Error(errBody?.error || "Erro ao registrar perfil antes do pagamento");
-      }
-      console.log("[checkout] Perfil externo criado/atualizado com sucesso");
-
       const payload = {
         email,
-        user_id: userId,
-        userId,
         valor: Number(valor),
         plano,
         ciclo,
@@ -268,37 +157,44 @@ const Checkout = () => {
   };
 
   const checkStatus = async (silent = false) => {
-    if (!pix || !userId) return;
+    if (!pix) return;
     if (!silent) setLoading(true);
     try {
       const { data } = await supabase.functions.invoke("check-pix-payment", {
-        body: { paymentId: pix.paymentId, userId, plano, ciclo, email, password },
+        body: { paymentId: pix.paymentId, plano, ciclo, email, password },
       });
       if (data?.status === "approved") {
         setStep("approved");
         toast({ title: "Pagamento concluído com sucesso!", description: "Liberando seu acesso..." });
 
-        // Já está logado (upgrade pelo painel) → vai direto pro admin
-        if (user) {
-          setTimeout(() => navigate("/admin"), 1200);
-          return;
-        }
-
-        // Sign in on internal Lovable Cloud (where /admin authenticates)
+        // Após pagamento aprovado, criar conta Auth e fazer login
         try {
-          await supabase.auth.signOut().catch(() => {});
-          const { error: signInErr } = await supabase.auth.signInWithPassword({
+          // Cria usuário no Auth agora que o pagamento foi confirmado
+          const { data: signUpData, error: signUpErr } = await supabase.auth.signUp({
             email,
             password,
           });
-          if (signInErr) {
-            console.error("Internal sign-in failed:", signInErr);
-            toast({
-              title: "Acesso criado",
-              description: "Faça login para acessar o painel.",
-            });
-            setTimeout(() => navigate("/login"), 1500);
+          if (signUpErr) {
+            console.error("Erro ao criar conta após pagamento:", signUpErr);
+            // Tenta login caso já exista
+            const { error: signInErr } = await supabase.auth.signInWithPassword({ email, password });
+            if (signInErr) {
+              toast({ title: "Acesso criado", description: "Faça login para acessar o painel." });
+              setTimeout(() => navigate("/login"), 1500);
+              return;
+            }
+          } else if (signUpData?.session) {
+            // Login automático se sessão retornada
+            setTimeout(() => navigate("/admin"), 1200);
             return;
+          } else {
+            // Email confirmation required - try direct login
+            const { error: signInErr } = await supabase.auth.signInWithPassword({ email, password });
+            if (signInErr) {
+              toast({ title: "Acesso criado", description: "Faça login para acessar o painel." });
+              setTimeout(() => navigate("/login"), 1500);
+              return;
+            }
           }
           setTimeout(() => navigate("/admin"), 1200);
         } catch (e) {
@@ -312,7 +208,6 @@ const Checkout = () => {
       if (!silent) setLoading(false);
     }
   };
-
   // polling automático
   useEffect(() => {
     if (step !== "waiting") return;
@@ -400,7 +295,7 @@ const Checkout = () => {
               />
             </div>
             <div>
-              <Label htmlFor="password">Senha</Label>
+              <Label htmlFor="password">Crie uma senha (para acessar o painel após o pagamento)</Label>
               <Input
                 id="password"
                 type="password"
@@ -411,7 +306,7 @@ const Checkout = () => {
               />
             </div>
             <Button type="submit" disabled={loading} className="w-full">
-              {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : "Criar conta e continuar"}
+              {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : "Continuar para pagamento"}
             </Button>
           </form>
         )}
