@@ -52,31 +52,43 @@ export type Database = {
       }
       perfis: {
         Row: {
+          ciclo: string
           created_at: string
           dominio_custom: string | null
           email: string | null
           id: string
           nome: string | null
+          plano: string
+          primeiro_login: boolean
+          status: string
           subdominio: string | null
           updated_at: string
           user_id: string
         }
         Insert: {
+          ciclo?: string
           created_at?: string
           dominio_custom?: string | null
           email?: string | null
           id?: string
           nome?: string | null
+          plano?: string
+          primeiro_login?: boolean
+          status?: string
           subdominio?: string | null
           updated_at?: string
           user_id: string
         }
         Update: {
+          ciclo?: string
           created_at?: string
           dominio_custom?: string | null
           email?: string | null
           id?: string
           nome?: string | null
+          plano?: string
+          primeiro_login?: boolean
+          status?: string
           subdominio?: string | null
           updated_at?: string
           user_id?: string

@@ -58,6 +58,27 @@ const Signup = () => {
         trial_end: trialEnd,
       });
     }
+
+    // Garante que o perfil exista (fallback caso o trigger não execute)
+    const { data: { user: currentUser } } = await supabase.auth.getUser();
+    if (currentUser) {
+      const { data: existingPerfil } = await supabase
+        .from("perfis")
+        .select("id")
+        .eq("user_id", currentUser.id)
+        .maybeSingle();
+      if (!existingPerfil) {
+        await supabase.from("perfis").insert({
+          user_id: currentUser.id,
+          email: currentUser.email,
+          plano: "gratuito",
+          status: "ativo",
+          primeiro_login: true,
+          ciclo: "mensal",
+        });
+      }
+    }
+
     setLoading(false);
     navigate("/admin");
   };
