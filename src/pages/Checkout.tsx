@@ -68,8 +68,7 @@ const Checkout = () => {
       });
       if (!externalRes.ok) {
         const errBody = await externalRes.json().catch(() => ({}));
-        console.error("[checkout] Erro ao criar perfil:", errBody);
-        throw new Error(errBody?.error || "Erro ao registrar perfil");
+        console.error("[checkout] Erro ao salvar perfil pending, continuando para o PIX:", errBody);
       }
       setEmail(normalizedEmail);
 
