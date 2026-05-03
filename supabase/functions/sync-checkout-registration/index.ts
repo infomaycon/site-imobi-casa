@@ -19,38 +19,48 @@ function computeExpiresAt(ciclo: string): string {
   return now.toISOString();
 }
 
-async function syncExternalProfile(params: {
+async function syncInternalRegistration(admin: ReturnType<typeof createClient>, params: {
   userId: string;
   email: string;
   plano: string;
   ciclo: string;
 }) {
-  const testUrl = Deno.env.get("TEST_SUPABASE_URL");
-  const testKey = Deno.env.get("TEST_SUPABASE_SERVICE_ROLE_KEY");
-  if (!testUrl || !testKey) return;
-
-  const admin = createClient(testUrl, testKey);
-  const basePayload: Record<string, unknown> = {
+  const profilePayload = {
     id: params.userId,
     email: params.email,
+    nome: params.email.split("@")[0],
     plano: params.plano,
     status: "pending",
+    ciclo: params.ciclo,
     trial: false,
+    trial_end: null,
+    first_login: true,
   };
 
-  const { error } = await admin
+  const { error: profileError } = await admin
     .from("profiles")
-    .upsert({ ...basePayload, ciclo: params.ciclo, expires_at: computeExpiresAt(params.ciclo) }, { onConflict: "id" });
+    .upsert(profilePayload, { onConflict: "id" });
+  if (profileError) throw profileError;
 
-  if (!error) return;
+  const { error: perfilError } = await admin.from("perfis").upsert(
+    {
+      user_id: params.userId,
+      email: params.email,
+      nome: params.email.split("@")[0],
+      plano: params.plano,
+      status: "ativo",
+      primeiro_login: true,
+      ciclo: params.ciclo,
+    },
+    { onConflict: "user_id" },
+  );
+  if (perfilError) throw perfilError;
 
-  const { error: fallbackError } = await admin
-    .from("profiles")
-    .upsert(basePayload, { onConflict: "id" });
-
-  if (fallbackError) {
-    throw new Error(`External profile sync failed: ${fallbackError.message}`);
-  }
+  const [{ data: profile }, { data: perfil }] = await Promise.all([
+    admin.from("profiles").select("id").eq("id", params.userId).maybeSingle(),
+    admin.from("perfis").select("id").eq("user_id", params.userId).maybeSingle(),
+  ]);
+  if (!profile?.id || !perfil?.id) throw new Error("Cadastro não confirmado nas tabelas");
 }
 
 Deno.serve(async (req) => {
@@ -109,7 +119,7 @@ Deno.serve(async (req) => {
       );
 
     if (subscriberError) throw subscriberError;
-    await syncExternalProfile({ userId, email, plano, ciclo });
+    await syncInternalRegistration(internalAdmin, { userId, email, plano, ciclo });
 
     return new Response(JSON.stringify({ ok: true }), {
       status: 200,
