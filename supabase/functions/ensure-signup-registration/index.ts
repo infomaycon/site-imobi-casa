@@ -35,6 +35,22 @@ Deno.serve(async (req) => {
     const email = user.email.toLowerCase();
     const trialEnd = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString();
 
+    const { error: profileError } = await admin.from("profiles").upsert(
+      {
+        id: user.id,
+        email,
+        nome: email.split("@")[0],
+        plano: "gratuito",
+        status: "ativo",
+        ciclo: "mensal",
+        trial: true,
+        trial_end: trialEnd,
+        first_login: true,
+      },
+      { onConflict: "id" },
+    );
+    if (profileError) throw profileError;
+
     const { error: perfilError } = await admin.from("perfis").upsert(
       {
         user_id: user.id,
@@ -63,12 +79,13 @@ Deno.serve(async (req) => {
     );
     if (subscriberError) throw subscriberError;
 
-    const [{ data: perfil }, { data: subscriber }] = await Promise.all([
+    const [{ data: profile }, { data: perfil }, { data: subscriber }] = await Promise.all([
+      admin.from("profiles").select("id").eq("id", user.id).maybeSingle(),
       admin.from("perfis").select("id").eq("user_id", user.id).maybeSingle(),
       admin.from("subscribers").select("id").eq("email", email).maybeSingle(),
     ]);
 
-    if (!perfil?.id || !subscriber?.id) throw new Error("Cadastro não confirmado nas tabelas");
+    if (!profile?.id || !perfil?.id || !subscriber?.id) throw new Error("Cadastro não confirmado nas tabelas");
 
     return new Response(JSON.stringify({ ok: true }), {
       status: 200,
