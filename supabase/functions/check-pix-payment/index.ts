@@ -18,19 +18,18 @@ function computeExpiresAt(ciclo: string): string {
   return now.toISOString();
 }
 
-async function persistExternalProfile(params: {
-  testUrl: string;
-  testKey: string;
+async function persistProfile(admin: ReturnType<typeof createClient>, params: {
   userId: string;
   email?: string;
   plano: string;
   ciclo: string;
 }) {
-  const { testUrl, testKey, userId, email, plano, ciclo } = params;
-  const admin = createClient(testUrl, testKey);
+  const { userId, email, plano, ciclo } = params;
+  const cleanEmail = email?.trim().toLowerCase() || null;
   const basePayload: Record<string, unknown> = {
     id: userId,
-    email: email ?? null,
+    email: cleanEmail,
+    nome: cleanEmail?.split("@")[0] ?? null,
     plano,
     status: "active",
     trial: false,
@@ -50,7 +49,7 @@ async function persistExternalProfile(params: {
     .upsert(basePayload, { onConflict: "id" });
 
   if (fallbackError) {
-    throw new Error(`External profile sync failed: ${fallbackError.message}`);
+    throw new Error(`Profile sync failed: ${fallbackError.message}`);
   }
 }
 
