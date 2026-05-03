@@ -13,6 +13,23 @@ const periods: { key: Period; label: string; discount?: string }[] = [
 
 const plans = [
   {
+    name: "Free",
+    tagline: "Para começar sem compromisso.",
+    prices: { mensal: "R$ 0", semestral: "R$ 0", anual: "R$ 0" },
+    periodLabel: { mensal: "", semestral: "", anual: "" },
+    highlighted: false,
+    isFree: true,
+    cta: "Criar conta grátis",
+    features: [
+      "1 modelo de site",
+      "Até 5 imóveis cadastrados",
+      "3 imagens por imóvel",
+      "Subdomínio gratuito",
+      "Marca d'água ImobiCasa",
+      "Suporte por email",
+    ],
+  },
+  {
     name: "Essencial",
     tagline: "Ideal para corretores iniciantes.",
     prices: { mensal: "R$ 69,90", semestral: "R$ 356,49", anual: "R$ 628,65" },
@@ -77,6 +94,7 @@ const plans = [
 ];
 
 const PLAN_SLUGS: Record<string, string> = {
+  Free: "gratuito",
   Essencial: "essencial",
   Profissional: "profissional",
   Elite: "elite",
@@ -142,7 +160,7 @@ const PricingSection = () => {
         </motion.div>
 
         {/* Plans grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8 items-start">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-5 items-start">
           {plans.map((plan, i) => (
             <motion.div
               key={plan.name}
@@ -195,6 +213,10 @@ const PricingSection = () => {
                 {/* CTA button */}
                 <button
                   onClick={() => {
+                    if ((plan as any).isFree) {
+                      navigate("/signup");
+                      return;
+                    }
                     const priceMap: Record<string, Record<Period, number>> = {
                       Essencial: { mensal: 69.90, semestral: 356.49, anual: 628.65 },
                       Profissional: { mensal: 99.90, semestral: 509.49, anual: 898.65 },
