@@ -64,14 +64,6 @@ Deno.serve(async (req) => {
     const internalServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
     if (!internalUrl || !internalServiceKey) throw new Error("Secrets not configured");
 
-    const token = (req.headers.get("Authorization") || "").replace("Bearer ", "");
-    if (!token) {
-      return new Response(JSON.stringify({ error: "Login obrigatório" }), {
-        status: 401,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
-    }
-
     const body = await req.json();
     const userId = String(body.userId || body.user_id || "");
     const email = String(body.email || "").trim().toLowerCase();
@@ -88,8 +80,12 @@ Deno.serve(async (req) => {
     }
 
     const internalAdmin = createClient(internalUrl, internalServiceKey);
-    const { data: authData, error: authError } = await internalAdmin.auth.getUser(token);
-    if (authError || authData.user?.id !== userId || authData.user?.email?.toLowerCase() !== email) {
+    const token = (req.headers.get("Authorization") || "").replace("Bearer ", "");
+    const authCheck = token
+      ? await internalAdmin.auth.getUser(token)
+      : await internalAdmin.auth.admin.getUserById(userId);
+
+    if (authCheck.error || authCheck.data.user?.id !== userId || authCheck.data.user?.email?.toLowerCase() !== email) {
       return new Response(JSON.stringify({ error: "Cadastro não confere com o usuário logado" }), {
         status: 403,
         headers: { ...corsHeaders, "Content-Type": "application/json" },

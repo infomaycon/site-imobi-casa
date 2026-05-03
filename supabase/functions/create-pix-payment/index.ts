@@ -49,17 +49,13 @@ Deno.serve(async (req) => {
       );
     }
 
-    const token = (req.headers.get("Authorization") || "").replace("Bearer ", "");
-    if (!token) {
-      return new Response(JSON.stringify({ error: "Login obrigatório para gerar PIX" }), {
-        status: 401,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
-    }
-
     const admin = createClient(supabaseUrl, serviceKey);
-    const { data: authData, error: authError } = await admin.auth.getUser(token);
-    if (authError || authData.user?.id !== userId || authData.user?.email?.toLowerCase() !== cleanEmail) {
+    const token = (req.headers.get("Authorization") || "").replace("Bearer ", "");
+    const authCheck = token
+      ? await admin.auth.getUser(token)
+      : await admin.auth.admin.getUserById(userId);
+
+    if (authCheck.error || authCheck.data.user?.id !== userId || authCheck.data.user?.email?.toLowerCase() !== cleanEmail) {
       return new Response(JSON.stringify({ error: "Cadastro não confere com o usuário logado" }), {
         status: 403,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
