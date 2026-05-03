@@ -18,6 +18,28 @@ const Signup = () => {
   const navigate = useNavigate();
   const { signUp, signIn } = useAuth();
 
+  const createProfile = async (userId: string, normalizedEmail: string) => {
+    const trialEnd = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString();
+    const { error: profileError } = await supabase.from("profiles" as any).upsert(
+      {
+        id: userId,
+        email: normalizedEmail,
+        nome: normalizedEmail.split("@")[0],
+        plano: "gratuito",
+        status: "ativo",
+        ciclo: "mensal",
+        trial: true,
+        trial_end: trialEnd,
+        first_login: true,
+      },
+      { onConflict: "id" },
+    );
+    if (profileError) {
+      console.error("Erro ao criar profile:", profileError);
+      throw profileError;
+    }
+  };
+
   const ensureSignupRegistration = async () => {
     const { error: syncError } = await supabase.functions.invoke("ensure-signup-registration", {
       body: {},
@@ -34,16 +56,37 @@ const Signup = () => {
       return;
     }
     setLoading(true);
-    const { error: signUpError } = await signUp(email, password);
+    const normalizedEmail = email.trim().toLowerCase();
+    console.log("Tentando criar usuário...");
+    const { data, error: signUpError } = await signUp(normalizedEmail, password);
+    console.log("Resposta do Auth:", data);
     if (signUpError) {
+      console.error("Erro ao criar usuário:", signUpError);
       setLoading(false);
       setError(signUpError.message || "Erro ao criar conta.");
       return;
     }
-    const { error: signInError } = await signIn(email, password);
+    const userId = data?.user?.id;
+    if (!userId) {
+      console.error("Erro ao criar usuário:", "Auth não retornou o ID do usuário.");
+      setLoading(false);
+      setError("Erro ao criar usuário no Auth. Verifique a conexão com o backend.");
+      return;
+    }
+
+    const { error: signInError } = data?.session ? { error: null } : await signIn(normalizedEmail, password);
     if (signInError) {
+      console.error("Erro ao criar usuário:", signInError);
       setLoading(false);
       setInfo("Conta criada! Verifique seu email para confirmar antes de entrar.");
+      return;
+    }
+
+    try {
+      await createProfile(userId, normalizedEmail);
+    } catch (profileError) {
+      setLoading(false);
+      setError("Usuário criado no Auth, mas o profile não foi salvo. Verifique o console e tente novamente.");
       return;
     }
 
