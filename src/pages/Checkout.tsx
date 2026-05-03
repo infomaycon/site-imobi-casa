@@ -28,8 +28,7 @@ const Checkout = () => {
   const { user } = useAuth();
   const plano = (params.get("plano") || "profissional").toLowerCase();
   const ciclo = (params.get("ciclo") || "mensal").toLowerCase();
-  const valorParam = Number((params.get("valor") || "").replace(",", "."));
-  const valor = Number.isFinite(valorParam) && valorParam > 0 ? valorParam : PLAN_PRICES[plano]?.[ciclo] ?? 1;
+  const valor = PLAN_PRICES[plano]?.[ciclo] ?? 1;
   const isUpgrade = params.get("upgrade") === "1";
 
   // Só pula o cadastro se vier explicitamente do painel (upgrade=1)
