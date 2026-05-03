@@ -15,7 +15,7 @@ const plans = [
   {
     name: "Essencial",
     tagline: "Ideal para corretores iniciantes.",
-    prices: { mensal: "R$ 1,00", semestral: "R$ 1,00", anual: "R$ 1,00" },
+    prices: { mensal: "R$ 69,90", semestral: "R$ 356,49", anual: "R$ 628,65" },
     periodLabel: { mensal: "/mês", semestral: "/semestre", anual: "/ano" },
     highlighted: false,
     cta: "Começar agora",
@@ -36,7 +36,7 @@ const plans = [
   {
     name: "Profissional",
     tagline: "Perfeito para corretores que querem crescer.",
-    prices: { mensal: "R$ 1,00", semestral: "R$ 1,00", anual: "R$ 1,00" },
+    prices: { mensal: "R$ 99,90", semestral: "R$ 509,49", anual: "R$ 898,65" },
     periodLabel: { mensal: "/mês", semestral: "/semestre", anual: "/ano" },
     highlighted: true,
     cta: "Começar agora",
@@ -57,7 +57,7 @@ const plans = [
   {
     name: "Elite",
     tagline: "Para corretores profissionais e imobiliárias.",
-    prices: { mensal: "R$ 1,00", semestral: "R$ 1,00", anual: "R$ 1,00" },
+    prices: { mensal: "R$ 149,90", semestral: "R$ 764,49", anual: "R$ 1.348,65" },
     periodLabel: { mensal: "/mês", semestral: "/semestre", anual: "/ano" },
     highlighted: false,
     cta: "Começar agora",
@@ -195,8 +195,12 @@ const PricingSection = () => {
                 {/* CTA button */}
                 <button
                   onClick={() => {
-                    // Modo de teste: todos os planos custam R$ 1,00
-                    const valor = 1;
+                    const priceMap: Record<string, Record<Period, number>> = {
+                      Essencial: { mensal: 69.90, semestral: 356.49, anual: 628.65 },
+                      Profissional: { mensal: 99.90, semestral: 509.49, anual: 898.65 },
+                      Elite: { mensal: 149.90, semestral: 764.49, anual: 1348.65 },
+                    };
+                    const valor = priceMap[plan.name][period];
                     navigate(
                       `/checkout?plano=${PLAN_SLUGS[plan.name]}&ciclo=${period}&valor=${valor}`,
                     );
