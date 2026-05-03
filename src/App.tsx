@@ -44,7 +44,8 @@ const App = () => (
         <BrowserRouter>
           <Suspense fallback={<div className="min-h-screen" />}>
           <Routes>
-            <Route path="/" element={<UnderConstruction />} />
+            <Route path="/" element={<Index />} />
+            <Route path="/em-construcao" element={<UnderConstruction />} />
             <Route path="/super-admin-login" element={<SuperAdminLogin />} />
             <Route path="/super-admin-forgot-password" element={<SuperAdminForgotPassword />} />
             <Route path="/login" element={<Login />} />
