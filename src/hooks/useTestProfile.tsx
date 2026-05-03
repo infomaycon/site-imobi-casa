@@ -13,7 +13,7 @@ export interface TestProfile {
 }
 
 /**
- * Lê o profile do usuário autenticado no Supabase EXTERNO de teste.
+ * Lê o profile do usuário autenticado no backend ativo do projeto.
  * Usado pelo painel /admin para gating de plano (free vs pago) e
  * mensagem de boas-vindas no primeiro login.
  */
