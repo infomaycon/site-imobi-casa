@@ -57,11 +57,9 @@ Deno.serve(async (req) => {
 
   try {
     const accessToken = Deno.env.get("MERCADO_PAGO_ACCESS_TOKEN");
-    const testUrl = Deno.env.get("TEST_SUPABASE_URL");
-    const testKey = Deno.env.get("TEST_SUPABASE_SERVICE_ROLE_KEY");
     const internalUrl = Deno.env.get("SUPABASE_URL");
     const internalServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
-    if (!accessToken || !testUrl || !testKey || !internalUrl || !internalServiceKey) throw new Error("Secrets missing");
+    if (!accessToken || !internalUrl || !internalServiceKey) throw new Error("Secrets missing");
 
     const body = await req.json().catch(() => ({}));
     console.log("MP webhook:", JSON.stringify(body));
@@ -85,6 +83,7 @@ Deno.serve(async (req) => {
     console.log("MP payment:", payment.status, payment.external_reference);
 
     if (payment.status === "approved") {
+      const internalAdmin = createClient(internalUrl, internalServiceKey);
       let userId: string | undefined;
       let plano: string | undefined;
       let ciclo = "mensal";
@@ -100,9 +99,7 @@ Deno.serve(async (req) => {
       }
 
       if (userId && plano) {
-        await persistExternalProfile({
-          testUrl,
-          testKey,
+        await persistProfile(internalAdmin, {
           userId,
           email: payment?.payer?.email,
           plano,
@@ -112,7 +109,6 @@ Deno.serve(async (req) => {
 
       const email = (payment?.metadata?.email || payment?.payer?.email)?.trim()?.toLowerCase();
       if (email && plano) {
-        const internalAdmin = createClient(internalUrl, internalServiceKey);
         await internalAdmin.from("subscribers").upsert(
           {
             email,
