@@ -4,10 +4,7 @@ const corsHeaders = {
     "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
-
 interface PixRequest {
-  userId: string;
   email: string;
   plano: string;
   ciclo: string;
@@ -20,14 +17,11 @@ Deno.serve(async (req) => {
   try {
     const accessToken = Deno.env.get("MERCADO_PAGO_ACCESS_TOKEN");
     const supabaseUrl = Deno.env.get("SUPABASE_URL");
-    const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
     if (!accessToken) throw new Error("MERCADO_PAGO_ACCESS_TOKEN not configured");
     if (!supabaseUrl) throw new Error("SUPABASE_URL not configured");
-    if (!serviceKey) throw new Error("SUPABASE_SERVICE_ROLE_KEY not configured");
 
-    const body = (await req.json()) as PixRequest & { user_id?: string };
-    const userId = body.userId || body.user_id;
-    if (!userId || !body.email || !body.plano || !body.ciclo || !body.valor) {
+    const body = (await req.json()) as PixRequest;
+    if (!body.email || !body.plano || !body.ciclo || !body.valor) {
       console.error("[create-pix] missing fields:", body);
       return new Response(JSON.stringify({ error: "Missing fields", received: body }), {
         status: 400,
@@ -49,31 +43,17 @@ Deno.serve(async (req) => {
       );
     }
 
-    const admin = createClient(supabaseUrl, serviceKey);
-    const token = (req.headers.get("Authorization") || "").replace("Bearer ", "");
-    const authCheck = token
-      ? await admin.auth.getUser(token)
-      : await admin.auth.admin.getUserById(userId);
+    console.log("[create-pix] payload:", { email: cleanEmail, plano: body.plano, ciclo: body.ciclo, valor: body.valor });
 
-    if (authCheck.error || authCheck.data.user?.id !== userId || authCheck.data.user?.email?.toLowerCase() !== cleanEmail) {
-      return new Response(JSON.stringify({ error: "Cadastro não confere com o usuário logado" }), {
-        status: 403,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
-    }
-
-    console.log("[create-pix] payload:", { userId, email: body.email, plano: body.plano, ciclo: body.ciclo, valor: body.valor });
-
-    const idempotencyKey = `${userId}-${Date.now()}`;
+    const idempotencyKey = `${cleanEmail}-${body.plano}-${body.ciclo}-${Date.now()}`;
     const payload = {
       transaction_amount: Number(body.valor),
       description: `ImobiCasa - Plano ${body.plano} (${body.ciclo})`,
       payment_method_id: "pix",
       notification_url: `${supabaseUrl}/functions/v1/mercadopago-webhook`,
       payer: { email: cleanEmail },
-      external_reference: `${userId}|${body.plano}|${body.ciclo}`,
+      external_reference: JSON.stringify({ email: cleanEmail, plano: body.plano, ciclo: body.ciclo }),
       metadata: {
-        user_id: userId,
         email: cleanEmail,
         plano: body.plano,
         ciclo: body.ciclo,
