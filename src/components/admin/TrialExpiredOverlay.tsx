@@ -8,7 +8,7 @@ const PLANS = [
   {
     id: "basic",
     name: "Essencial",
-    price: "R$ 49,90",
+    price: "R$ 1,00",
     period: "/mês",
     features: [
       "Até 10 imóveis cadastrados",
@@ -21,7 +21,7 @@ const PLANS = [
   {
     id: "pro",
     name: "Profissional",
-    price: "R$ 89,90",
+    price: "R$ 1,00",
     period: "/mês",
     features: [
       "Até 50 imóveis cadastrados",
@@ -35,7 +35,7 @@ const PLANS = [
   {
     id: "premium",
     name: "Premium",
-    price: "R$ 149,90",
+    price: "R$ 1,00",
     period: "/mês",
     features: [
       "Imóveis ilimitados",
