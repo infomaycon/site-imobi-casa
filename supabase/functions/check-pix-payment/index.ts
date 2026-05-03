@@ -18,19 +18,18 @@ function computeExpiresAt(ciclo: string): string {
   return now.toISOString();
 }
 
-async function persistExternalProfile(params: {
-  testUrl: string;
-  testKey: string;
+async function persistProfile(admin: ReturnType<typeof createClient>, params: {
   userId: string;
   email?: string;
   plano: string;
   ciclo: string;
 }) {
-  const { testUrl, testKey, userId, email, plano, ciclo } = params;
-  const admin = createClient(testUrl, testKey);
+  const { userId, email, plano, ciclo } = params;
+  const cleanEmail = email?.trim().toLowerCase() || null;
   const basePayload: Record<string, unknown> = {
     id: userId,
-    email: email ?? null,
+    email: cleanEmail,
+    nome: cleanEmail?.split("@")[0] ?? null,
     plano,
     status: "active",
     trial: false,
@@ -50,7 +49,7 @@ async function persistExternalProfile(params: {
     .upsert(basePayload, { onConflict: "id" });
 
   if (fallbackError) {
-    throw new Error(`External profile sync failed: ${fallbackError.message}`);
+    throw new Error(`Profile sync failed: ${fallbackError.message}`);
   }
 }
 
@@ -59,13 +58,11 @@ Deno.serve(async (req) => {
 
   try {
     const accessToken = Deno.env.get("MERCADO_PAGO_ACCESS_TOKEN");
-    const testUrl = Deno.env.get("TEST_SUPABASE_URL");
-    const testKey = Deno.env.get("TEST_SUPABASE_SERVICE_ROLE_KEY");
     // Internal Lovable Cloud (where /admin authenticates)
     const internalUrl = Deno.env.get("SUPABASE_URL");
     const internalServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
 
-    if (!accessToken || !testUrl || !testKey || !internalUrl || !internalServiceKey) {
+    if (!accessToken || !internalUrl || !internalServiceKey) {
       throw new Error("Secrets not configured");
     }
 
@@ -90,11 +87,11 @@ Deno.serve(async (req) => {
     }
 
     if (data.status === "approved") {
-      // 1) Update external test profile (legacy)
+      const internalAdmin = createClient(internalUrl, internalServiceKey);
+
+      // 1) Update profile in the active backend
       if (userId && plano) {
-        await persistExternalProfile({
-          testUrl,
-          testKey,
+        await persistProfile(internalAdmin, {
           userId,
           email,
           plano,
@@ -104,7 +101,6 @@ Deno.serve(async (req) => {
 
       // 2) Provision user in INTERNAL Lovable Cloud + subscribers row
       if (email) {
-        const internalAdmin = createClient(internalUrl, internalServiceKey);
         const planValue = PLAN_VALUES[plano] ?? 1;
 
         // Create or update login only when password is available (new checkout flow)

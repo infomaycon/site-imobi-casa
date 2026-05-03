@@ -54,7 +54,7 @@ const TestLogin = () => {
       <div className="w-full max-w-md bg-card rounded-2xl shadow-lg p-8 space-y-6 border">
         <div className="text-center space-y-2">
           <h1 className="text-2xl font-bold">Login (Teste)</h1>
-          <p className="text-sm text-muted-foreground">Supabase externo: conuhvxiiwdsppowwrib</p>
+          <p className="text-sm text-muted-foreground">Backend ativo do projeto</p>
         </div>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">

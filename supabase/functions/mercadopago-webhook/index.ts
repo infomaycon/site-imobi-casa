@@ -18,19 +18,18 @@ function computeExpiresAt(ciclo: string): string {
   return now.toISOString();
 }
 
-async function persistExternalProfile(params: {
-  testUrl: string;
-  testKey: string;
+async function persistProfile(admin: ReturnType<typeof createClient>, params: {
   userId: string;
   email?: string;
   plano: string;
   ciclo: string;
 }) {
-  const { testUrl, testKey, userId, email, plano, ciclo } = params;
-  const admin = createClient(testUrl, testKey);
+  const { userId, email, plano, ciclo } = params;
+  const cleanEmail = email?.trim().toLowerCase() || null;
   const basePayload: Record<string, unknown> = {
     id: userId,
-    email: email ?? null,
+    email: cleanEmail,
+    nome: cleanEmail?.split("@")[0] ?? null,
     plano,
     status: "active",
     trial: false,
@@ -49,7 +48,7 @@ async function persistExternalProfile(params: {
     .upsert(basePayload, { onConflict: "id" });
 
   if (fallbackError) {
-    throw new Error(`External profile sync failed: ${fallbackError.message}`);
+    throw new Error(`Profile sync failed: ${fallbackError.message}`);
   }
 }
 
@@ -58,11 +57,9 @@ Deno.serve(async (req) => {
 
   try {
     const accessToken = Deno.env.get("MERCADO_PAGO_ACCESS_TOKEN");
-    const testUrl = Deno.env.get("TEST_SUPABASE_URL");
-    const testKey = Deno.env.get("TEST_SUPABASE_SERVICE_ROLE_KEY");
     const internalUrl = Deno.env.get("SUPABASE_URL");
     const internalServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
-    if (!accessToken || !testUrl || !testKey || !internalUrl || !internalServiceKey) throw new Error("Secrets missing");
+    if (!accessToken || !internalUrl || !internalServiceKey) throw new Error("Secrets missing");
 
     const body = await req.json().catch(() => ({}));
     console.log("MP webhook:", JSON.stringify(body));
@@ -86,6 +83,7 @@ Deno.serve(async (req) => {
     console.log("MP payment:", payment.status, payment.external_reference);
 
     if (payment.status === "approved") {
+      const internalAdmin = createClient(internalUrl, internalServiceKey);
       let userId: string | undefined;
       let plano: string | undefined;
       let ciclo = "mensal";
@@ -101,9 +99,7 @@ Deno.serve(async (req) => {
       }
 
       if (userId && plano) {
-        await persistExternalProfile({
-          testUrl,
-          testKey,
+        await persistProfile(internalAdmin, {
           userId,
           email: payment?.payer?.email,
           plano,
@@ -113,7 +109,6 @@ Deno.serve(async (req) => {
 
       const email = (payment?.metadata?.email || payment?.payer?.email)?.trim()?.toLowerCase();
       if (email && plano) {
-        const internalAdmin = createClient(internalUrl, internalServiceKey);
         await internalAdmin.from("subscribers").upsert(
           {
             email,

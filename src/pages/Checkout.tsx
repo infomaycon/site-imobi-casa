@@ -49,6 +49,28 @@ const Checkout = () => {
     }
   }, [user, isUpgrade]);
 
+  const createProfile = async (uid: string, normalizedEmail: string) => {
+    const trialEnd = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString();
+    const { error: profileError } = await supabase.from("profiles" as any).upsert(
+      {
+        id: uid,
+        email: normalizedEmail,
+        nome: normalizedEmail.split("@")[0],
+        plano,
+        status: "pending",
+        ciclo,
+        trial: false,
+        trial_end: trialEnd,
+        first_login: true,
+      },
+      { onConflict: "id" },
+    );
+    if (profileError) {
+      console.error("Erro ao criar profile:", profileError);
+      throw profileError;
+    }
+  };
+
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -80,12 +102,15 @@ const Checkout = () => {
       await supabase.auth.signOut().catch(() => {});
 
       // Cadastro no Lovable Cloud (Supabase principal — onde /admin autentica)
+      console.log("Tentando criar usuário...");
       const { data, error } = await supabase.auth.signUp({
         email: normalizedEmail,
         password,
         options: { emailRedirectTo: `${window.location.origin}/checkout` },
       });
+      console.log("Resposta do Auth:", data);
       if (error) {
+        console.error("Erro ao criar usuário:", error);
         if (error.message?.toLowerCase().includes("already")) {
           toast({
             title: "Email já cadastrado",
@@ -112,6 +137,8 @@ const Checkout = () => {
       if (!accessToken) {
         throw new Error("Cadastro criado, mas o login ainda não foi validado. Faça login para continuar o pagamento.");
       }
+
+      await createProfile(uid, normalizedEmail);
 
       // Registra no banco como assinante pendente e sincroniza a base de validação antes do PIX.
       const { data: syncData, error: syncError } = await supabase.functions.invoke("sync-checkout-registration", {
