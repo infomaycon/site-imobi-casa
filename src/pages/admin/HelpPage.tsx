@@ -25,9 +25,8 @@ const HelpPage = () => {
 
     try {
       // TODO: call new backend AI chat
-      const data = { reply: "Backend não configurado." }; const error = null; /* await supabase.functions.invoke("help-chat", {
-        body: { messages: updatedMessages },
-      }); */
+      const data = { reply: "Backend não configurado." };
+      const error = null;
 
       if (error) throw error;
       const reply = data?.reply || "Desculpe, não consegui processar sua mensagem.";

@@ -100,9 +100,9 @@ const AppearancePage = () => {
     const existing = null as any;
     const payload = { selected_theme: selectedTheme, color_palette: selectedColor };
     if (existing) {
-      // await supabase update
+      // TODO: update via new backend
     } else {
-      // await supabase insert
+      // TODO: insert via new backend
     }
     setSaved(true);
     setSaving(false);
