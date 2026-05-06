@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
-import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -23,36 +22,13 @@ const SiteContentPage = () => {
 
   useEffect(() => {
     if (!user) return;
-    supabase.from("site_settings").select("*").single().then(({ data }) => {
-      if (data) {
-        setForm({
-          broker_name: data.broker_name || "",
-          creci: data.creci || "",
-          phone: data.phone || "",
-          whatsapp: data.whatsapp || "",
-          email: data.email || "",
-          about_title: data.about_title || "Sobre",
-          about_description: data.about_description || "",
-          footer_text: data.footer_text || "",
-          footer_rights: data.footer_rights || "",
-          footer_extra_info: (data as any).footer_extra_info || "",
-          facebook_url: (data as any).facebook_url || "",
-          instagram_url: (data as any).instagram_url || "",
-          show_rental_highlight: (data as any).show_rental_highlight ?? true,
-        });
-      }
-    });
+// TODO: fetch from new backend
   }, [user]);
 
   const handleSave = async () => {
     if (!user) return;
     setSaving(true);
-    const { data: existing } = await supabase.from("site_settings").select("id").single();
-    if (existing) {
-      await supabase.from("site_settings").update(form as any).eq("id", existing.id);
-    } else {
-      await supabase.from("site_settings").insert({ ...form, user_id: user.id } as any);
-    }
+    // TODO: save to new backend
     setSaved(true);
     setSaving(false);
     setTimeout(() => setSaved(false), 3000);

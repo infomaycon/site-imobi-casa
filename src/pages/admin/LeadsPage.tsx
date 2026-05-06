@@ -1,10 +1,16 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
-import { supabase } from "@/integrations/supabase/client";
 import { MessageSquare } from "lucide-react";
-import type { Tables } from "@/integrations/supabase/types";
 
-type Lead = Tables<"leads">;
+interface Lead {
+  id: string;
+  name: string;
+  phone: string | null;
+  email: string | null;
+  message: string | null;
+  property_title: string | null;
+  created_at: string;
+}
 
 const LeadsPage = () => {
   const { user } = useAuth();
@@ -13,14 +19,9 @@ const LeadsPage = () => {
 
   useEffect(() => {
     if (!user) return;
-    supabase
-      .from("leads")
-      .select("*")
-      .order("created_at", { ascending: false })
-      .then(({ data }) => {
-        setLeads(data || []);
-        setLoading(false);
-      });
+    // TODO: fetch from new backend
+    setLeads([]);
+    setLoading(false);
   }, [user]);
 
   if (loading) return <div className="text-muted-foreground font-body text-center py-12">Carregando...</div>;

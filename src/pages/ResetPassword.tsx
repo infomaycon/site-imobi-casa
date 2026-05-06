@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -22,13 +21,8 @@ const ResetPassword = () => {
       setIsRecovery(true);
     }
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
-      if (event === "PASSWORD_RECOVERY") {
-        setIsRecovery(true);
-      }
-    });
-
-    return () => subscription.unsubscribe();
+    // TODO: implement with new backend
+    return () => {};
   }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -46,7 +40,8 @@ const ResetPassword = () => {
     }
 
     setLoading(true);
-    const { error } = await supabase.auth.updateUser({ password });
+    // TODO: implement with new backend
+    const error = new Error("Backend não configurado.");
 
     if (error) {
       setError("Erro ao redefinir senha. Tente novamente.");

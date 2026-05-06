@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { z } from "zod";
-import { testSupabase } from "@/lib/supabase";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -19,13 +18,8 @@ const TestLogin = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    testSupabase.auth.getSession().then(({ data: { session } }) => {
-      if (session) navigate("/admin", { replace: true });
-    });
-    const { data: { subscription } } = testSupabase.auth.onAuthStateChange((_e, session) => {
-      if (session) navigate("/admin", { replace: true });
-    });
-    return () => subscription.unsubscribe();
+    // TODO: implement with new backend
+    return () => {};
   }, [navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -37,10 +31,8 @@ const TestLogin = () => {
       return;
     }
     setLoading(true);
-    const { error } = await testSupabase.auth.signInWithPassword({
-      email: parsed.data.email,
-      password: parsed.data.password,
-    });
+    // TODO: implement with new backend
+    const error = new Error("Backend não configurado.");
     setLoading(false);
     if (error) {
       setError("Email ou senha incorretos.");

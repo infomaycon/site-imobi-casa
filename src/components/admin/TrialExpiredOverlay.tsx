@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { testSupabase } from "@/lib/supabase";
 import { useTestProfile } from "@/hooks/useTestProfile";
 import { useAuth } from "@/hooks/useAuth";
 import { Clock, Check, LogOut } from "lucide-react";
@@ -67,7 +66,7 @@ const TrialExpiredOverlay = () => {
       return;
     }
     (async () => {
-      await testSupabase
+      await (null as any)
         .from("profiles" as any)
         .update({ status: "expired" })
         .eq("id", profile!.id);

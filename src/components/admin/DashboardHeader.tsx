@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
-import { supabase } from "@/integrations/supabase/client";
 import { Plus, CheckCircle2, TrendingUp, Home as HomeIcon, MessageSquare, Eye, Star, Sparkles } from "lucide-react";
 import { motion } from "framer-motion";
 
@@ -91,27 +90,8 @@ const DashboardHeader = ({ onAddClick }: { onAddClick?: () => void }) => {
 
   useEffect(() => {
     if (!user) return;
-    const load = async () => {
-      const [{ data: props }, { data: leads }] = await Promise.all([
-        supabase.from("properties").select("id,active,featured").eq("user_id", user.id),
-        supabase.from("leads").select("id,created_at").eq("user_id", user.id),
-      ]);
-      const active = (props ?? []).filter((p) => p.active).length;
-      const featured = (props ?? []).filter((p) => p.featured).length;
-      const dayAgo = Date.now() - 24 * 60 * 60 * 1000;
-      const leads24h = (leads ?? []).filter((l) => new Date(l.created_at).getTime() > dayAgo).length;
-      // Visits is simulated for now (not tracked in DB)
-      const visits = Math.max(active * 12 + (leads?.length ?? 0) * 4, 0);
-      setStats({
-        active,
-        leads: leads?.length ?? 0,
-        visits,
-        featured,
-        leads24h,
-      });
-    };
-    load();
-    const userMeta = (user.user_metadata?.name as string) || user.email?.split("@")[0] || "";
+    // TODO: fetch from new backend
+    const userMeta = user.email?.split("@")[0] || "";
     setName(userMeta.charAt(0).toUpperCase() + userMeta.slice(1));
   }, [user]);
 

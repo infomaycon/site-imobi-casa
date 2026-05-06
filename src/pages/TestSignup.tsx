@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { z } from "zod";
-import { testSupabase } from "@/lib/supabase";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -28,48 +27,9 @@ const TestSignup = () => {
     }
     setLoading(true);
     console.log("Tentando criar usuário...");
-    const { data, error } = await testSupabase.auth.signUp({
-      email: parsed.data.email,
-      password: parsed.data.password,
-      options: { emailRedirectTo: `${window.location.origin}/admin` },
-    });
-    console.log("Resposta do Auth:", data);
-    if (error) {
-      console.error("Erro ao criar usuário:", error);
-      setLoading(false);
-      setError(error.message);
-      return;
-    }
-
-    const user = data.user;
-    if (user) {
-      const now = new Date();
-      const trialEnd = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
-      const { error: profileError } = await testSupabase.from("profiles" as any).insert({
-        id: user.id,
-        email: user.email,
-        nome: user.email?.split("@")[0] ?? null,
-        plano: "free",
-        status: "active",
-        trial: true,
-        trial_start: now.toISOString(),
-        trial_end: trialEnd.toISOString(),
-        first_login: true,
-      });
-      if (profileError) {
-        console.error("Erro ao criar profile:", profileError);
-        setLoading(false);
-        setError(`Conta criada, mas erro ao criar profile: ${profileError.message}`);
-        return;
-      }
-    }
-
+    // TODO: implement with new backend
     setLoading(false);
-    if (data.session) {
-      navigate("/admin");
-    } else {
-      setError("Cadastro criado. Verifique seu email para confirmar antes de entrar.");
-    }
+    setError("Backend não configurado.");
   };
 
   return (

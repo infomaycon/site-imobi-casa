@@ -5,8 +5,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "@/hooks/use-toast";
-import { supabase } from "@/integrations/supabase/client";
-
 type Step = "signup" | "waiting" | "approved";
 
 const PLAN_PRICES: Record<string, Record<string, number>> = {
@@ -61,15 +59,7 @@ const Checkout = () => {
     setLoading(true);
     try {
       console.log("[checkout] Salvando perfil pending para:", normalizedEmail);
-      const externalRes = await fetch("https://conuhvxiiwdsppowwrib.supabase.co/functions/v1/create-or-update-profile", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: normalizedEmail }),
-      });
-      if (!externalRes.ok) {
-        const errBody = await externalRes.json().catch(() => ({}));
-        console.error("[checkout] Erro ao salvar perfil pending, continuando para o PIX:", errBody);
-      }
+      // TODO: save profile to new backend
       setEmail(normalizedEmail);
 
       console.log("[checkout] Perfil salvo. Gerando PIX sem autenticação.");
@@ -81,9 +71,9 @@ const Checkout = () => {
       };
       console.log("PIX DATA:", { plano, ciclo, valor: Number(valor) });
       console.log("[checkout] create-pix payload:", payload);
-      const { data, error } = await supabase.functions.invoke("create-pix-payment", {
-        body: payload,
-      });
+      // TODO: implement with new backend
+      const data = null as any;
+      const error = new Error("Backend não configurado.");
 
       // Lê mensagem de erro real do backend, mesmo quando vem como non-2xx
       if (error || data?.error) {
@@ -121,9 +111,8 @@ const Checkout = () => {
     if (!pix) return;
     if (!silent) setLoading(true);
     try {
-      const { data } = await supabase.functions.invoke("check-pix-payment", {
-        body: { paymentId: pix.paymentId, plano, ciclo, email },
-      });
+      // TODO: implement with new backend
+      const data = null as any;
       if (data?.status === "approved") {
         setStep("approved");
         toast({ title: "Pagamento concluído com sucesso!", description: "Seu acesso será liberado em seguida." });

@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -17,26 +16,9 @@ const SuperAdminForgotPassword = () => {
     setLoading(true);
 
     try {
-      const { data: checkData, error: checkError } = await supabase.functions.invoke(
-        "check-email-exists",
-        { body: { email: email.trim().toLowerCase() } }
-      );
+      // TODO: implement with new backend
 
-      if (checkError || !checkData?.exists) {
-        setError("Não existe uma conta com este email.");
-        setLoading(false);
-        return;
-      }
-
-      const { error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: `${window.location.origin}/reset-password`,
-      });
-
-      if (error) {
-        setError("Erro ao enviar email. Tente novamente mais tarde.");
-      } else {
-        setSent(true);
-      }
+      setError("Backend não configurado.");
     } catch {
       setError("Erro ao processar solicitação. Tente novamente.");
     }

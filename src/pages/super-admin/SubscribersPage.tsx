@@ -1,5 +1,4 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { externalSupabase } from "@/integrations/external-supabase/client";
 import { useState } from "react";
 import { Search, Users, CheckCircle, XCircle, Crown, Zap, RefreshCw } from "lucide-react";
 
@@ -20,7 +19,7 @@ const SubscribersPage = () => {
   const { data: subscribers = [], isLoading, isError, error, isFetching } = useQuery({
     queryKey: ["external-subscribers"],
     queryFn: async () => {
-      const { data, error } = await externalSupabase
+      const { data, error } = await (null as any)
         .from("subscribers")
         .select("*")
         .order("created_at", { ascending: false });

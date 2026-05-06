@@ -1,8 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { Send, Bot, User, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { supabase } from "@/integrations/supabase/client";
-
 type Message = { role: "user" | "assistant"; content: string };
 
 const HelpPage = () => {
@@ -26,9 +24,9 @@ const HelpPage = () => {
     setLoading(true);
 
     try {
-      const { data, error } = await supabase.functions.invoke("help-chat", {
-        body: { messages: updatedMessages },
-      });
+      // TODO: call new backend AI chat
+      const data = { reply: "Backend não configurado." };
+      const error = null;
 
       if (error) throw error;
       const reply = data?.reply || "Desculpe, não consegui processar sua mensagem.";

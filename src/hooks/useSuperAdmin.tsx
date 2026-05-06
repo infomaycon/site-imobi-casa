@@ -1,31 +1,16 @@
 import { useAuth } from "@/hooks/useAuth";
-import { supabase } from "@/integrations/supabase/client";
-import { useQuery } from "@tanstack/react-query";
 
 export type AppRole = "owner" | "admin" | "user";
 
+/** Stub — no backend connected. */
 export const useSuperAdmin = () => {
   const { user } = useAuth();
 
-  const { data: userRole, isLoading: roleLoading } = useQuery({
-    queryKey: ["user-role", user?.id],
-    queryFn: async () => {
-      if (!user) return null;
-      const { data, error } = await supabase
-        .from("user_roles")
-        .select("role")
-        .eq("user_id", user.id)
-        .in("role", ["owner", "admin"])
-        .maybeSingle();
-      if (error) throw error;
-      return (data?.role as AppRole) ?? null;
-    },
-    enabled: !!user,
-  });
-
-  const isOwner = userRole === "owner";
-  const isAdmin = userRole === "admin";
-  const hasSuperAccess = isOwner || isAdmin;
-
-  return { userRole, isOwner, isAdmin, hasSuperAccess, roleLoading };
+  return {
+    userRole: null as AppRole | null,
+    isOwner: false,
+    isAdmin: false,
+    hasSuperAccess: false,
+    roleLoading: false,
+  };
 };

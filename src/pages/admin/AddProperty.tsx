@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
-import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -72,12 +71,8 @@ const AddProperty = () => {
     if (!user) return null;
     const webpFile = await convertToWebp(file);
     const path = `${user.id}/${Date.now()}-${Math.random().toString(36).slice(2)}.webp`;
-    const { error } = await supabase.storage
-      .from("property-images")
-      .upload(path, webpFile, { contentType: "image/webp" });
-    if (error) return null;
-    const { data } = supabase.storage.from("property-images").getPublicUrl(path);
-    return data.publicUrl;
+    // TODO: upload to new backend storage
+    return null;
   };
 
   const handleFeaturedUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -109,21 +104,8 @@ const AddProperty = () => {
 
     const allImages = featuredImage ? [featuredImage, ...galleryImages] : galleryImages;
 
-    const { error } = await supabase.from("properties").insert({
-      user_id: user.id,
-      title: form.title,
-      price: parseFloat(form.price) || 0,
-      property_type: selectedCat.type,
-      status: selectedCat.status,
-      location: form.location,
-      description: form.description,
-      bedrooms: isTerrain ? 0 : parseInt(form.bedrooms) || 0,
-      bathrooms: isTerrain ? 0 : parseInt(form.bathrooms) || 0,
-      area: parseFloat(form.area) || 0,
-      parking: isTerrain ? 0 : parseInt(form.parking) || 0,
-      featured: form.featured,
-      images: allImages,
-    });
+    // TODO: save to new backend
+    const error = null;
 
     if (!error) {
       setSaved(true);

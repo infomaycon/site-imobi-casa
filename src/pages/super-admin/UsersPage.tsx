@@ -1,5 +1,4 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
 import { useSuperAdmin } from "@/hooks/useSuperAdmin";
 import { useState } from "react";
 import { UserPlus, Trash2, Shield, Crown, X } from "lucide-react";
@@ -16,7 +15,8 @@ const UsersPage = () => {
   const { data: roles = [] } = useQuery({
     queryKey: ["super-user-roles"],
     queryFn: async () => {
-      const { data, error } = await supabase.from("user_roles").select("*");
+      // TODO: fetch from new backend
+      const data: any[] = []; const error = null;
       if (error) throw error;
       return data ?? [];
     },
@@ -25,20 +25,16 @@ const UsersPage = () => {
   const addAdmin = useMutation({
     mutationFn: async () => {
       // Create user via edge function or sign up
-      const { data, error } = await supabase.auth.signUp({
-        email: newEmail,
-        password: newPassword,
-        options: { data: { full_name: newName } },
-      });
+      // TODO: implement with new backend
+      const data = null as any;
+      const error = new Error("Backend não configurado.");
       if (error) throw error;
       if (!data.user) throw new Error("Erro ao criar usuário");
 
       // Add admin role
-      const { error: roleError } = await supabase.from("user_roles").insert({
-        user_id: data.user.id,
-        role: "admin" as any,
-      });
-      if (roleError) throw roleError;
+      // TODO: implement with new backend
+      const roleError = null;
+      if (roleError) throw new Error("Role error");
     },
     onSuccess: () => {
       toast.success("Administrador criado com sucesso!");
@@ -53,7 +49,8 @@ const UsersPage = () => {
 
   const removeRole = useMutation({
     mutationFn: async (roleId: string) => {
-      const { error } = await supabase.from("user_roles").delete().eq("id", roleId);
+      // TODO: implement with new backend
+      const error = null;
       if (error) throw error;
     },
     onSuccess: () => {
