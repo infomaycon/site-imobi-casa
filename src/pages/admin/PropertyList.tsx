@@ -3,7 +3,21 @@ import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { Pencil, Trash2, Star, Eye, EyeOff, Copy, Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
-type Property = Tables<"properties">;
+
+interface Property {
+  id: string;
+  title: string;
+  price: number;
+  location: string | null;
+  status: string;
+  property_type: string;
+  active: boolean;
+  featured: boolean;
+  images: string[] | null;
+  created_at: string;
+  updated_at: string;
+  user_id: string;
+}
 
 const PropertyList = () => {
   const { user } = useAuth();
@@ -13,11 +27,8 @@ const PropertyList = () => {
 
   const fetchProperties = async () => {
     if (!user) return;
-    const { data } = await supabase
-      .from("properties")
-      .select("*")
-      .order("created_at", { ascending: false });
-    setProperties(data || []);
+    // TODO: fetch from new backend
+    setProperties([]);
     setLoading(false);
   };
 
@@ -26,26 +37,21 @@ const PropertyList = () => {
   }, [user]);
 
   const toggleActive = async (id: string, current: boolean) => {
-    await supabase.from("properties").update({ active: !current }).eq("id", id);
-    fetchProperties();
+    // TODO: implement with new backend
   };
 
   const toggleFeatured = async (id: string, current: boolean) => {
-    await supabase.from("properties").update({ featured: !current }).eq("id", id);
-    fetchProperties();
+    // TODO: implement with new backend
   };
 
   const duplicateProperty = async (property: Property) => {
     if (!user) return;
-    const { id, created_at, updated_at, ...rest } = property;
-    await supabase.from("properties").insert({ ...rest, title: `${rest.title} (cópia)`, user_id: user.id });
-    fetchProperties();
+    // TODO: implement with new backend
   };
 
   const deleteProperty = async (id: string) => {
     if (!confirm("Tem certeza que deseja excluir este imóvel?")) return;
-    await supabase.from("properties").delete().eq("id", id);
-    fetchProperties();
+    // TODO: implement with new backend
   };
 
   const formatPrice = (price: number) =>
