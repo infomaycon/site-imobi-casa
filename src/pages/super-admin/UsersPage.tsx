@@ -33,11 +33,8 @@ const UsersPage = () => {
 
       // Add admin role
       // TODO: implement with new backend
-        const roleError = null; /* supabase.from("user_roles").insert({
-        user_id: data.user.id,
-        role: "admin" as any,
-      });
-      if (roleError) throw roleError;
+      const roleError = null;
+      if (roleError) throw new Error("Role error");
     },
     onSuccess: () => {
       toast.success("Administrador criado com sucesso!");
