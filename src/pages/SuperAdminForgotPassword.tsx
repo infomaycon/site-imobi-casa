@@ -16,16 +16,7 @@ const SuperAdminForgotPassword = () => {
     setLoading(true);
 
     try {
-      const { data: checkData, error: checkError } = await supabase.functions.invoke(
-        "check-email-exists",
-        { body: { email: email.trim().toLowerCase() } }
-      );
-
-      if (checkError || !checkData?.exists) {
-        setError("Não existe uma conta com este email.");
-        setLoading(false);
-        return;
-      }
+      // TODO: implement with new backend
 
       const { error } = await supabase.auth.resetPasswordForEmail(email, {
         redirectTo: `${window.location.origin}/reset-password`,

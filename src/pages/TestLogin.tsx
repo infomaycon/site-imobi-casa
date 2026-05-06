@@ -18,13 +18,8 @@ const TestLogin = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    testSupabase.auth.getSession().then(({ data: { session } }) => {
-      if (session) navigate("/admin", { replace: true });
-    });
-    const { data: { subscription } } = testSupabase.auth.onAuthStateChange((_e, session) => {
-      if (session) navigate("/admin", { replace: true });
-    });
-    return () => subscription.unsubscribe();
+    // TODO: implement with new backend
+    return () => {};
   }, [navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {

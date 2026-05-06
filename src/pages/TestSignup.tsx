@@ -44,17 +44,8 @@ const TestSignup = () => {
     if (user) {
       const now = new Date();
       const trialEnd = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
-      const { error: profileError } = await testSupabase.from("profiles" as any).insert({
-        id: user.id,
-        email: user.email,
-        nome: user.email?.split("@")[0] ?? null,
-        plano: "free",
-        status: "active",
-        trial: true,
-        trial_start: now.toISOString(),
-        trial_end: trialEnd.toISOString(),
-        first_login: true,
-      });
+      // TODO: save profile to new backend
+      const profileError = null;
       if (profileError) {
         console.error("Erro ao criar profile:", profileError);
         setLoading(false);

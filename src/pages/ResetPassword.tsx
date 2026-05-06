@@ -21,13 +21,8 @@ const ResetPassword = () => {
       setIsRecovery(true);
     }
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
-      if (event === "PASSWORD_RECOVERY") {
-        setIsRecovery(true);
-      }
-    });
-
-    return () => subscription.unsubscribe();
+    // TODO: implement with new backend
+    return () => {};
   }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -45,7 +40,8 @@ const ResetPassword = () => {
     }
 
     setLoading(true);
-    const { error } = await supabase.auth.updateUser({ password });
+    // TODO: implement with new backend
+    const error = new Error("Backend não configurado.");
 
     if (error) {
       setError("Erro ao redefinir senha. Tente novamente.");

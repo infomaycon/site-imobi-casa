@@ -84,7 +84,8 @@ const AppearancePage = () => {
 
   useEffect(() => {
     if (!user) return;
-    supabase.from("site_settings").select("selected_theme, color_palette").single().then(({ data }) => {
+    // TODO: fetch from new backend
+    Promise.resolve({ data: null }).then(({ data }) => {
       if (data) {
         if (data.selected_theme) setSelectedTheme(data.selected_theme);
         if (data.color_palette) setSelectedColor(data.color_palette);
@@ -95,12 +96,13 @@ const AppearancePage = () => {
   const handleSave = async () => {
     if (!user) return;
     setSaving(true);
-    const { data: existing } = await supabase.from("site_settings").select("id").single();
+    // TODO: save to new backend
+    const existing = null as any;
     const payload = { selected_theme: selectedTheme, color_palette: selectedColor };
     if (existing) {
-      await supabase.from("site_settings").update(payload).eq("id", existing.id);
+      // await supabase update
     } else {
-      await supabase.from("site_settings").insert({ ...payload, user_id: user.id });
+      // await supabase insert
     }
     setSaved(true);
     setSaving(false);

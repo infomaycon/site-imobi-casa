@@ -15,7 +15,8 @@ const UsersPage = () => {
   const { data: roles = [] } = useQuery({
     queryKey: ["super-user-roles"],
     queryFn: async () => {
-      const { data, error } = await supabase.from("user_roles").select("*");
+      // TODO: fetch from new backend
+      const data: any[] = []; const error = null;
       if (error) throw error;
       return data ?? [];
     },
@@ -33,7 +34,8 @@ const UsersPage = () => {
       if (!data.user) throw new Error("Erro ao criar usuário");
 
       // Add admin role
-      const { error: roleError } = await supabase.from("user_roles").insert({
+      // TODO: implement with new backend
+        const roleError = null; /* supabase.from("user_roles").insert({
         user_id: data.user.id,
         role: "admin" as any,
       });
@@ -52,7 +54,8 @@ const UsersPage = () => {
 
   const removeRole = useMutation({
     mutationFn: async (roleId: string) => {
-      const { error } = await supabase.from("user_roles").delete().eq("id", roleId);
+      // TODO: implement with new backend
+      const error = null;
       if (error) throw error;
     },
     onSuccess: () => {

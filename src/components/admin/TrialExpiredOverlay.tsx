@@ -66,7 +66,7 @@ const TrialExpiredOverlay = () => {
       return;
     }
     (async () => {
-      await testSupabase
+      await (null as any)
         .from("profiles" as any)
         .update({ status: "expired" })
         .eq("id", profile!.id);

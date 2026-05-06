@@ -14,31 +14,18 @@ const SettingsPage = () => {
 
   useEffect(() => {
     if (!user) return;
-    supabase.from("site_settings").select("domain, site_name, whatsapp").single().then(async ({ data }) => {
-      if (data) setForm(prev => ({ ...prev, domain: data.domain || "", site_name: data.site_name || "", whatsapp: data.whatsapp || "" }));
-      // Load subdominio from perfis
-      const { data: perfil } = await supabase.from("perfis").select("subdominio").eq("user_id", user!.id).maybeSingle();
-      if (perfil) setForm(prev => ({ ...prev, subdominio: perfil.subdominio || "" }));
-    });
+    // TODO: fetch from new backend
   }, [user]);
 
   const handleSave = async () => {
     if (!user) return;
     setSaving(true);
-    const { data: existing } = await supabase.from("site_settings").select("id").single();
-    if (existing) {
-      await supabase.from("site_settings").update({ domain: form.domain, site_name: form.site_name, whatsapp: form.whatsapp }).eq("id", existing.id);
-    } else {
-      await supabase.from("site_settings").insert({ domain: form.domain, site_name: form.site_name, whatsapp: form.whatsapp, user_id: user.id });
-    }
-    // Save subdominio to perfis
-    const { data: existingPerfil } = await supabase.from("perfis").select("id").eq("user_id", user.id).maybeSingle();
-    if (existingPerfil) {
-      await supabase.from("perfis").update({ subdominio: form.subdominio }).eq("user_id", user.id);
-    } else {
-      await supabase.from("perfis").insert({ user_id: user.id, subdominio: form.subdominio });
-    }
-    setSaved(true);
+    // TODO: implement with new backend
+    // TODO: implement with new backend
+    // TODO: implement with new backend
+    // TODO: implement with new backend
+    // TODO: implement with new backend
+    // TODO: implement with new backend
     setSaving(false);
     setTimeout(() => setSaved(false), 3000);
   };

@@ -79,9 +79,9 @@ const Checkout = () => {
       };
       console.log("PIX DATA:", { plano, ciclo, valor: Number(valor) });
       console.log("[checkout] create-pix payload:", payload);
-      const { data, error } = await supabase.functions.invoke("create-pix-payment", {
-        body: payload,
-      });
+      // TODO: implement with new backend
+      const data = null as any;
+      const error = new Error("Backend não configurado.");
 
       // Lê mensagem de erro real do backend, mesmo quando vem como non-2xx
       if (error || data?.error) {
@@ -119,9 +119,8 @@ const Checkout = () => {
     if (!pix) return;
     if (!silent) setLoading(true);
     try {
-      const { data } = await supabase.functions.invoke("check-pix-payment", {
-        body: { paymentId: pix.paymentId, plano, ciclo, email },
-      });
+      // TODO: implement with new backend
+      const data = null as any;
       if (data?.status === "approved") {
         setStep("approved");
         toast({ title: "Pagamento concluído com sucesso!", description: "Seu acesso será liberado em seguida." });

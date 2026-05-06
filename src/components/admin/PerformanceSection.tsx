@@ -218,12 +218,8 @@ const PerformanceSection = () => {
   useEffect(() => {
     if (!user) return;
     const load = async () => {
-      const { data } = await supabase
-        .from("leads")
-        .select("id, name, property_title, created_at")
-        .eq("user_id", user.id)
-        .order("created_at", { ascending: false })
-        .limit(5);
+      // TODO: fetch from new backend
+      const data: any[] = [];
       setLeads((data ?? []) as Lead[]);
     };
     load();

@@ -18,27 +18,8 @@ const ForgotPassword = () => {
 
     try {
       // Verificar se o email existe no banco de dados
-      const { data: checkData, error: checkError } = await supabase.functions.invoke(
-        "check-email-exists",
-        { body: { email: email.trim().toLowerCase() } }
-      );
-
-      if (checkError || !checkData?.exists) {
-        setError("Não existe uma conta com este email. Verifique o endereço informado.");
-        setLoading(false);
-        return;
-      }
-
-      // Email existe, enviar link de redefinição
-      const { error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: `${window.location.origin}/reset-password`,
-      });
-
-      if (error) {
-        setError("Erro ao enviar email. Tente novamente mais tarde.");
-      } else {
-        setSent(true);
-      }
+      // TODO: implement with new backend
+      setError("Backend não configurado.");
     } catch (err) {
       setError("Erro ao processar solicitação. Tente novamente.");
     }

@@ -6,9 +6,8 @@ const DashboardPage = () => {
   const { data: subscribers = [] } = useQuery({
     queryKey: ["super-subscribers"],
     queryFn: async () => {
-      const { data, error } = await supabase.from("subscribers").select("*");
-      if (error) throw error;
-      return data ?? [];
+      // TODO: fetch from new backend
+      return [];
     },
   });
 
