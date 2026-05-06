@@ -1,9 +1,6 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
-import { supabase } from "@/integrations/supabase/client";
 import { MessageSquare } from "lucide-react";
-import type { Tables } from "@/integrations/supabase/types";
-
 type Lead = Tables<"leads">;
 
 const LeadsPage = () => {

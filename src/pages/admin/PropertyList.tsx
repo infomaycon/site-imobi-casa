@@ -1,11 +1,8 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
-import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Pencil, Trash2, Star, Eye, EyeOff, Copy, Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import type { Tables } from "@/integrations/supabase/types";
-
 type Property = Tables<"properties">;
 
 const PropertyList = () => {

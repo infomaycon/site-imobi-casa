@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { useTestProfile } from "@/hooks/useTestProfile";
-import { supabase } from "@/integrations/supabase/client";
 import { demoModels } from "@/data/models";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";

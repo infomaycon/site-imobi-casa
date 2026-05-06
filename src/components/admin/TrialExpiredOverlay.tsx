@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { testSupabase } from "@/lib/supabase";
 import { useTestProfile } from "@/hooks/useTestProfile";
 import { useAuth } from "@/hooks/useAuth";
 import { Clock, Check, LogOut } from "lucide-react";

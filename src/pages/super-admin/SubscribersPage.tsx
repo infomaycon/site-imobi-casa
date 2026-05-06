@@ -1,5 +1,4 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { externalSupabase } from "@/integrations/external-supabase/client";
 import { useState } from "react";
 import { Search, Users, CheckCircle, XCircle, Crown, Zap, RefreshCw } from "lucide-react";
 
