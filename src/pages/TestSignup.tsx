@@ -28,40 +28,8 @@ const TestSignup = () => {
     setLoading(true);
     console.log("Tentando criar usuário...");
     // TODO: implement with new backend
-    const data = null as any;
-    const error = new Error("Backend não configurado."); /* testSupabase.auth.signUp({
-      email: parsed.data.email,
-      password: parsed.data.password,
-      options: { emailRedirectTo: `${window.location.origin}/admin` },
-    });
-    console.log("Resposta do Auth:", data);
-    if (error) {
-      console.error("Erro ao criar usuário:", error);
-      setLoading(false);
-      setError(error.message);
-      return;
-    }
-
-    const user = data.user;
-    if (user) {
-      const now = new Date();
-      const trialEnd = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
-      // TODO: save profile to new backend
-      const profileError = null;
-      if (profileError) {
-        console.error("Erro ao criar profile:", profileError);
-        setLoading(false);
-        setError(`Conta criada, mas erro ao criar profile: ${profileError.message}`);
-        return;
-      }
-    }
-
     setLoading(false);
-    if (data.session) {
-      navigate("/admin");
-    } else {
-      setError("Cadastro criado. Verifique seu email para confirmar antes de entrar.");
-    }
+    setError("Backend não configurado.");
   };
 
   return (
