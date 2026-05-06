@@ -44,18 +44,16 @@ const HeroSection = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.45 }}
         >
-          <a
-            href="#planos"
-            className="inline-flex items-center justify-center px-8 py-4 rounded-lg font-display font-bold text-base sm:text-lg bg-gold text-white hover:brightness-110 transition-all shadow-premium"
+          <span
+            className="inline-flex items-center justify-center px-8 py-4 rounded-lg font-display font-bold text-base sm:text-lg bg-gold text-white cursor-default shadow-premium"
           >
             Quero Meu Site
-          </a>
-          <a
-            href="#modelos"
-            className="inline-flex items-center justify-center px-8 py-4 rounded-lg font-display font-semibold text-base sm:text-lg border-2 border-white/30 text-white hover:bg-white/10 transition-all backdrop-blur-sm"
+          </span>
+          <span
+            className="inline-flex items-center justify-center px-8 py-4 rounded-lg font-display font-semibold text-base sm:text-lg border-2 border-white/30 text-white cursor-default backdrop-blur-sm"
           >
             Ver Modelos
-          </a>
+          </span>
         </motion.div>
       </div>
     </section>

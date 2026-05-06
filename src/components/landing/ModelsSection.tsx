@@ -1,6 +1,5 @@
 import { motion } from "framer-motion";
 import { demoModels } from "@/data/models";
-import { useNavigate } from "react-router-dom";
 import { ExternalLink } from "lucide-react";
 
 import previewAuroraPrime from "@/assets/preview-aurora-prime.webp";
@@ -26,8 +25,6 @@ const previewMap: Record<string, string> = {
 };
 
 const ModelsSection = () => {
-  const navigate = useNavigate();
-
   return (
     <section id="modelos" className="py-28 bg-surface-light relative">
       <div className="container mx-auto px-6 max-w-7xl">
@@ -81,14 +78,13 @@ const ModelsSection = () => {
                   <span className="text-xs font-body text-body-muted ml-1">{model.style}</span>
                 </div>
 
-                <button
-                  onClick={() => navigate(`/demo/${model.id}`)}
-                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-display font-semibold transition-all hover:brightness-110 w-full justify-center text-white"
+                <span
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-display font-semibold w-full justify-center text-white cursor-default"
                   style={{ backgroundColor: "#00bf63" }}
                 >
                   Ver Demonstração
                   <ExternalLink className="w-4 h-4" />
-                </button>
+                </span>
               </div>
             </motion.div>
           ))}

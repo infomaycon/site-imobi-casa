@@ -16,10 +16,10 @@ const FinalCTA = () => {
         <motion.p className="text-white/85 text-lg mb-10 font-body" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }}>
           Não perca mais tempo com sites genéricos. Conquiste autoridade digital com uma presença online premium.
         </motion.p>
-        <motion.a href="#planos" className="inline-flex items-center justify-center px-10 py-5 rounded-lg font-display font-bold text-lg bg-gold text-white hover:brightness-110 transition-all shadow-premium"
+        <motion.span className="inline-flex items-center justify-center px-10 py-5 rounded-lg font-display font-bold text-lg bg-gold text-white cursor-default shadow-premium"
           initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }}>
           Quero Começar Agora
-        </motion.a>
+        </motion.span>
       </div>
     </section>
   );

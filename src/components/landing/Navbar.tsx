@@ -8,20 +8,16 @@ const Navbar = () => {
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-xl border-b border-border">
       <div className="container mx-auto px-6 h-20 flex items-center justify-between">
-        <a href="/" className="flex items-center">
+        <span className="flex items-center cursor-default">
           <img src={logo} alt="ImobiCasa" className="w-[180px] md:w-[280px]" />
-        </a>
+        </span>
 
         <div className="hidden md:flex items-center gap-8">
-          <a href="#modelos" className="text-body-muted hover:text-gold transition-colors text-sm font-body">Modelos</a>
-          {/* <a href="#planos" className="text-body-muted hover:text-gold transition-colors text-sm font-body">Planos</a> */}
-          <a href="/login" className="flex items-center gap-1.5 text-body-muted hover:text-primary transition-colors text-sm font-body">
+          <span className="text-body-muted cursor-default text-sm font-body">Modelos</span>
+          <span className="flex items-center gap-1.5 text-body-muted cursor-default text-sm font-body">
             <LogIn className="w-4 h-4" />
             Entrar
-          </a>
-          {/* <a href="#planos" className="px-5 py-2 rounded-lg bg-primary text-primary-foreground font-display font-semibold text-sm hover:brightness-110 transition-all">
-            Começar Agora
-          </a> */}
+          </span>
         </div>
 
         <button onClick={() => setOpen(!open)} className="md:hidden text-heading">
@@ -31,14 +27,10 @@ const Navbar = () => {
 
       {open && (
         <div className="md:hidden bg-background border-t border-border p-6 space-y-4">
-          <a href="#modelos" onClick={() => setOpen(false)} className="block text-body-muted hover:text-primary text-sm font-body">Modelos</a>
-          {/* <a href="#planos" onClick={() => setOpen(false)} className="block text-body-muted hover:text-primary text-sm font-body">Planos</a> */}
-          <a href="/login" onClick={() => setOpen(false)} className="flex items-center gap-1.5 text-body-muted hover:text-primary text-sm font-body">
+          <span className="block text-body-muted cursor-default text-sm font-body">Modelos</span>
+          <span className="flex items-center gap-1.5 text-body-muted cursor-default text-sm font-body">
             <LogIn className="w-4 h-4" />Entrar
-          </a>
-          {/* <a href="#planos" onClick={() => setOpen(false)} className="block text-center px-5 py-2 rounded-lg bg-primary text-primary-foreground font-display font-semibold text-sm">
-            Começar Agora
-          </a> */}
+          </span>
         </div>
       )}
     </nav>
