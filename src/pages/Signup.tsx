@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
-import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -18,35 +17,6 @@ const Signup = () => {
   const navigate = useNavigate();
   const { signUp, signIn } = useAuth();
 
-  const createProfile = async (userId: string, normalizedEmail: string) => {
-    const trialEnd = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString();
-    const { error: profileError } = await supabase.from("profiles" as any).upsert(
-      {
-        id: userId,
-        email: normalizedEmail,
-        nome: normalizedEmail.split("@")[0],
-        plano: "gratuito",
-        status: "ativo",
-        ciclo: "mensal",
-        trial: true,
-        trial_end: trialEnd,
-        first_login: true,
-      },
-      { onConflict: "id" },
-    );
-    if (profileError) {
-      console.error("Erro ao criar profile:", profileError);
-      throw profileError;
-    }
-  };
-
-  const ensureSignupRegistration = async (userId: string, normalizedEmail: string) => {
-    const { error: syncError } = await supabase.functions.invoke("ensure-signup-registration", {
-      body: { userId, email: normalizedEmail },
-    });
-    if (syncError) throw syncError;
-  };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
@@ -59,34 +29,20 @@ const Signup = () => {
     const normalizedEmail = email.trim().toLowerCase();
     console.log("Tentando criar usuário...");
     const { data, error: signUpError } = await signUp(normalizedEmail, password);
-    console.log("Resposta do Auth:", data);
     if (signUpError) {
-      console.error("Erro ao criar usuário:", signUpError);
       setLoading(false);
       setError(signUpError.message || "Erro ao criar conta.");
       return;
     }
     const userId = data?.user?.id;
     if (!userId) {
-      console.error("Erro ao criar usuário:", "Auth não retornou o ID do usuário.");
       setLoading(false);
       setError("Erro ao criar usuário no Auth. Verifique a conexão com o backend.");
       return;
     }
 
-    try {
-      if (data?.session) await createProfile(userId, normalizedEmail);
-      await ensureSignupRegistration(userId, normalizedEmail);
-    } catch (syncError) {
-      setLoading(false);
-      setError("Conta criada, mas o acesso ainda não foi liberado porque o cadastro não foi salvo no banco. Tente entrar novamente em alguns segundos.");
-      console.error("Erro ao sincronizar cadastro:", syncError);
-      return;
-    }
-
-    const { error: signInError } = data?.session ? { error: null } : await signIn(normalizedEmail, password);
+    const { error: signInError } = await signIn(normalizedEmail, password);
     if (signInError) {
-      console.error("Erro ao criar usuário:", signInError);
       setLoading(false);
       setInfo("Conta criada e profile salvo. Verifique seu email para confirmar antes de entrar.");
       return;
