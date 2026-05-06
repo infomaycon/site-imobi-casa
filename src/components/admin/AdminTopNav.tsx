@@ -23,7 +23,6 @@ import {
 import { useAuth } from "@/hooks/useAuth";
 import { useSubscriberAccess } from "@/hooks/useSubscriberAccess";
 import { useAdminTheme, AdminTheme } from "@/hooks/useAdminTheme";
-import { supabase } from "@/integrations/supabase/client";
 import logo from "@/assets/imobicasa-logo.webp";
 
 const navItems = [
@@ -50,7 +49,7 @@ const AdminTopNav = () => {
   const [openTheme, setOpenTheme] = useState(false);
   const [unread, setUnread] = useState(0);
 
-  const name = subscriber?.name || (user?.user_metadata?.name as string) || user?.email?.split("@")[0] || "";
+  const name = subscriber?.name || user?.email?.split("@")[0] || "";
   const planLabel = subscriber?.plan
     ? subscriber.plan.charAt(0).toUpperCase() + subscriber.plan.slice(1)
     : "Trial";
@@ -59,15 +58,8 @@ const AdminTopNav = () => {
   // Fetch unread leads count
   useEffect(() => {
     if (!user) return;
-    const load = async () => {
-      const { count } = await supabase
-        .from("leads")
-        .select("id", { count: "exact", head: true })
-        .eq("user_id", user.id)
-        .eq("read", false);
-      setUnread(count ?? 0);
-    };
-    load();
+    // TODO: fetch from new backend
+    setUnread(0);
   }, [user]);
 
   const handleSignOut = async () => {
