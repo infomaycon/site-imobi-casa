@@ -25,11 +25,9 @@ const UsersPage = () => {
   const addAdmin = useMutation({
     mutationFn: async () => {
       // Create user via edge function or sign up
-      const { data, error } = await supabase.auth.signUp({
-        email: newEmail,
-        password: newPassword,
-        options: { data: { full_name: newName } },
-      });
+      // TODO: implement with new backend
+      const data = null as any;
+      const error = new Error("Backend não configurado.");
       if (error) throw error;
       if (!data.user) throw new Error("Erro ao criar usuário");
 

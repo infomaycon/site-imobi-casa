@@ -18,15 +18,7 @@ const SuperAdminForgotPassword = () => {
     try {
       // TODO: implement with new backend
 
-      const { error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: `${window.location.origin}/reset-password`,
-      });
-
-      if (error) {
-        setError("Erro ao enviar email. Tente novamente mais tarde.");
-      } else {
-        setSent(true);
-      }
+      setError("Backend não configurado.");
     } catch {
       setError("Erro ao processar solicitação. Tente novamente.");
     }

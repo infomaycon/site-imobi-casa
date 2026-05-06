@@ -31,10 +31,8 @@ const TestLogin = () => {
       return;
     }
     setLoading(true);
-    const { error } = await testSupabase.auth.signInWithPassword({
-      email: parsed.data.email,
-      password: parsed.data.password,
-    });
+    // TODO: implement with new backend
+    const error = new Error("Backend não configurado.");
     setLoading(false);
     if (error) {
       setError("Email ou senha incorretos.");
