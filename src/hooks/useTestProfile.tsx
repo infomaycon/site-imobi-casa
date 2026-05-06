@@ -1,5 +1,4 @@
-import { useEffect, useState, useCallback } from "react";
-import { testSupabase } from "@/lib/supabase";
+import { useState } from "react";
 
 export interface TestProfile {
   id: string;
@@ -12,22 +11,22 @@ export interface TestProfile {
   first_login: boolean | null;
 }
 
-/**
- * Lê o profile do usuário autenticado no backend ativo do projeto.
- * Usado pelo painel /admin para gating de plano (free vs pago) e
- * mensagem de boas-vindas no primeiro login.
- */
+/** Stub — no backend connected. */
 export const useTestProfile = () => {
-  const [profile, setProfile] = useState<TestProfile | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [profile] = useState<TestProfile | null>(null);
 
-  const fetchProfile = useCallback(async () => {
-    const { data: sessionData } = await testSupabase.auth.getSession();
-    const user = sessionData.session?.user;
-    if (!user) {
-      setProfile(null);
-      setLoading(false);
-      return;
+  const isFree = true;
+
+  const markFirstLoginSeen = async () => {
+    // TODO: implement with new backend
+  };
+
+  const refetch = async () => {
+    // TODO: implement with new backend
+  };
+
+  return { profile, loading: false, isFree, markFirstLoginSeen, refetch };
+};
     }
     const { data } = await testSupabase
       .from("profiles" as any)
