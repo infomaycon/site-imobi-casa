@@ -19,9 +19,6 @@ const Navbar = () => {
             <LogIn className="w-4 h-4" />
             Entrar
           </a>
-          <a href="/signup" className="text-body-muted hover:text-gold transition-colors text-sm font-body">
-            Cadastrar
-          </a>
           {/* <a href="#planos" className="px-5 py-2 rounded-lg bg-primary text-primary-foreground font-display font-semibold text-sm hover:brightness-110 transition-all">
             Começar Agora
           </a> */}
@@ -38,9 +35,6 @@ const Navbar = () => {
           {/* <a href="#planos" onClick={() => setOpen(false)} className="block text-body-muted hover:text-primary text-sm font-body">Planos</a> */}
           <a href="/login" onClick={() => setOpen(false)} className="flex items-center gap-1.5 text-body-muted hover:text-primary text-sm font-body">
             <LogIn className="w-4 h-4" />Entrar
-          </a>
-          <a href="/signup" onClick={() => setOpen(false)} className="block text-body-muted hover:text-primary text-sm font-body">
-            Cadastrar
           </a>
           {/* <a href="#planos" onClick={() => setOpen(false)} className="block text-center px-5 py-2 rounded-lg bg-primary text-primary-foreground font-display font-semibold text-sm">
             Começar Agora
