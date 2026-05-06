@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
 
 export interface TenantData {
   id: string;
@@ -28,6 +27,12 @@ function extractSubdomain(hostname: string): string | null {
 
 export const useTenant = () => {
   const [tenant, setTenant] = useState<TenantData | null>(null);
+  const [loading, setLoading] = useState(false);
+
+  // TODO: fetch from new backend
+
+  return { tenant, loading };
+};
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
   const [isSubdomainAccess, setIsSubdomainAccess] = useState(false);

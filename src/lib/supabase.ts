@@ -1,4 +1,2 @@
-import { supabase } from "@/integrations/supabase/client";
-
-// Mantém compatibilidade com telas antigas, mas usa somente o backend ativo do projeto.
-export const testSupabase = supabase;
+// Stub — no backend connected. Will be replaced with Cloudflare integration.
+export const testSupabase = null as any;
