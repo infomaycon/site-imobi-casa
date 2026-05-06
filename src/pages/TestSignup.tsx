@@ -27,7 +27,9 @@ const TestSignup = () => {
     }
     setLoading(true);
     console.log("Tentando criar usuário...");
-    const { data, error } = await testSupabase.auth.signUp({
+    // TODO: implement with new backend
+    const data = null as any;
+    const error = new Error("Backend não configurado."); /* testSupabase.auth.signUp({
       email: parsed.data.email,
       password: parsed.data.password,
       options: { emailRedirectTo: `${window.location.origin}/admin` },

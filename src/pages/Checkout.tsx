@@ -59,15 +59,7 @@ const Checkout = () => {
     setLoading(true);
     try {
       console.log("[checkout] Salvando perfil pending para:", normalizedEmail);
-      const externalRes = await fetch("https://conuhvxiiwdsppowwrib.supabase.co/functions/v1/create-or-update-profile", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: normalizedEmail }),
-      });
-      if (!externalRes.ok) {
-        const errBody = await externalRes.json().catch(() => ({}));
-        console.error("[checkout] Erro ao salvar perfil pending, continuando para o PIX:", errBody);
-      }
+      // TODO: save profile to new backend
       setEmail(normalizedEmail);
 
       console.log("[checkout] Perfil salvo. Gerando PIX sem autenticação.");
