@@ -1,5 +1,3 @@
-import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 
 export interface SubscriberData {
@@ -14,20 +12,17 @@ export interface SubscriberData {
   trial_end?: string | null;
 }
 
-interface AccessData {
-  subscriber: SubscriberData | null;
-  hasPerfil: boolean;
-}
-
+/** Stub — no backend connected. */
 export const useSubscriberAccess = () => {
   const { user } = useAuth();
 
-  const { data: access, isLoading } = useQuery({
-    queryKey: ["subscriber-access", user?.id, user?.email],
-    queryFn: async () => {
-      if (!user?.id || !user?.email) return { subscriber: null, hasPerfil: false } as AccessData;
-      const [subscriberResult, perfilResult] = await Promise.all([
-        supabase
+  return {
+    subscriber: null as SubscriberData | null,
+    isAuthorized: false,
+    isActive: false,
+    isLoading: false,
+  };
+};
         .from("subscribers")
         .select("*")
         .eq("email", user.email)
