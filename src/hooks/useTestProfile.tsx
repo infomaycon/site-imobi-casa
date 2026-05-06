@@ -27,36 +27,3 @@ export const useTestProfile = () => {
 
   return { profile, loading: false, isFree, markFirstLoginSeen, refetch };
 };
-    }
-    const { data } = await testSupabase
-      .from("profiles" as any)
-      .select("*")
-      .eq("id", user.id)
-      .maybeSingle();
-    setProfile((data as any) ?? null);
-    setLoading(false);
-  }, []);
-
-  useEffect(() => {
-    fetchProfile();
-    const { data: sub } = testSupabase.auth.onAuthStateChange(() => {
-      fetchProfile();
-    });
-    return () => {
-      sub.subscription.unsubscribe();
-    };
-  }, [fetchProfile]);
-
-  const markFirstLoginSeen = useCallback(async () => {
-    if (!profile) return;
-    await testSupabase
-      .from("profiles" as any)
-      .update({ first_login: false })
-      .eq("id", profile.id);
-    setProfile({ ...profile, first_login: false });
-  }, [profile]);
-
-  const isFree = !profile?.plano || profile.plano === "free";
-
-  return { profile, loading, isFree, markFirstLoginSeen, refetch: fetchProfile };
-};
