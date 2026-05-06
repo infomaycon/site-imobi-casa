@@ -6,8 +6,17 @@ import FinalCTA from "@/components/landing/FinalCTA";
 import Footer from "@/components/landing/Footer";
 
 const Index = () => {
+  const blockLandingInteraction = (event: React.SyntheticEvent<HTMLElement>) => {
+    event.preventDefault();
+    event.stopPropagation();
+  };
+
   return (
-    <div className="bg-background min-h-screen">
+    <div
+      className="bg-background min-h-screen pointer-events-none"
+      onClickCapture={blockLandingInteraction}
+      onAuxClickCapture={blockLandingInteraction}
+    >
       <Navbar />
       <HeroSection />
       <ModelsSection />
