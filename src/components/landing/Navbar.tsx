@@ -1,4 +1,5 @@
 import { Menu, LogIn } from "lucide-react";
+import { Link } from "react-router-dom";
 import logo from "@/assets/imobicasa-logo.webp";
 
 const Navbar = () => {  
