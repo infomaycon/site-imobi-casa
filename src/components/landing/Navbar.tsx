@@ -12,10 +12,10 @@ const Navbar = () => {
 
         <div className="hidden md:flex items-center gap-8">
           <span className="text-body-muted cursor-default text-sm font-body">Modelos</span>
-          <span className="flex items-center gap-1.5 text-body-muted cursor-default text-sm font-body">
+          <Link to="/login" className="flex items-center gap-1.5 text-body-muted hover:text-primary transition-colors text-sm font-body pointer-events-auto">
             <LogIn className="w-4 h-4" />
             Entrar
-          </span>
+          </Link>
         </div>
 
         <span className="md:hidden text-heading cursor-default" aria-hidden="true">
