@@ -15,8 +15,6 @@ const Index = () => {
   return (
     <div
       className="bg-background min-h-screen pointer-events-none"
-      onClickCapture={blockLandingInteraction}
-      onAuxClickCapture={blockLandingInteraction}
     >
       <Navbar />
       <HeroSection />
