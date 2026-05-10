@@ -27,7 +27,7 @@ const previewMap: Record<string, string> = {
 
 const ModelsSection = () => {
   return (
-    <section id="modelos" className="py-28 bg-surface-light relative">
+    <section id="modelos" className="py-28 bg-surface-light relative pointer-events-auto">
       <div className="container mx-auto px-6 max-w-7xl">
         <motion.div className="text-center mb-16" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
           <span className="text-gold font-display font-semibold text-sm uppercase tracking-widest">Modelos</span>
