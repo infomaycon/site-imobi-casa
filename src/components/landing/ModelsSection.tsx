@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { demoModels } from "@/data/models";
 import { ExternalLink } from "lucide-react";
+import { Link } from "react-router-dom";
 
 import previewAuroraPrime from "@/assets/preview-aurora-prime.webp";
 import previewSkylineUrban from "@/assets/preview-skyline-urban.webp";
