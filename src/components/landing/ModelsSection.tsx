@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { demoModels } from "@/data/models";
 import { ExternalLink } from "lucide-react";
+import { Link } from "react-router-dom";
 
 import previewAuroraPrime from "@/assets/preview-aurora-prime.webp";
 import previewSkylineUrban from "@/assets/preview-skyline-urban.webp";
@@ -26,7 +27,7 @@ const previewMap: Record<string, string> = {
 
 const ModelsSection = () => {
   return (
-    <section id="modelos" className="py-28 bg-surface-light relative">
+    <section id="modelos" className="py-28 bg-surface-light relative pointer-events-auto">
       <div className="container mx-auto px-6 max-w-7xl">
         <motion.div className="text-center mb-16" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
           <span className="text-gold font-display font-semibold text-sm uppercase tracking-widest">Modelos</span>
@@ -78,13 +79,14 @@ const ModelsSection = () => {
                   <span className="text-xs font-body text-body-muted ml-1">{model.style}</span>
                 </div>
 
-                <span
-                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-display font-semibold w-full justify-center text-white cursor-default"
+                <Link
+                  to={`/demo/${model.id}`}
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-display font-semibold w-full justify-center text-white hover:brightness-110 transition-all"
                   style={{ backgroundColor: "#00bf63" }}
                 >
                   Ver Demonstração
                   <ExternalLink className="w-4 h-4" />
-                </span>
+                </Link>
               </div>
             </motion.div>
           ))}
